@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CD66447C-203E-4527-8971-36D1176B19BA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ERPOptima.Model</RootNamespace>
+    <AssemblyName>ERPOptima.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetOpenAuth.AspNet">
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.3.2.0\lib\net45\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.0\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.0\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounts\AnFAdjustment.cs" />
+    <Compile Include="Accounts\AnFAdvance.cs" />
+    <Compile Include="Accounts\AnFChartOfAccount.cs" />
+    <Compile Include="Accounts\AnFClosingBalance.cs" />
+    <Compile Include="Accounts\AnFExpens.cs" />
+    <Compile Include="Accounts\AnFMeasurementUnit.cs" />
+    <Compile Include="Accounts\AnFBankReconciliationItem.cs" />
+    <Compile Include="Accounts\AnFChequeBook.cs" />
+    <Compile Include="Accounts\AnFCostCenter.cs" />
+    <Compile Include="Accounts\AnFDeliveryMethod.cs" />
+    <Compile Include="Accounts\AnFDepreciationRate.cs" />
+    <Compile Include="Accounts\AnFMonthLock.cs" />
+    <Compile Include="Accounts\AnFOpeningBalance.cs" />
+    <Compile Include="Accounts\AnFPaymentMethod.cs" />
+    <Compile Include="Accounts\AnFPaymentTerm.cs" />
+    <Compile Include="Accounts\AnFProductOrServiceTax.cs" />
+    <Compile Include="Accounts\AnFProductOrServiceType.cs" />
+    <Compile Include="Accounts\AnFVoucher.cs" />
+    <Compile Include="Accounts\AnFVoucherDetail.cs" />
+    <Compile Include="Accounts\AnFVoucherType.cs" />
+    <Compile Include="Accounts\AnFVoucherTypesEnum.cs" />
+    <Compile Include="Accounts\CmnAccountHeadMapper.cs" />
+    <Compile Include="Accounts\CmnMappingType.cs" />
+    <Compile Include="Accounts\FxdAcquisition.cs" />
+    <Compile Include="Accounts\FxdAsset.cs" />
+    <Compile Include="Accounts\FxdDepreciation.cs" />
+    <Compile Include="Accounts\FxdDisposal.cs" />
+    <Compile Include="Accounts\FxdRevaluation.cs" />
+    <Compile Include="Common\CmnCurrency.cs" />
+    <Compile Include="Common\CmnCountry.cs" />
+    <Compile Include="HRM\HrmDepartment.cs" />
+    <Compile Include="HRM\HrmDesignation.cs" />
+    <Compile Include="HRM\HrmEmployee.cs" />
+    <Compile Include="Inventory\InvDamage.cs" />
+    <Compile Include="Inventory\InvDamageApproval.cs" />
+    <Compile Include="Inventory\InvDamageApprovalProduct.cs" />
+    <Compile Include="Inventory\InvDamageDetail.cs" />
+    <Compile Include="Inventory\InvIssue.cs" />
+    <Compile Include="Inventory\InvIssueDetail.cs" />
+    <Compile Include="Inventory\InvProductReceive.cs" />
+    <Compile Include="Inventory\InvProductReceiveDetail.cs" />
+    <Compile Include="Inventory\InvProductSend.cs" />
+    <Compile Include="Inventory\InvProductSendDetail.cs" />
+    <Compile Include="Inventory\InvProductSendDetailItem.cs" />
+    <Compile Include="Inventory\InvRequisition.cs" />
+    <Compile Include="Inventory\InvRequisitionApproval.cs" />
+    <Compile Include="Inventory\InvRequisitionDetail.cs" />
+    <Compile Include="Inventory\InvStockInOut.cs" />
+    <Compile Include="Inventory\InvStore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\CmnApproval.cs" />
+    <Compile Include="Common\CmnApprovalComment.cs" />
+    <Compile Include="Common\CmnApprovalProcess.cs" />
+    <Compile Include="Common\CmnApprovalUserPermission.cs" />
+    <Compile Include="Common\CmnApprovalProcessLevel.cs" />
+    <Compile Include="Common\CmnFinancialYear.cs" />
+    <Compile Include="Common\CmnProcessLevel.cs" />
+    <Compile Include="Sales\SlsArea.cs" />
+    <Compile Include="Sales\SlsAreaConfiguration.cs" />
+    <Compile Include="Sales\SlsAreaConfigurationDetail.cs" />
+    <Compile Include="Sales\SlsCollection.cs" />
+    <Compile Include="Sales\SlsCollectionTarget.cs" />
+    <Compile Include="Sales\SlsCommission.cs" />
+    <Compile Include="Sales\SlsCommissionPackage.cs" />
+    <Compile Include="Sales\SlsCorporateClient.cs" />
+    <Compile Include="Sales\SlsCorporateSalesApplication.cs" />
+    <Compile Include="Sales\SlsCorporateSalesApplicationDetail.cs" />
+    <Compile Include="Sales\SlsCorporateSalesApproval.cs" />
+    <Compile Include="Sales\SlsCorporateType.cs" />
+    <Compile Include="Sales\SlsDealer.cs" />
+    <Compile Include="Sales\SlsDefect.cs" />
+    <Compile Include="Sales\SlsDefectDetail.cs" />
+    <Compile Include="Sales\SlsDeliverDetail.cs" />
+    <Compile Include="Sales\SlsDelivery.cs" />
+    <Compile Include="Sales\SlsDiscountSetting.cs" />
+    <Compile Include="Sales\SlsDistributor.cs" />
+    <Compile Include="Sales\SlsDistrict.cs" />
+    <Compile Include="Sales\SlsFieldVisit.cs" />
+    <Compile Include="Sales\SlsFreeProduct.cs" />
+    <Compile Include="Sales\SlsGeneralDiscount.cs" />
+    <Compile Include="Sales\SlsIncentive.cs" />
+    <Compile Include="Sales\SlsIncentiveSetting.cs" />
+    <Compile Include="Sales\SlsNotification.cs" />
+    <Compile Include="Sales\SlsNotificationDetail.cs" />
+    <Compile Include="Sales\SlsOffice.cs" />
+    <Compile Include="Sales\SlsOfficeType.cs" />
+    <Compile Include="Sales\SlsProduct.cs" />
+    <Compile Include="Sales\SlsProductDiscount.cs" />
+    <Compile Include="Sales\SlsProductPrice.cs" />
+    <Compile Include="Sales\SlsProductReceiveDetail.cs" />
+    <Compile Include="Sales\SlsProductReceives.cs" />
+    <Compile Include="Sales\SlsProductUnit.cs" />
+    <Compile Include="Sales\SlsPromotionalOffer.cs" />
+    <Compile Include="Sales\SlsPromotionalOfferDetail.cs" />
+    <Compile Include="Sales\SlsRegion.cs" />
+    <Compile Include="Sales\SlsReplacement.cs" />
+    <Compile Include="Sales\SlsReplacementDetail.cs" />
+    <Compile Include="Sales\SlsRetailer.cs" />
+    <Compile Include="Sales\SlsRoute.cs" />
+    <Compile Include="Sales\SlsRouteDetail.cs" />
+    <Compile Include="Sales\SlsRoutePlan.cs" />
+    <Compile Include="Sales\SlsRoutePlanApproval.cs" />
+    <Compile Include="Sales\SlsRoutePlanDetail.cs" />
+    <Compile Include="Sales\SlsSalesOrder.cs" />
+    <Compile Include="Sales\SlsSalesOrderApproval.cs" />
+    <Compile Include="Sales\SlsSalesOrderDetail.cs" />
+    <Compile Include="Sales\SlsSalesReturn.cs" />
+    <Compile Include="Sales\SlsSalesReturnDetail.cs" />
+    <Compile Include="Sales\SlsSalesTarget.cs" />
+    <Compile Include="Sales\SlsSalesTargetDetail.cs" />
+    <Compile Include="Inventory\InvStoreOpening.cs" />
+    <Compile Include="Sales\SlsThana.cs" />
+    <Compile Include="Sales\SlsTransfer.cs" />
+    <Compile Include="Sales\SlsTransferDetail.cs" />
+    <Compile Include="Sales\SlsUnit.cs" />
+    <Compile Include="Security\SecCompany.cs" />
+    <Compile Include="Security\SecCompanyUser.cs" />
+    <Compile Include="Security\SecDashboard.cs" />
+    <Compile Include="Security\SecDashboardPermission.cs" />
+    <Compile Include="Security\SecFile.cs" />
+    <Compile Include="Security\SecGroup.cs" />
+    <Compile Include="Security\SecModule.cs" />
+    <Compile Include="Security\SecResource.cs" />
+    <Compile Include="Security\SecRole.cs" />
+    <Compile Include="Security\SecRolePermission.cs" />
+    <Compile Include="Security\SecUser.cs" />
+    <Compile Include="Security\SecUserRole.cs" />
+    <Compile Include="ViewModel\ChartViewModel.cs" />
+    <Compile Include="ViewModel\HrmEmployeeViewModel.cs" />
+    <Compile Include="ViewModel\Sales\SlsIncentiveViewModel.cs" />
+    <Compile Include="ViewModel\Sales\SlsSalesOrderProductViewModel.cs" />
+    <Compile Include="ViewModel\Sales\SpPartyCreditViewModel.cs" />
+    <Compile Include="ViewModel\SlsCollectionViewModel.cs" />
+    <Compile Include="ViewModel\SlsFreeProductsViewModel.cs" />
+    <Compile Include="ViewModel\SlsNotificationViewModel.cs" />
+    <Compile Include="ViewModel\SlsRouteDetailViewModel.cs" />
+    <Compile Include="ViewModel\SlsSalesOrderViewModel.cs" />
+    <Compile Include="ViewModel\TargetList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SupplyChain\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

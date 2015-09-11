@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "Commission Package";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Commission Package</h2>
+<div ng-controller="CommissionPackageController">
+    <form name="CommissionPackageForm">
+        <section class="margin-top-10 col-sm-5 col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Commission Package Entry</h3>
+                </div>
+                <div class="box-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-12 col-xs-12">
+                                Year<span style="color:red">*</span>
+                                <span style="color:red" data-ng-show="CommissionPackageForm.nmCmbYear.$dirty && CommissionPackageForm.nmCmbYear.$error.required">Required</span>
+                            </label>
+                            <select id="cmbYear" name="nmCmbYear" class="col-sm-12 col-xs-12" data-ui-select2 data-placeholder="Pick a Year"
+                                    ng-model="MainObj.Year" required>
+                                <option value=""></option>
+                                <option ng-repeat="data in Years" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-12 col-xs-12">
+                                Month<span style="color:red">*</span>
+                                <span style="color:red" data-ng-show="CommissionPackageForm.nmCmbMonth.$dirty && CommissionPackageForm.nmCmbMonth.$error.required">Required</span>
+                            </label>
+                            <select id="cmbMonth" name="nmCmbMonth" class="col-sm-12 col-xs-12" data-ui-select2 data-placeholder="Pick a Month"
+                                    ng-model="MainObj.Month" required>
+                                <option value=""></option>
+                                <option ng-repeat="mon in Months" value={{mon.Id}}>{{mon.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Lower<span style="color:red">*</span>
+                            <span style="color:red" data-ng-show="CommissionPackageForm.nmTxtLower.$dirty && CommissionPackageForm.nmTxtLower.$error.required">Required</span>
+                        </label>
+                        <input type="number" name="nmTxtLower" class="form-control right-align" id="txtLower" placeholder=""
+                               ng-model="MainObj.LowerTarget" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Upper
+                            <!--<span style="color:red" data-ng-show="CommissionPackageForm.nmTxtUpper.$dirty && CommissionPackageForm.nmTxtUpper.$error.required">Required</span>-->
+                        </label>
+                        <input type="number" name="nmTxtUpper" class="form-control right-align" id="txtUpper" placeholder=""
+                               ng-model="MainObj.UpperTarget">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            Commission<span style="color:red">*</span>
+                            <span style="color:red" data-ng-show="CommissionPackageForm.nmTxtCommission.$dirty && CommissionPackageForm.nmTxtCommission.$error.required">Required</span>
+                        </label>
+                        <input type="number" name="nmTxtCommission" class="form-control right-align" id="txtCommission" placeholder=""
+                               ng-model="MainObj.Commission" required>
+                    </div>  <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="CommissionPackageForm.$invalid" ng-click="Save(CommissionPackageForm.$valid)">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="reset" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+    </form>
+
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Commission Package List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding margin">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:15%">Year</th>
+                                <th style="width:18%">Month</th>
+                                <th style="width: 15%">Lower</th>
+                                <th style="width: 15%">Upper</th>
+                                <th style="width: 15%">Commission</th>
+                                <th style="width: 10%; text-wrap: normal">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in MainList | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:10%">{{$index+1}}</td>
+                                    <td style="width:15%">{{resource.Year}}</td>
+                                    <td style="width:18%">
+                                        <div ng-repeat="data in Months">
+                                            <label ng-show="ShowMonth(resource.Month, data.Id)">
+                                                {{data.Name}}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td style="width:15%">{{resource.LowerTarget}}</td>
+                                    <td style="width:15%">{{resource.UpperTarget}}</td>
+                                    <td style="width:15%">{{resource.Commission}}</td>
+
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{$index+1}}" ng-click="setForEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+            /*min-width: 620px !important;*/
+            overflow-x: auto;
+        }
+    </style>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/CommissionPackageController.js")"></script>
+}

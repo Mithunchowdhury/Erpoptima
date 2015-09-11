@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Financial Year";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Financial Year</h2>
+<div ng-controller="FinancialYear">
+    <section class="margin-top-10 col-xs-12 col-sm-5">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">Financial Year Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="FinancialYears">
+                  
+                    <div class="form-group">
+                        <label for="txtName">Name</label><label style="color:red">*</label>
+                        <span style="color:red" data-ng-show="FinancialYears.txtName.$dirty && FinancialYears.txtName.$error.required">Required</span>
+                        <input type="text" name="txtName" ng-model="FinancialYear.Name" class="form-control" id="txtName" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtFromDate">Start Date</label><label style="color:red">*</label>
+                        <span style="color:red" data-ng-show="FinancialYears.startDate.$dirty && FinancialYears.startDate.$error.required">Required</span>
+                        <input type="text" name="startDate" ng-model="FinancialYear.OpeningDate" class="form-control dpkr" id="txtFromDate" placeholder="From Date" datetimepicker required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtToDate">End Date</label><label style="color:red">*</label>
+                        <span style="color:red" data-ng-show="FinancialYears.enddate.$dirty && FinancialYears.enddate.$error.required">Required</span>
+                        <input type="text" name="enddate" ng-model="FinancialYear.ClosingDate" class="form-control dpkr" id="txtToDate" placeholder="To Date" datetimepicker required>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            Status <input type="checkbox" name="active" ng-model="FinancialYear.Status" checked="checked" ng-checked ="true">
+                        </label>
+                    </div>
+                    <div class="form-group center-align">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="FinancialYears.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="reset()">Reset</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-xs-12 col-sm-7">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">Financial Year Table</h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body">
+                <div>
+                    <table ng-table="tableParams" class="table table-responsive">
+                        <tbody ng-repeat="data in $data  | filter:SearchList">
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Opening Date'" sortable="'OpeningDate'">{{data.OpeningDate}}</td>
+                                <td class="rowTd" data-title="'Closing Date'" sortable="'ClosingDate'">{{data.ClosingDate}}</td>
+                                <td class="rowTd" data-title="'Status'" sortable="'Status'"><span ng-class="{'badge bg-green': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit($index)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Common/FinancialYearController.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/blockUI.js")"></script>
+}

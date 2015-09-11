@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "RoutePlan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+@*<style>
+    .fieldset1 {
+        font-family: sans-serif !important;
+        border: 3px solid #1F497D !important;
+        background: #ddd !important;
+        border-radius: 5px !important;
+        padding: 5px !important;
+    }
+
+    .legend1 {
+        background: #1F497D !important;
+        color: #fff !important;
+        padding: 5px 5px !important;
+        font-size: 12px !important;
+        border-radius: 5px !important;
+        box-shadow: 0 0 0 5px #ddd !important;
+        margin-left: 20px !important;
+        font-weight: bold;
+        margin-top: 5px !important;
+    }
+</style>*@
+<h2 class="text-center">Route Plan</h2>
+<div ng-controller="RoutePlan">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Route Plan Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="RoutePlan">
+                    <div class="form-group">
+                        <label for="cmbEmployee">Employee<span style="color:red">*</span></label>
+                        <select id="cmbEmployee" placeholder="Pick an Employee" ng-model="Employee" class="selectUI" ng-change="EmployeeChanged()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Employees" value={{data}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cmbWeek">Week<span style="color:red">*</span></label>
+                        <select id="cmbWeek" placeholder="Pick a Week" ng-model="week" class="selectUI" ng-change="WeekChanged()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in Weeks" value={{data}}>
+                                Week No {{data.WeekNo}} : {{data.Start}} to {{data.End}}
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Title<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="Businesses.nmTitle.$dirty && Businesses.nmTitle.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="Businesses.nmTitle.$dirty && Businesses.nmTitle.$error.pattern">Invalid code.</span>
+                        <span style="color:red" data-ng-show="Businesses.nmTitle.$dirty && Businesses.nmTitle.$error.minlength">Minimum 3 characters required</span>
+                        <input type="text" ng-model="Title" class="form-control" id="nmTitle" name="nmTitle" maxlength="62" ng-minlength="3" data-ng-pattern="/^[a-zA-Z0-9\s]{3,62}$/" placeholder="" required>
+                    </div>
+                    <div>
+                        <fieldset class="fieldset1">
+                            <legend class="legend1">Saturday {{days[0]}}</legend>
+                            <div class="checkbox">
+                                <ul style="list-style:none;">
+                                    <li ng-repeat="(indx,enabled) in Routes">
+                                        <input type="checkbox" value="{{Routes[indx].Id}}" ng-true-value="{{Routes[indx].Id}}" ng-false-value="0" ng-model="Sat[indx]">{{Routes[indx].Name}}
+
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <fieldset class="fieldset1">
+                            <legend class="legend1">Sunday {{days[1]}}</legend>
+                            <div class="checkbox">
+                                <ul style="list-style:none;">
+                                    <li ng-repeat="(indx,enabled) in Routes">
+                                        <input type="checkbox" value="{{Routes[indx].Id}}" ng-true-value="{{Routes[indx].Id}}" ng-false-value="0" ng-model="Sun[indx]">{{Routes[indx].Name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <fieldset class="fieldset1">
+                            <legend class="legend1">Monday {{days[2]}}</legend>
+                            <div class="checkbox">
+                                <ul style="list-style:none;">
+                                    <li ng-repeat="(indx,enabled) in Routes">
+                                        <input type="checkbox" value="{{Routes[indx].Id}}" ng-true-value="{{Routes[indx].Id}}" ng-false-value="0" ng-model="Mon[indx]">{{Routes[indx].Name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <fieldset class="fieldset1">
+                            <legend class="legend1">Tuesday {{days[3]}}</legend>
+                            <div class="checkbox">
+                                <ul style="list-style:none;">
+                                    <li ng-repeat="(indx,enabled) in Routes">
+                                        <input type="checkbox" value="{{Routes[indx].Id}}" ng-true-value="{{Routes[indx].Id}}" ng-false-value="0" ng-model="Tue[indx]">{{Routes[indx].Name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <fieldset class="fieldset1">
+                            <legend class="legend1">Wednesday {{days[4]}}</legend>
+                            <div class="checkbox">
+                                <ul style="list-style:none;">
+                                    <li ng-repeat="(indx,enabled) in Routes">
+                                        <input type="checkbox" value="{{Routes[indx].Id}}" ng-true-value="{{Routes[indx].Id}}" ng-false-value="0" ng-model="Wed[indx]">{{Routes[indx].Name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <fieldset class="fieldset1">
+                            <legend class="legend1">Thursday {{days[5]}}</legend>
+                            <div class="checkbox">
+                                <ul style="list-style:none;">
+                                    <li ng-repeat="(indx,enabled) in Routes">
+                                        <input type="checkbox" value="{{Routes[indx].Id}}" ng-true-value="{{Routes[indx].Id}}" ng-false-value="0" ng-model="Thu[indx]">{{Routes[indx].Name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" ng-disabled="RoutePlan.$invalid" ng-click="Save()">Save</button>
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .div-table-content1 {
+            height: 100px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Plan List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:20%">Title</th>
+                                <th style="width:15%">Week No</th>
+                                <th style="width:28%">Start Date</th>
+                                <th style="width:25%">End Date</th>
+                                <th style="width:10%"></th>
+                                <th></th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="plan in Plans | filter:SearchList">
+                                    <th style="width:20%">{{plan.Title}}</th>
+                                    <td style="width:15%">{{plan.WeekNo}}</td>
+                                    <td style="width:28%">{{plan.Start}}</td>
+                                    <td style="width:25%">{{plan.End}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="deleteRowBtn{{plan.Id}}" ng-click="Delete(plan)"><i class="fa fa-edit"></i> Delete</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/RoutePlanController.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/date.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/moment.js")"></script>
+
+}

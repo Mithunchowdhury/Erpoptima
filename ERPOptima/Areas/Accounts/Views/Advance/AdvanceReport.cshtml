@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "AdvanceReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<section class="content-header ">
+    <h2 class="text-center section-title">Advance Report</h2>
+</section>
+
+<div class="row content" ng-controller="AdvanceReportController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+
+            @using (Html.BeginForm("GetDailySalesReport", "Report", FormMethod.Get, new { area = "Accounts", target = "_blank" }))
+            {
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="lblDateFrom">
+                                Date From:<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " id="lblDateFrom" name="txtDateFrom" ng-model="StartDate" required placeholder=""
+                                       datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="lblDateTo">
+                                Date To:<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " id="lblDateTo" name="txtDateTo" ng-model="EndDate" placeholder=""
+                                       required datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="cmdEmployee">Employee:</label>
+                            <select class="col-sm-8  col-xs-12" ui-select2 ng-model="" name="txtEmployee" id="cmdEmployee" data-placeholder="Pick a Employee">
+                                <option value=""></option>
+                                <option ng-repeat="data in Office" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary">Show</button>
+                        <button type="reset" id="SearchButton" ng-click="Reset()" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+<script src="~/Scripts/Accounts/Report_AdvanceController.js"></script>

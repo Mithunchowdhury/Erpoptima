@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Bank Reconciliation Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Bank Reconciliation Item</h2>
+<div ng-controller="BankReconciliationItem">
+    <div class="margin-top-10 col-xs-5">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Bank Reconciliation Item Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="BankReconciliationItems">
+
+                    <div class="form-group">
+                        <label for="txtName">Name<span style="color:red">*</span></label>
+                        <input type="text" ng-model="BankReconciliationItem.Name" class="form-control" id="txtName" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-xs-12" for="cmbAcName">Account Name<span style="color:red">*</span></label>
+                            <select class="col-xs-12" id="cmbAcName" ng-model="accountName" ui-select2 data-placeholder="Pick an Account" required>
+                                <option class=""></option>
+                                <option ng-repeat="data in AccountNameAndCode" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="">                                                 
+                            <input id="rdoAdd" type="" name="AddOrLess" ng-model="BankReconciliationItem.AddOrLess" ng-value="true" />Add
+                            <input id="rdoLess" type="radio" name="AddOrLess" ng-model="BankReconciliationItem.AddOrLess" ng-value="false" /> Less                      
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="active" ng-model="BankReconciliationItem.Status"> Status
+                        </label>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-success" ng-disabled="BankReconciliationItems.$invalid" ng-click="Save()">Save</button>
+                        <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="margin-top-10 col-xs-7">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Bank Reconciliation Item Table</h3>
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" data-sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Status'" data-sortable="'Status'"><span ng-class="{'badge bg-green': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+
+                                <td class="rowTd" data-title="'Action'">
+                                    <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                </td>
+
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/BankReconciliationItem.js")"></script>
+
+}

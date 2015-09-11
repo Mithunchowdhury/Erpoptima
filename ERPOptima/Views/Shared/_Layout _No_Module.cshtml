@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="AnF">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - </title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/themes")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")*@
+   
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/scripts")
+    @Scripts.Render("~/bundles/angular")
+    <script src="~/Scripts/ui-bootstrap-custom-tpls-0.10.0.min.js"></script>
+    <script src="~/Scripts/checklist-model.js"></script>
+    @RenderSection("scripts", required: false)
+
+
+</head>
+<body class="skin-blue">
+    <header class="header">
+        @Html.ActionLink("Optima", "Index", "Home", null, new { @class = "logo" })
+        <nav class="navbar navbar-static-top" role="navigation">
+            <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <div class="navbar-right">
+                <section id="login">
+                    @*@Html.Partial("_LoginPartial")*@
+                </section>
+                <nav>
+                    @*<ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>*@
+                </nav>
+            </div>
+        </nav>
+    </header>
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <aside class="left-side sidebar-offcanvas collapse-left">
+
+            <section class="sidebar">
+
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search..." />
+                        <span class="input-group-btn">
+                            <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+
+              
+            </section>
+        </aside>
+        <aside class="right-side strech">
+            @RenderSection("featured", required: false)
+            @RenderBody()
+        </aside>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+            </div>
+        </div>
+    </footer>
+
+   
+</body>
+</html>

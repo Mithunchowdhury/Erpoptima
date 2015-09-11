@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Cheque Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('button').tooltip({
+            selector: '[data-toggle=tooltip]',
+            container: 'body'
+        });
+    });
+</script>
+<h2 class="text-center section-title">Cheque Book</h2>
+<div ng-controller="chequeBook">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">Cheque Book Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="Cheque">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-xs-12" for="cmbAcName">Account Name<span style="color:red">*</span></label>
+                            <select class="col-xs-12" id="cmbAcName" ng-model="accountName" ui-select2 data-placeholder="Pick an Account" ng-change="loadCheckBookInfo()" required>
+                                <option class=""></option>
+                                <option ng-repeat="data in AccountNameAndCode" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtChequeBookNo">Cheque Book No</label><label style="color:red">*</label>
+                        <input type="text" ng-model="ChequeBook.ChequeBookNo" class="form-control" id="txtChequeBookNo" placeholder="Cheque Book No" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtIssueDate">Issue Date</label><label style="color:red">*</label>
+                        <input type="text" ng-model="ChequeBook.IssueDate" class="form-control datetimepicker" id="txtIssueDate" placeholder="Issue Date" required>
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtNoofPage">No of Page</label><label style="color:red">*</label>
+                        <input type="number" min="0" step="1" ng-model="ChequeBook.NoofPage" class="form-control" id="txtNoofPage" placeholder="Page no.." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtStartingPageNo">Starting Page No</label>
+                        <input type="text" ng-model="ChequeBook.StartingPageNo" class="form-control" id="txtStartingPageNo" placeholder="Starting Page No">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtEndingPageNo">Ending Page No</label>
+                        <input type="text" ng-model="ChequeBook.EndingPageNo" class="form-control" id="txtEndingPageNo" placeholder="Ending Page No">
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                                @*<button type="submit" data-toggle="tooltip" data-placement="left" title="Tooltip on left" class="btn btn-success" ng-disabled="Cheque.$invalid" ng-click="Save()">Save</button>*@
+                            <button type="submit" class="btn btn-success" ng-disabled="Cheque.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="Cheque.$invalid" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">Cheque Book Table</h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table table-responsive">
+
+                        <tbody ng-repeat="data in $data | filter:SearchList">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Cheque Book No'" sortable="'ChequeBookNo'">{{data.ChequeBookNo}}</td>
+                                <td class="rowTd" data-title="'Issue Date'" sortable="'IssueDate'">{{data.IssueDate}}</td>
+                                <td class="rowTd" data-title="'No of Page'" sortable="'NoofPage'">{{data.NoofPage}}</td>
+                                <td class="rowTd" data-title="'Starting Page No'" sortable="'StartingPageNo'">{{data.StartingPageNo}}</td>
+                                <td class="rowTd" data-title="'Ending Page No'" sortable="'EndingPageNo'">{{data.EndingPageNo}}</td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit($index)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/ChequeBook.js")"></script>
+
+}

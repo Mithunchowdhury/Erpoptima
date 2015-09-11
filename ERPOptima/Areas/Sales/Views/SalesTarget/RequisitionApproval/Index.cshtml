@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Requisition Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Requisition Approval</h2>
+<div ng-controller="business">
+    <section class="margin-top-10 col-sm-12 col-xs-12">
+        <div class="box box-primary margin">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Requisition List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:20%">Code</th>
+                                <th style="width:25%">Company</th>
+                                <th style="width: 15%">Requisition Date</th>
+                                <th style="width: 20%; text-wrap: normal">Preferred Delivery Date</th>
+                                <th style="width:5%">Status</th>
+                                <th style="width: 5%">Details</th>
+                                <th style="width: 5%; text-wrap: normal">Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList">
+                                    <td style="width:8%">{{resource.Name}}</td>
+                                    <td style="width:22%">{{resource.Name}}</td>
+                                    <td style="width:20%"></td>
+                                    <td style="width:10%"></td>
+                                    <td style="width:16%"></td>
+                                    <td style="width:8%"></td>
+                                    <td style="width:8%">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                    <td style="width:8%">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               <div class="form-group">
+                        <label for="txtRemarks">Previous Comments</label>
+                        <textarea cols="20" rows="2" ng-model="Business.Remarks" class="form-control" id="txtRemarks" placeholder="" readonly="readonly"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="txtRemarks">Comments<span style="color:red">*</span></label>
+                    <textarea cols="20" rows="1" ng-model="Business.Remarks" class="form-control" id="txtRemarks" placeholder="" required="required"></textarea>
+                </div>
+                
+                <div class="text-center">
+                    @if (add || edit)
+                    {
+                    <button type="submit" class="btn btn-success" ng-disabled="Businesses.$invalid" ng-click="Save()">Approve</button>
+                    }
+                    @if (delete)
+                    {
+                    <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Reject</button>
+                    }
+                    <button type="submit" class="btn btn-default" ng-click="Reset()">Pass</button>
+                </div>
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+    
+</div>

@@ -1,0 +1,14 @@
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\ERPOptima.Data.dll.config
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\ERPOptima.Data.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\ERPOptima.Data.pdb
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\EntityFramework.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\EntityFramework.SqlServer.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\ERPOptima.Lib.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\ERPOptima.Model.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\ERPOptima.Lib.pdb
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\ERPOptima.Model.pdb
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\EntityFramework.xml
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\bin\Debug\EntityFramework.SqlServer.xml
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\obj\Debug\ERPOptima.Data.csprojResolveAssemblyReference.cache
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\obj\Debug\ERPOptima.Data.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Data\obj\Debug\ERPOptima.Data.pdb

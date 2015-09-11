@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Role Permission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 class="text-center">User Permission</h2>
+<div ng-controller="rolePermission">
+    <section class="margin-top-10 col-sm-4 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">Permission</h3>
+            </div>
+            <div class="box-body">
+                <form name="RolePermission">
+                    @*<div class="form-group">
+                        <label for="rdbRole">Role</label>
+                        <input type="radio" name="roleOrUser" class="flat-red" ng-model="roleRadio" value="1" ng-change="RoleInfo()" />
+                        <label for="rdbUser">User</label>
+                        <input ng-model="roleRadio" type="radio" class="flat-red" name="roleOrUser" value="2" ng-change="UserInfo()" />
+                    </div>*@
+                    <div class="form-group">
+                        <label for="cmbUser">Roles</label><label style="color:red">*</label>
+                        <select id="cmbUser" ng-model="RoleId" class="form-control input-sm" ng-change="UserRoleInfo()" required>
+                            <option ng-repeat="data in Roles" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="CmbMoule">Modules</label><label style="color:red">*</label>
+                        <select id="CmbMoule" ng-model="ModuleId" class="form-control input-sm" ng-change="ResourceInfo()" required>
+                            <option ng-repeat="data in CompanyModuleIdNName" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" ng-disabled="ButtonDisabled" ng-click="Save()">Save</button>
+                        <button type="button" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+        <section class="margin-top-10 col-sm-8 col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-table"></i>
+                    <h3 class="box-title">
+                        Resources
+                    </h3>
+                    <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                </div>
+                <div class="box-body no-padding">
+                    <div class="panel panel-default margin">
+                        <table class="table  table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%">S.L</th>
+                                    <th style="width:43%">Name</th>
+                                    <th style="width:9%"><input type="checkbox" class="flat-red" ng-model="readCheck" ng-change="setReadonlyCheckBox()" /> Read</th>
+                                    <th style="width:9%"><input type="checkbox" ng-model="addCheck" ng-change="setAddCheckBox()" /> Add</th>
+                                    <th style="width: 9%"><input type="checkbox" ng-model="editCheck" ng-change="setEditCheckBox()" /> Edit</th>
+                                    <th style="width: 9%"><input type="checkbox" ng-model="deleteCheck" ng-change="setDeleteCheckBox()" /> Delete</th>
+                                    <th style="width: 9%"><input type="checkbox" ng-model="printCheck" ng-change="setPrintCheckBox()" /> Print</th>
+                                    <th style="width:2%"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="div-table-content">
+                            <table class="table  table-striped">
+                                <tbody>
+                                    <tr ng-repeat="resource in Resources | filter:SearchList">
+                                        <td style="width:10%">{{$index+1}}</td>
+                                        <td style="width:43%">{{resource.Name}}</td>
+                                        <td style="width:9%"><input type="checkbox" ng-model="resource.Read" /></td>
+                                        <td style="width:9%"><input type="checkbox" ng-model="resource.Add" /></td>
+                                        <td style="width:9%"><input type="checkbox" ng-model="resource.Edit" /></td>
+                                        <td style="width:9%"><input type="checkbox" ng-model="resource.Delete" /></td>
+                                        <td style="width:9%"><input type="checkbox" ng-model="resource.Print" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                    <div ng-class="{overlay:ShowLoading}"></div>
+                    <div class="{loading-img:ShowLoading}"></div>
+                </div>
+            </div>
+        </section>
+</div>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Security/RolePermission.js")"></script>
+}

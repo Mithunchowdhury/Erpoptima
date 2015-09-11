@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Business";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="center-align section-title">Business</h2>
+<div ng-controller="business">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Business Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="Businesses">
+                    <div class="form-group">
+                        <label for="txtName">Name<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Business.Name" class="form-control" id="txtName" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtType">Type</label>
+                        <input type="text" ng-model="Business.Type" class="form-control" id="txtType" placeholder="Type">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="1" ng-model="Business.Remarks" class="form-control" id="txtRemarks" placeholder=""></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPrefix">Prefix<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Business.Prefix" class="form-control" id="txtPrefix" placeholder="Prefix" required>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="active" ng-model="Business.Status"> Status
+                        </label>
+                    </div>
+                    <div class="text-center">
+                       
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="Businesses.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Business Table</h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table table-responsive">
+
+                        <tbody ng-repeat="data in $data | filter:SearchList">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" data-sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Type'" data-sortable="'Type'">{{data.Type}}</td>
+                                <td class="rowTd" data-title="'Prefix'" data-sortable="'Prefix'">{{data.Prefix}}</td>
+                                @*<td class="rowTd" data-title="'Status'" sortable="'Status'">{{data.Status}}</td>*@
+                                <td class="rowTd" data-title="'Status'" data-sortable="'Status'"><span ng-class="{'badge bg-color': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Common/Business.js")"></script>
+
+}

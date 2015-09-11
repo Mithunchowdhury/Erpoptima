@@ -1,0 +1,238 @@
+﻿@{
+    ViewBag.Title = "Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+
+
+<h2 class="text-center  section-title">Route Plan Approval</h2>
+<div ng-controller="RoutePlanApprovalController">
+    <section class="col-sm-4 col-xs-12 margin-top-10 col-sm-offset-4">
+        <div class="box box-primary ">
+            <div class="box-body no-padding">
+                <form role="form" name="FindApprvlForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>From Date<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txtFromDate" ng-model="ApprovalSearchObj.FromDate" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="form-group">
+                            <label>To Date<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txToDate" ng-model="ApprovalSearchObj.ToDate" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success" ng-disabled="FindApprvlForm.$invalid" ng-click="Find()">Load</button>
+                            <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Route Plan Approval List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:30%">Week</th>
+                                <th style="width:30%">Title</th>
+                                <th style="width:15%">Date</th>
+                                <th style="width: 15%">Status</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:30%">
+                                        <div ng-repeat="data in Weeks" ng-show="resource.WeekNo==data.WeekNo">
+                                            Week No {{data.WeekNo}} : {{data.Start}} to {{data.End}}
+                                        </div>
+                                    </td>
+                                    <td style="width:30%">{{resource.Title}}</td>
+                                    <td style="width:15%">{{resource.CreatedDate | jsonDate}}</td>
+                                    <td style="width:15%">
+                                        <div ng-repeat="data in ApprovalStatusData" ng-show="resource.ApprovalStatus==data.Id">
+                                            {{data.Name}}
+                                        </div>
+                                    </td>
+                                    @if (edit || delete)
+                                    {
+                                    <td style="width:10%">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{resource.Id}}" 
+                                                ng-click="GetApprovalObjById(resource)">
+                                            <i class="fa fa-edit"></i>Detail
+                                        </button>
+                                    </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+
+            @*for pop up window*@
+
+            <script type="text/ng-template" id="modal">
+                <form name="modules">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Route Plan Information</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="txtWeek">Week</label>
+                            <input type="text" ng-model="RoutePlans.Week" class="form-control" id="txtWeek" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtTitle">Title</label>
+                            <input type="text" ng-model="RoutePlans.Title" class="form-control" id="txtTitle" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDate">Date</label>
+                            <input type="text" ng-model="RoutePlans.Date" class="form-control" id="txtDate" placeholder="" readonly>
+                        </div>
+
+                        <div class="box-header" style="cursor: move;">
+
+                            <h3 class="box-title">
+                                Route Information
+                            </h3>
+                            <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                        </div>
+                        <div class="panel panel-default">
+                            <table class="table  table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:10%">SL</th>
+                                        <th style="width:35%">Route Name</th>
+                                        <th style="width:20%">Date</th>                                       
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="div-table-content">
+                                <table class="table  table-striped">
+                                    <tbody>
+                                        <tr ng-repeat="rpd in RoutePlans.RoutePlanDetails | filter:SearchList">
+                                            <td style="width:10%">{{$index+1}}</td>
+                                            <td style="width:35%">{{rpd.RouteName}}</td>
+                                            <td style="width:20%">{{rpd.Date}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Previous Comments</label>
+                            <textarea cols="20" rows="2" ng-model="RoutePlans.PreComments" class="form-control" id="txtPreComments" placeholder=""
+                                      readonly style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Comments<span style="color:red">*</span></label>
+                            <textarea cols="20" rows="1" ng-model="RoutePlans.NewComments" class="form-control" id="txtNewComments" placeholder="" required
+                                      style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" ng-disabled="DisableApproval()" ng-click="Approve()">Approve</button>
+                        <button type="submit" class="btn btn-danger" ng-disabled="DisableApproval()" ng-click="Reject()">Reject</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="DisableApproval()" ng-click="Pass()">Pass</button>
+                        <button class="btn btn-warning" ng-click="cancel()">Close</button>
+                        @*<button class="btn btn-primary" ng-disabled="modules.$invalid" ng-click="ok()">Save</button>*@
+
+                    </div>
+                </form>
+            </script>
+
+
+            @*end pop up window*@
+
+
+
+            @*<div class="box-body no-padding">
+                <form role="form" name="ApprvlForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Previous Comments</label>
+                            <textarea cols="20" rows="2" ng-model="ApprovalObj.Comment" class="form-control" id="txtRemarks" placeholder=""
+                                      readonly style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Comments<span style="color:red">*</span></label>
+                            <textarea cols="20" rows="1" ng-model="NewComment" class="form-control" id="txtRemarks" placeholder="Comment" required
+                                      style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success" ng-disabled="ApprvlForm.$invalid" ng-click="Approve()">Approve</button>
+                            <button type="submit" class="btn btn-danger" ng-disabled="ApprvlForm.$invalid" ng-click="Reject()">Reject</button>
+                            <button type="submit" class="btn btn-default" ng-disabled="ApprvlForm.$invalid" ng-click="Pass()">Pass</button>
+                        </div>
+                    </div>
+                </form>
+            </div>*@
+
+
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+
+@section scripts{
+
+    <script>
+
+        (function () {
+            var glbApprovalId = parseInt('@ViewData["RoutePlanNumber"]');
+            if (glbApprovalId !== undefined && glbApprovalId > 0) {
+                app.value('glbApprovalObj', { appID: glbApprovalId });
+            }
+            else {
+                app.value('glbApprovalObj', { appID: 0 });
+            }
+
+        }).call(this);
+    </script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/RoutePlanApprovalController.js")"></script>
+}

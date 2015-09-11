@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Notification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Notification</h2>
+<div ng-controller="NotificationController">
+
+    <section class="margin-top-10 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="notifIsAllCompany" ng-model="IsAllCompany" ng-change="ViewAll()" />View All
+                    </label>
+                </div>
+
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Notification List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:15%">Date</th>
+                                <th style="width:43%">Message</th>
+                                <th style="width:20%">Type</th>
+                                <th style="width:10%">URL</th>
+                                <th style="width:10%">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList">
+                                    <td style="width:15%" ng-class='{approvalread : resource.IsRead, approvaltoread: !resource.IsRead}'>{{resource.Date | jsonDate}}</td>
+                                    <td style="width:43%" ng-class='{approvalread : resource.IsRead, approvaltoread: !resource.IsRead }'>{{resource.Message}}</td>
+                                    <td style="width:20%" ng-class='{approvalread : resource.IsRead, approvaltoread: !resource.IsRead }'>{{resource.Type}}</td>
+                                    <td style="width:10%" ng-click="changeView(resource)" ng-class='{approvalread : resource.IsRead, approvaltoread: !resource.IsRead}'>
+                                        <a ng-show="resource.URL" ng-href="{{resource.URL}}">View</a>
+                                        <a ng-show="!resource.URL"> --- </a>
+                                    </td>
+                                    @if (edit)
+                                    {
+                                        <td style="width:10%" ng-class='{approvalread : resource.IsRead, approvaltoread: !resource.IsRead}'>
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{resource.Id}}" ng-click="ignoreNotification(resource)"><i class="fa fa-edit"></i>Skip</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 330px;
+            overflow-y: auto;
+        }
+
+        [ng-click] {
+            cursor: pointer;
+        }
+
+        .approvalread {
+            background-color: transparent;
+        }
+
+        .approvaltoread {
+            background-color: #dbdbde;
+        }
+    </style>
+
+</div>
+
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/NotificationController.js")"></script>
+}

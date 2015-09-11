@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "ExpenseList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //bool search = true;
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        //search = (bool)ViewData["Search"];
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">ExpenseList</h2>
+
+
+    
+<div ng-controller="ExpenseListController">
+    
+    <div class="col-sm-4 col-xs-12 margin-top-10"></div>
+        <section class="col-sm-4 col-xs-12 margin-top-10">
+            <form role="form" name="WebForm">
+                <div class="box box-primary">
+                    <div class="box-header" style="cursor: move;">
+                        <i class="fa fa-refresh"></i>
+                        <h3 class="box-title">
+                            Expense List
+                        </h3>
+                    </div>
+                    <div class="box-body no-padding">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="txtExpDateFrom">
+                                    Date From
+                                </label>
+                                <input type="text" class="form-control datetimepicker" id="txtExpDateFrom" name="txtExpDateFrom" ng-model="fromDate" placeholder="Select date from">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtExpDateTo">
+                                    Date To
+                                </label>
+                                <input type="text" class="form-control datetimepicker" id="txtExpDateTo" name="txtExpDateTo" ng-model="toDate" placeholder="Select date to">
+                            </div>
+                            <div class="form-group">
+                                <label for="cmbCoCenter">Status</label>
+                                <select class="selectUI" data-placeholder="Pick a Status" data-ui-select2="Status" ng-model="status" id="cmbStatus" name="cmbStatus">
+                                    <option value="False"></option>
+                                    <option value="True">Posted</option>
+                                    <option value="False">Unposted</option>
+                                </select>
+                            </div>
+                        </div><!-- /.box-body -->
+                        <div class="form-group center-align" ng-show="SumbitShow">
+                            <button type="submit" id="SearchButton" class="btn btn-primary" ng-disabled="Search.$invalid" ng-click="Search()">Search</button>
+                            <button type="button" id="reset" name="reset" class="btn btn-default" ng-click="ResetList()">Reset</button>
+                        </div>
+                    </div><!-- /.box-body-->
+                </div>
+            </form>
+        </section>
+        <section class="margin-top-10 col-sm-12 col-xs-12">
+            <div class="box box-primary" style="width: auto;">
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-table"></i>
+                    <h3 class="box-title">
+                        Expense List
+                    </h3>
+                    <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                </div>
+                <div class="box-body no-padding">
+                    <div class="panel panel-default">
+                        <table class="table  table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width:3%">SL</th>
+                                    <th style="width:11%">RefNo</th>
+                                    <th style="width:10%">Particular</th>
+                                    <th style="width:10%">CostCenter</th>
+                                    <th style="width:9%">Date</th>
+                                    <th style="width:7%">BillNo</th>
+                                    <th style="width:9%">Narration</th>
+                                    <th style="width:7%">File</th>
+                                    <th style="width:7%">Amount</th>
+                                    <th style="width:6%">Posted</th>
+                                    <th style="width:7%">Cancel</th>
+                                    <th style="width:7%">Purpose</th>
+                                    <th style="width:7%">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                            <tr ng-repeat="expense in ExpenseList | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                <td style="width:3%">{{$index+1}}</td>
+                                <td style="width:11%">{{expense.RefNo}}</td>
+                                <td style="width:10%">{{expense.Particular}}</td>
+                                <td style="width:10%">{{expense.AnFCostCenterId}}</td>
+                                <td style="width:9%">{{expense.Date | jsonDate}}</td>
+                                <td style="width:7%">{{expense.BillNo}}</td>
+                                <td style="width:9%">{{expense.Narration}}</td>
+                                <td style="width:7%">{{expense.FileLocation}}</td>
+                                <td style="width:7%">{{expense.Amount}}</td>
+                                <td style="width:6%">{{expense.IsPosted}}</td>
+                                <td style="width:7%">{{expense.IsCancel}}</td>
+                                <td style="width:7%">{{expense.Purpose}}</td>
+                                <td style="width:7%">
+                                    @if (edit || delete)
+                                     {  <button class="btn btn-success btn-xs" id="editRowBtn{{expense.Id}}" ng-click="GoToExpense(expense)"><i class="fa fa-edit"></i>Edit</button> }
+                                 </td>                                                                                                                              </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                        <style>
+                            .selected {
+                                background-color: #FAA61A;
+                                color: white;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </div>
+                    <div ng-class="{overlay:ShowLoading}"></div>
+                    <div class="{loading-img:ShowLoading}"></div>
+                </div>
+            </div>
+        </section>
+
+    @*</form>*@
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/ExpenseListController.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/blockUI.js")"></script>
+}

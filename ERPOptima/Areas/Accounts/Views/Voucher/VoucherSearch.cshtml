@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "VoucherSearch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+
+    <h2 class="text-center section-title">Voucher Search</h2>
+</section>
+<div ng-controller="VoucherReportController">
+
+    <section class="margin-top-10 col-xs-12 col-sm-5">
+
+        <div class="box box-info">
+            <div class="box-header" style="cursor: move;">
+
+                @*<i class="fa fa-search"></i>
+                    <h3 class="box-title"> Search</h3>*@
+            </div>
+
+
+            @using (Html.BeginForm("GetAnfVoucherList", "Report", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search", target = "_blank" }))
+            {
+                <div class="box-body">
+                    @*<form name="Search">*@
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="form-group col-xs-6 col-sm-6">
+                                <label>Date From</label>
+                                <input type="text" id="startDate" class="form-control datepicker" name="DateFrom" ng-model="Voucher.DateFrom">
+                            </div>
+
+                            <div class="form-group col-xs-6 col-sm-6">
+                                <label>Date To</label>
+                                <input type="text" id="endDate" class="form-control datepicker" name="ToDate" ng-model="Voucher.ToDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Cost Center</label>
+                        <select class="selectUI" name="CostcenterId" ng-model="Voucher.CostcenterId" data-placeholder="Pick a CostCenter" data-ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="costcenter in CostCenters" value="{{costcenter.Id}}">{{costcenter.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="radio" ng-init="Voucher.VoucherTypeId=0">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="0" />
+                                All Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="1" />
+                                Cash Payment Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="2" />
+                                Bank Payment Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="3" />
+                                Cash Receive Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="4" />
+                                Bank Receive Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="5" />
+                                Journal Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="6" />
+                                Contra Voucher
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group center-align" ng-show="SumbitShow">
+                        <button type="submit" id="SearchButton" class="btn btn-primary" ng-disabled="Search.$invalid" ng-click="SearchVoucher()">Search</button>
+                    </div>
+
+                    @*</form>*@
+                </div><!-- /.box-body-->
+
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 450px;
+            overflow-y: auto;
+        }
+    </style>
+
+    <section class="margin-top-10 col-xs-12 col-sm-7">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Voucher List
+                </h3>
+
+                <input type="text" style="margin:8px" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+
+                <div class="panel panel-default div-table-content">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th width="20%">Voucher Number</th>
+                                <th width="15%">Voucher Date</th>
+                                <th width="15%">Type</th>
+                                <th width="20%" class="center-align">Total Amount</th>
+                                <th width="20%">Narration</th>
+                                <th width="10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="voucher in VoucherList | filter:SearchList">
+                                <td width="20%">{{voucher.VoucherNumber}}</td>
+                                <td width="15%">{{voucher.DateStr }}</td>
+                                <td width="15%">{{voucher.TypeName}}</td>
+                                <td width="20%" class="center-align">{{voucher.TotalAmount}}</td>
+                                <td width="20%">{{voucher.Naration}}</td>
+                                <td width="10%"><a data-ng-href="@Url.Action("GetAnfVoucher", "Report", new { area="Accounts"})/{{voucher.Id}}">Show</a></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body-->
+
+
+            </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/Report_VoucherSearch.js")"></script>
+
+}

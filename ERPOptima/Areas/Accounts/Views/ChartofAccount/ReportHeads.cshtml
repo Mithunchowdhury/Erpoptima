@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "ReportHeads";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+<script src="~/Scripts/Accounts/Report_HeadsControlle.js"></script>
+
+<h2 class="text-center section-title">Report Heads</h2>
+<div ng-controller="RptHeadsController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Report Heads Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="ReportHeadsForm">
+
+                    <div class="form-group">
+                        <label for="txtName">Name</label>
+                        <input type="text" ng-model="" class="form-control" id="txtName" name="nmName" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtSrtName">Short Name</label>
+                        <input type="text" ng-model="ShortName" class="form-control" id="txtSrtName" name="txtSrtName" placeholder="Short Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cmdCompany">Company<span style="color:red">*</span></label>
+                        <select id="cmdCompany" placeholder="" name="cmdCompany" ng-model="Company" class="form-control" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="cmdSerialNo">Serial No<span style="color:red">*</span></label>
+                        <select id="cmdSerialNo" placeholder="" name="txtSerialNo" ng-model="SerialNo" class="form-control" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cmdType">Type<span style="color:red">*</span></label>
+                        <select id="cmdType" placeholder="" name="txtType" ng-model="Type" class="form-control" ng-change="GetFromStore()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtGpName">Group Name<span style="color:red">*</span></label>
+                        <input type="text" ng-model="GroupName" class="form-control" id="txtGpName" name="txtGpName" placeholder="" required>
+                    </div>
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="ReportHeadsForm.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Report Head List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:15%">Name</th>
+                                <th style="width:15%">Short Name</th>
+                                <th style="width:15%">Company</th>
+                                <th style="width:15%">Serial No</th>
+                                <th style="width:10%">Type</th>
+                                <th style="width: 8%; text-wrap: normal">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resorce in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:5%">{{$index+1}}</td>
+                                    <td style="width:15%">{{resorce.Name}}</td>
+                                    <td style="width:15%">{{resorce.ShortName}}</td>
+                                    <td style="width:15%">{{resorce.Company}}</td>
+                                    <td style="width:15%">{{resorce.SerialNo}}</td>
+                                    <td style="width:10%">{{resorce.Type}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">
+                                            <button class="btn btn-success btn-xs" ng-click="setFortEdit(resorce);GetTransferDetailByTransferId()"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+

@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header ">
+    <h2 class="text-center section-title">Damage List</h2>
+</section>
+<div ng-controller="DamageList">
+    <section class="margin-top-10 col-sm-4 col-sm-offset-4 col-xs-12">
+        <div class="box box-primary ">
+            <div class="box-body no-padding margin">
+                <form name="DamageLists">
+                    <div class="form-group">
+                        <label for="txtName"> Start Date</label>
+                        <input type="text" class="form-control" id="txtStartDate" ng-model="StartDate" placeholder="" datetimepicker>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">End Date</label>
+                        <input type="text" class="form-control dpkr " id="txtEndDate" ng-model="EndDate" placeholder="" datetimepicker>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-12  col-xs-12">Status:</label>
+                            <select placeholder="Pick an Status" ng-model="Status" class="col-sm-12 col-xs-12" ui-select2>
+                                <option value="0"></option>
+                                <option value="1">New</option>
+                                <option value="2">Approve</option>
+                                <option value="3">Pass</option>
+                                <option value="4">Reject</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary" ng-click="Show()">Show</button>
+                        <button type="reset" id="btnReset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 280px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-12 col-xs-12">
+        <div class="box box-primary margin">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Damage List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:20%">RefNo</th>
+                                <th style="width:30%">Store</th>
+                                <th style="width:10%">Status</th>
+                                <th style="width:15%">Approval Status</th>
+                                <th style="width:15%">Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:10%">{{$index+1}}</td>
+                                    <td style="width:20%">{{resource.RefNo}}</td>
+                                    <td style="width:30%">
+                                        <div ng-repeat="data in Stores" ng-show="resource.InvStoreId==data.Id">
+                                            {{data.Name}}
+                                        </div>
+                                    </td>
+                                    <td style="width:10%">{{resource.Status}}</td>
+                                    <td style="width:15%">{{resource.ApprovalStatus}}</td>
+                                    <td style="width:15%">{{resource.CreatedDate}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="~/Scripts/Sales/DamageListController.js"></script>

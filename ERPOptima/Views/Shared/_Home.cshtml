@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="AnF">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - </title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/themes")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")*@
+
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/scripts")
+    @Scripts.Render("~/bundles/angular")
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/ui-bootstrap-custom-tpls-0.10.0.min.js"></script>
+
+    <script src="~/Scripts/checklist-model.js"></script>
+    @*@RenderSection("scripts", required: false)*@
+
+    @if (Request.IsAuthenticated)
+    {
+        <script type="text/javascript" src="@Url.Content("/Scripts/Security/ChangePassword.js")"></script>
+    }
+
+
+</head>
+<body class="skin-blue">
+    <header class="header">
+        @*@Html.ActionLink("Optima", "Index", "Home", null, new { @class = "logo" })*@
+        <a class="logo" href="#" target="_blank"><img src="../../Content/Images/MEP_logo.gif" height="54" alt="" /></a>
+        <nav class="navbar navbar-static-top" role="navigation">
+            @*<a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>*@
+
+            <div class="navbar-right" ng-controller="passwordChange">
+
+
+                <ul class="nav navbar-nav">
+                    <li style=" margin-top: 15px; color: palegoldenrod">
+                        <span>Welcome {{User.LoginName}}</span>
+
+                    </li>
+
+                </ul>
+
+                <ul class="nav navbar-nav">
+                    @if (Request.IsAuthenticated)
+                    {
+
+                        <text>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    <span>Profile <i class="caret"></i></span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+                                    {
+                                        <li class="pull-right"><a class="btn btn-danger" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+
+                                    }
+                                </ul>
+                            </li>
+                        </text>
+                    }
+                </ul>
+
+
+
+                <div class="navbar-right">
+                    <section id="login">
+                        @*@Html.Partial("_LoginPartial")*@
+                    </section>
+                    <nav>
+                        @*<ul id="menu">
+                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                                <li>@Html.ActionLink("About", "About", "Home")</li>
+                                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            </ul>*@
+                    </nav>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <aside class="left-side sidebar-offcanvas collapse-left">
+
+            <section class="sidebar">
+
+                @*<form action="#" method="get" class="sidebar-form">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search..." />
+                            <span class="input-group-btn">
+                                <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </form>*@
+
+                @* -------- Menu Section --------------*@
+                @*<ul class="sidebar-menu">
+                        <li class="active">
+                            <a href="@Url.Action("Index", "Home")">
+                                <i class="fa fa-th"></i> <span>Home</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-th"></i> <span>Details</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("About", "Home")"><i class="fa fa-angle-double-right"></i> About</a></li>
+                                <li><a href="@Url.Action("Contact", "Home")"><i class="fa fa-angle-double-right"></i> Contact</a></li>
+                            </ul>
+                        </li>
+                    </ul>*@
+
+                @* -------- End Menu Section --------------*@
+
+
+            </section>
+        </aside>
+        <aside class="right-side strech">
+            @RenderSection("featured", required: false)
+            @RenderBody()
+        </aside>
+    </div>
+    <footer>
+        <div class="content-wrapper">            
+            <div class="float-right">
+                <p class="header footerLogo"><a target="_blank" href="http://www.erpoptima.com/" class="logo">ERP Optima</a></p><br clear="all" />
+                <p class="rights">All rights reserved &copy; @DateTime.Now.Year - ERP. Powered By: <a href="http://www.stargroup-bd.com/">Star Computer Systems Ltd.</a></p>                
+            </div>
+        </div>
+        @*<div class="content-wrapper">
+            <div class="float-left">
+                <p>Powered By: <a href="http://www.stargroup-bd.com/">Star Computer Systems Ltd.</a></p>
+            </div>
+        </div>*@
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/scripts")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "Store Opening";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+
+}
+<h2 class="text-center  section-title">Store Opening</h2>
+
+<div ng-controller="StoreOpening">
+    <section class="col-sm-5 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class=" box-header" style="cursor: move;">
+                <i class="fa fa-refresh"></i>
+                <h3 class="box-title">
+                    Store Information
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <form role="form" name="StoreOpening">
+                    <div class="box-body">
+                        <div class="row"> 
+                            <div class="form-group">
+                                <label for="txtPrefix" class="col-sm-12 col-xs-12">Store<span style="color:red">*</span></label>
+                                <select id="selStore" placeholder="Pick a store" ui-select2 ng-model="StoreId" class="col-sm-12 col-xs-12" ng-change="OB()" required>
+                                    <option value=""></option>
+                                    <option ng-repeat="data in Stores" value={{data.Id}}>{{data.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="StoreOpening.$invalid" ng-click="Save()">Save</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                    <br />
+                </form>
+            </div><!-- /.box-body-->
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="col-sm-7 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Product List
+                </h3>
+                <input type="text" style="margin:8px" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-2">SL#</th>
+                                <th class="col-sm-4">Code</th>
+                                <th class="col-sm-2">Product</th>
+                                <th class="col-sm-2">Quantity</th>
+                                <th class="col-sm-2">Unit</th>
+                                <th class="col-sm-2">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr id="tr{{storeOpeningBalance.Id}}" ng-repeat="storeOpeningBalance in StoreOpeningBalances | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td class="col-sm-2">{{$index+1}}</td>
+                                    <td class="col-sm-2">{{storeOpeningBalance.Code}}</td>
+                                    <td class="col-sm-4">{{storeOpeningBalance.Name}}</td>
+                                    <td class="col-sm-2">
+                                        <span style="padding-left:50px" ng-if="!storeOpeningBalance.$edit">{{storeOpeningBalance.Quantity}}</span>
+                                        <div ng-if="storeOpeningBalance.$edit"><input class="form-control" type="number" ng-model="storeOpeningBalance.Quantity" /></div>
+                                    </td>
+                                    <td class="col-sm-2">
+                                        <span style="padding-left:50px" ng-if="!storeOpeningBalance.$edit">{{storeOpeningBalance.Unit}}</span>
+                                        <div ng-if="storeOpeningBalance.$edit">
+                                            <select class="form-control" ng-model="storeOpeningBalance.Unit">
+                                                <option value=""></option>
+                                                <option ng-repeat="data in units" value={{data.Unit}}>{{data.Unit}}</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class="col-sm-2">
+                                        <a ng-if="!storeOpeningBalance.$edit" href="" class="btn btn-default btn-xs" ng-click="storeOpeningBalance.$edit=true;Unit(storeOpeningBalance.SlsProductId);">Edit</a>
+                                        <a ng-if="storeOpeningBalance.$edit" href="" class="btn btn-primary btn-xs" ng-click="storeOpeningBalance.$edit = false;storeOpeningBalance.$editable = true">Set</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+
+                </div><!-- /.box-body-->
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+    </section>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Inventory/StoreOpening.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/blockUI.js")"></script>
+}

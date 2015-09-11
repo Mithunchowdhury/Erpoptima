@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Requisition Board";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Requisition Board</h2>
+<div ng-controller="RequisitionBoard">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Search</h3>
+            </div>
+            <div class="box-body">
+                <form name="Businesses">
+                    <div class="form-group">
+                        <label>Company</label>
+                        <select id="CmbCompany" data-placeholder="Pick a Company" ng-model="SearchObj.CompanyId" class="selectUI" data-ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in Companies" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>From</label>
+                        <input type="text" ng-model="SearchObj.StartDate" class="form-control dpkr " id="txtFromDate" placeholder="From Date" datetimepicker>
+                    </div>
+                    <div class="form-group">
+                        <label>To</label>
+                        <input type="text" ng-model="SearchObj.EndDate" class="form-control dpkr " id="txtDateTo" placeholder="To Date" datetimepicker>
+                    </div>
+
+                    <div>
+                        <div ng-repeat="statusitem in statusitems">
+                            <div class="checkbox">
+                                <input type="checkbox" value="statusitem.Id" ng-model="statusitem.selected"> {{statusitem.name}}
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" ng-click="Search()">Search</button>
+                        <button type="reset" class="btn btn-danger" ng-click="Reset()">Reset</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Requisition List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:20%">Code</th>
+                                <th style="width:20%">Preferred Delivery Date</th>
+                                <th style="width: 33%">Remarks</th>
+                                <th style="width: 15%; text-wrap: normal">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="req in Requisitions | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:10%">{{$index+1}}</td>
+                                    <td style="width:20%">{{req.RequisitionCode}}</td>
+                                    <td style="width:20%">{{req.PreferredDeliveryDate}}</td>
+                                    <td style="width:33%">{{req.Remarks}}</td>
+                                    <td style="width:15%">
+                                        <a ng-href="/Inventory/Requisition/Edit?RequisitionNumber={{req.Id}}">View</a>
+                                        @*<button class="btn btn-success btn-xs" id="editRowBtn{{req.Id}}" ng-click="setForEdit(req)"><i class="fa fa-edit"></i>Edit</button>*@
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+<script src="~/Scripts/Sales/RequisitionBoardController.js"></script>

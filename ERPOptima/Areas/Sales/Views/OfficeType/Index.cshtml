@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "OfficeType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+<h2 class="text-center section-title">Office Type</h2>
+<div ng-controller="OfficeType">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Office Type Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="OfficeTypes">
+                    <div class="form-group">
+                        <label for="txtName">Type<span style="color:red">*</span></label>
+                        <input type="text" ng-model="OfficeType.Name" class="form-control" id="txtName" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="OfficeType.Remarks" class="form-control" id="txtRemarks" placeholder=""></textarea>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-click="Save(OfficeTypes.$valid)">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Office Type List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:40%">Type</th>
+                                <th style="width: 48%">Remarks</th>
+                                <th style="width: 10%">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:40%">{{resource.Name}}</td>
+                                    <td style="width:48%">{{resource.Remarks}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/OfficeTypeController.js")"></script>
+
+}

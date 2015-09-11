@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Chart Of Account Report";
+}
+<script src="~/Scripts/Accounts/Report_AnFChartOfAccount.js"></script>
+
+<section class="content-header text-center">
+
+    <h2 class="text-center section-title">Chart Of Account Report</h2>
+</section>
+<div class="row content" ng-controller="ChartOfAccountReportController">
+
+    <div class="col-sm-5 col-xs-12 margin-top-10" style="margin-left:314px;">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                @*<i class="fa fa-search"></i>
+                    <h3 class="box-title"> Search</h3>*@
+            </div>
+
+            @using (Html.BeginForm("GetAnFChartOfAccountReport", "Report", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search", target = "_blank" }))
+            {
+                <div class="box-body">          
+
+                    <div class="form-group center-align">
+                        <button type="submit" id="VoucherButton" class="btn btn-primary">Show Report</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @*<section class="col-lg-7">
+
+        <div class="box box-primary">
+
+            <div class="box-header" style="cursor: move;">
+
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Opening Balance
+                </h3>
+            </div>
+
+            <div class="box-body">
+               
+@using (Html.BeginForm("GetAnFChartOfAccountWIthOpeningbalanceReport", "Report", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search" }))
+            {                    
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-lg-4">Business :</label>
+                            <select class="col-lg-8" ui-select2 ng-model="BusinessId" name="CmnBusinessId" data-placeholder="Pick a Business" ng-change="ProjectInfo()" required>
+                                <option value=""></option>
+                                <option ng-repeat="data in Businesses" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                     </div>
+                    <div class="form-group">
+                        <div class="row">
+                          <label class="col-lg-4">Project  :</label>
+                          <select class="col-lg-8" name="CmnProjectId" ui-select2 ng-model="Parmeters.CmnProjectId">
+                              <option ng-repeat="data in Projects" value="{{data.Id}}">{{data.Name}}</option>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-xs-9"></label>
+                            <button type="submit" id="VoucherButton" class="btn btn-primary">Show Report</button>
+                        </div>
+                    </div>
+            }            
+   
+            </div> /.box-body
+        </div>
+    </section>*@
+</div>

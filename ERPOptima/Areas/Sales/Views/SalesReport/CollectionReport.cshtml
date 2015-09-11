@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "CollectionReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content-header text-center">
+    <h2 class="section-title">Collection Report</h2>
+</section>
+<div class="row content" ng-controller="CollectionReportController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+
+            @using (Html.BeginForm("GetCollectionReports", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">
+
+                        <div class="form-group">
+                            <label for="txtName">Date From<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txtDateFrom" name="StartDate" ng-model="StartDate" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtName">Date To<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txtDateTo" name="EndDate" ng-model="EndDate" placeholder="" datetimepicker required>
+                        </div>
+                   
+                    <div class="form-group">
+
+                        <label for="txtPrefix">Office Selection<span style="color:red"></span></label>
+                        <select id="CmbMoule" placeholder="Pick an Office" ng-model="OfficeId" name="OfficeId" class="selectUI" ng-change="LoadPartyTypeInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in Office" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-12 col-xs-12">
+                                Party type
+                            </label>
+                            <select class="col-sm-12 col-xs-12" id="cmbPartytype" name="nmPartytype" data-placeholder="Pick a Party type"
+                                    ng-model="PartyType" ng-change="PartyTypeChangeHandler()" data-ui-select2>
+                                <option value=""></option>
+                                <option value="1"> Distributor</option>
+                                <option value="2"> Retailer</option>
+                                <option value="3"> Dealer</option>
+                                <option value="4"> Corporate Client</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-12 col-xs-12">
+                                Party
+                                
+                            </label>
+                            <select class="col-sm-12 col-xs-12" id="cmbParty" name="nmParty" ng-model="Party"
+                                    data-placeholder="Pick a Party Name" data-ui-select2>
+                                <option value=""></option>
+                                <option ng-repeat="partyItem in Parties" value={{partyItem.Id}}>{{partyItem.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                   
+
+
+                    <br />
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary">Show</button>
+                        <button type="reset" id="SearchButton" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/CollectionReportController.js")"></script>
+
+}

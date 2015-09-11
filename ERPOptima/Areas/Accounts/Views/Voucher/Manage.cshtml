@@ -1,0 +1,516 @@
+﻿@*The file contains old logic, commented lines are not planned to remove now.*@
+
+@{
+    ViewBag.Title = "Voucher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //bool add = true;
+    //bool edit = true;
+    //bool delete = true;
+    //if (Request.IsAuthenticated)
+    //{
+    //    add = (bool)ViewData["Add"];
+    //    edit = (bool)ViewData["Edit"];
+    //    delete = (bool)ViewData["Delete"];
+    //}
+    
+}
+
+@{
+    string typeOfVoucher = "";  
+    if (ViewData["type"] != null && ViewData["financialyear"] != null && ViewData["companyid"] != null && ViewData["officeid"] != null)
+    {              
+        typeOfVoucher = ViewData["type"].ToString();
+        
+        if (typeOfVoucher == "CR")
+        {
+            <h2 class="text-center  section-title">Cash Recieve Voucher</h2>
+        }
+        else if (typeOfVoucher == "BR")
+        {
+            <h2 class="text-center  section-title">Bank Recieve Voucher</h2>
+        }
+        else if (typeOfVoucher == "CP")
+        {
+            <h2 class="text-center  section-title">Cash Payment Voucher</h2>
+        }
+        else if (typeOfVoucher == "BP")
+        {
+            <h2 class="text-center  section-title">Bank Payment Voucher</h2>
+        }
+        else if (typeOfVoucher == "JV")
+        {
+            <h2 class="text-center  section-title">Journal Voucher</h2>
+        }
+        else if (typeOfVoucher == "CT")
+        {
+            <h2 class="text-center  section-title">Contra Voucher</h2>
+        }
+   
+
+
+
+
+<div ng-controller="VoucherController">
+    <section class="margin-top-10 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+
+                @if (typeOfVoucher == "CR")
+                {
+                    <h3 class="box-title">
+                        Cash Recieve Voucher Info
+                    </h3>
+                }
+                else if (typeOfVoucher == "BR")
+                {
+                    <h3 class="box-title">
+                        Bank Recieve Voucher Info
+                    </h3>
+                }
+                else if (typeOfVoucher == "CP")
+                {
+                    <h3 class="box-title">
+                        Cash Payment Voucher Info
+                    </h3>
+                }
+                else if (typeOfVoucher == "BP")
+                {
+                    <h3 class="box-title">
+                        Bank Payment Voucher Info
+                    </h3>
+                }
+                else if (typeOfVoucher == "JV")
+                {
+                    <h3 class="box-title">
+                        Journal Voucher Info
+                    </h3>
+                }
+                else if (typeOfVoucher == "CT")
+                {
+                    <h3 class="box-title">
+                        Contra Voucher Info
+                    </h3>
+                }
+
+            </div>
+            <div class="box-body">
+                <form>
+                    <div>
+                        
+                            <label>Voucher Date:</label>
+                            <input type="text" datetimepicker id="txtVoucherDate" value=""
+                                   ng-model="Voucher.Date" /> @*ng-change="loadData()"*@
+                            
+
+                           
+                            
+                                <label>Cost Center:</label>
+                                <select class="form-control" id="cmbCostCenter" required style="width:300px; display:inline;"
+                                        ng-model="Voucher.AnFCostCenterId">
+                                    @*ng-change="loadData()"*@
+                                    <option value={{data.Id}} ng-repeat="data in CostCenters">{{data.Name}}</option>
+                                </select>
+                            
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header">
+
+                    <h3 class="box-title">Voucher Details</h3> {{Voucher.VoucherNumber}}
+                </div>
+
+                <div class="box-body">
+
+                    <form>
+
+                        <div class="col-sm-12">
+
+                            <table class="table table-responsive">
+
+                                <tr>
+                                    <td class="col-md-2"><label>Account Name</label></td>
+                                    <td class="col-md-2"><label>Account Code:</label></td>
+
+                                    <td class="col-md-2"><label>Debit:</label></td>
+                                    <td class="col-md-2"><label>Credit:</label></td>
+                                    <td class="col-md-2"><label>Short Naration:</label></td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <select class="form-control input-sm" id="cmbAcName" required style="width:400px"
+                                                ng-model="VoucherDetail.AnFChartOfAccountId" ng-change="SetTransactionalHeadCode()">
+                                            <option ng-repeat="data in AccountNameAndCode" value={{data.Id}}>{{data.Particular}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" disabled id="txtAcCode" style="width:175px" value=""
+                                               ng-model="VoucherDetail.AcCode" />
+                                    </td>
+
+                                    <td>
+                                        <input type="number" class="pull-right" id="txtDetailDebit" style="width:150px" value=""
+                                               ng-model="VoucherDetail.Debit" />
+                                    </td>
+                                    <td>
+                                        <input type="number" id="txtDetailCredit" style="width:105px" value=""
+                                               ng-model="VoucherDetail.Credit" />
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtDetailShortNarration" style="width:105px" value=""
+                                               ng-model="VoucherDetail.ShortNarration" />
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary" data-original-title="Add new item" data-placement="top" data-toggle="tooltip" style="width:60px;"
+                                                ng-click="AddDetail()">
+                                            <i class="glyphicon glyphicon-plus" style="width:20px;"></i>  Add
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div> {{ VoucherNo }}</div>
+
+
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-striped" id="gridTable">
+
+                                <thead>
+                                    <tr>
+                                        <th>Cost Center</th>
+                                        <th>Chart of Account</th>
+                                        <th>Account Code</th>
+
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                    </tr>
+                                </thead>
+
+                                <tr ng-repeat="data in table">
+                                    <td> {{ data.CostCenterName }} </td>
+                                    <td> {{ data.AnFChartOfAcountName }} </td>
+                                    <td> {{ data.AcCode }} </td>
+
+                                    <td>{{ data.Debit }}</td>
+                                    <td>{{ data.Credit }}</td>
+
+                                    <td><button class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i> Delete</button></td>@*ng-click="remove(data)"*@
+                                </tr>
+
+                                <tfoot>
+                                    <tr></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="pull-right">
+                            <span><b>Debit:{{ DebitCal() }}</b></span>
+                            <span><b>Credit:{{ CreditCal() }}</b></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Naration</label>
+                            <textarea class="form-control" placeholder="Naration" rows="2"
+                                      ng-model="Voucher.Naration"></textarea>
+                        </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-success" ng-click="SaveVouchers()">   Save   </button>@*ng-click="SaveVouchers()"*@
+                            @*<button class="btn btn-danger ">   Cancel  </button>*@@*ng-click="reset()"*@
+                            <button class="btn btn-default ">  Reset   </button>@*ng-click="reset()"*@
+                            @*<button class="btn btn-primary ">  Print   </button>*@
+                            @*<button class="btn btn-warning">  Search   </button>*@@*ng-click="open(lg)"*@
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    @*<div ng-controller="VoucherController">
+            <section class="margin-top-10 col-xs-12">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="fa fa-info"></i>
+                        <h3 class="box-title">Voucher Info</h3>
+                    </div>
+                    <div class="box-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-xs-4  form-group">
+                                    <label for="txtVoucherDate">Voucher Date:&nbsp;</label>
+                                    <input type="text" ng-model="Voucher.Date" value="" id="txtVoucherDate" ng-change="loadData()" />
+                                </div>
+
+                                <div class="form-group col-xs-1" style="width:110px;">
+                                    <label for="cmbCostCenter">Cost Center:</label>
+
+                                </div>
+                                <div>
+                                    <select id="cmbCostCenter" ng-model="form.AnFCostCenterId" class="form-control" ng-change="loadData()" style="width:300px" required>
+                                        <option ng-repeat="data in CostCenters" value={{data.Id}}>{{data.Name}}</option>
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section class="col-sm-12">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="fa fa-th-list"></i>
+                        <h3 class="box-title">Voucher Details</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        <form>
+
+                            <div class="col-sm-12">
+
+                                <table class="table table-responsive">
+
+                                    <tr>
+                                        <td class="col-md-2"><label for="cmbAcName">Account Name</label></td>
+                                        <td class="col-md-2"><label for="txtAcCode">Account Code:</label></td>
+
+                                        <td class="col-md-2"><label for="txtDebit">Debit:</label></td>
+                                        <td class="col-md-2"><label for="txtCredit">Credit:</label></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <select id="cmbAcName" ng-model="form.AnFChartOfAccountId" class="form-control input-sm" ng-change="setCode()" style="width:400px" required>
+                                                <option ng-repeat="data in AccountNameAndCode" value={{data.Id}}>{{data.Particular}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="form.AcCode" value="" id="txtAcCode" disabled style="width:345px" />
+                                        </td>
+
+                                        <td>
+                                            <input type="number" value="" ng-model="form.Debit" id="txtAcCode" style="width:150px" class=" pull-right" />
+                                        </td>
+                                        <td>
+                                            <input type="number" value="" ng-model="form.Credit" id="txtAcCode" style="width:105px" />
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-original-title="Add new item" style="width:60px;" ng-click="pushItem(form)"> <i class="glyphicon glyphicon-plus" style="width:20px;"></i>  Add   </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <script type="text/ng-template" id="modal">
+                                <style type="text/css">
+                                    .div-table-content {
+                                        height: 200px;
+                                        overflow-y: auto;
+                                    }
+                                </style>
+                                <div class="modal-header">
+                                    <h3 class="modal-title">Search By Items</h3>
+                                </div>
+                                <div class="modal-body margin">
+                                    <table class="form-group col-md-12">
+                                        <tr>
+                                            <td class="col-sm-3">Voucher Number:</td>
+                                            <td><input type="text" value="" ng-model="search.voucherNumber" id="txtAcCode" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="col-sm-3">From Date:</td>
+                                            <td><input type="text" value="" ng-model="search.fromDate" id="txtAcCode" datetimepicker /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="col-sm-3">To Date:</td>
+                                            <td><input type="text" value="" ng-model="search.toDate" id="txtAcCode" datetimepicker /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-sm-3">Business:</td>
+                                            <td>
+
+                                                <select id="cmbBiz" ng-model="search.CmnBusinessesId" class="col-sm-7 form-control input-sm" ng-change="loadProjects()">
+                                                    <option ng-repeat="data in search.CmnBusinesses" value={{data.Id}}>{{data.Name}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-sm-3">Project:</td>
+
+                                            <td>
+                                                <select id="cmbProject" ng-model="search.ProjectId" class="col-sm-7 form-control input-sm">
+                                                    <option ng-repeat="data in Projects" value={{data.Id}}>{{data.Name}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-sm-3">Cost Center:</td>
+                                            <td>
+                                                <select id="cmbCostCenter" ng-model="search.CostCenterId" class="col-sm-7 form-control input-sm">
+                                                    <option ng-repeat="data in search.AnfCostCenters" value={{data.Id}}>{{data.Name}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-12 text-center margin">
+                                    <button class="btn btn-warning" ng-click="load()"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Load</button>
+                                    <button class="btn btn-twitter" ng-click="Clear()">Reset</button>
+                                    <button class="btn btn-default" ng-click="cancel()">Close</button>
+                                </div>
+
+                                <div class="form-group col-md-12" ng-show="ShowOrHide">
+                                    <div class="panel panel-default bg-gray">
+                                        <input type="text" style="margin: 6px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+
+                                        <table id="searchTable" class="table table-bordered table-striped">
+
+                                            <thead>
+                                                <tr>
+                                                    <th width="22%">Voucher Number</th>
+                                                    <th width="12%">Date</th>
+                                                    <th width="18%">Total Amount</th>
+                                                    <th width="28%">Naration</th>
+                                                    <th width="18%">Action</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                        <div class="div-table-content">
+                                            <table class="table  table-striped">
+                                                <tbody>
+                                                    <tr ng-repeat="data in result | filter:SearchList">
+
+                                                        <td width="22%"> {{ data.VoucherNumber }} </td>
+                                                        <td width="15%"> {{ data.DateString }} </td>
+                                                        <td width="15%">{{ data.TotalAmount }}</td>
+                                                        <td width="28%">{{ data.Naration }} </td>
+                                                        <td width="15%"><button data-toggle="tooltip" data-placement="top" data-original-title="Edit" class="btn btn-success btn-xs" ng-click="setId(data)"><i class="fa fa-edit"></i>Edit</button></td>
+                                                    </tr>
+                                                </tbody>
+
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer text-center">
+
+                                </div>
+                            </script>
+
+
+                            <div>&nbsp;{{ VoucherNo }}</div>
+
+
+
+                            <table id="gridTable" class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th>Chart of Account</th>
+                                        <th>Account Code</th>
+
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                    </tr>
+                                </thead>
+
+                                <tr ng-repeat="data in table">
+
+                                    <td> {{ data.AnFChartOfAcountName }} </td>
+                                    <td> {{ data.AcCode }} </td>
+
+                                    <td>{{ data.Debit }}</td>
+                                    <td>{{ data.Credit }}</td>
+
+                                    <td><button class="btn btn-danger btn-xs" ng-click="remove(data)"><i class="glyphicon glyphicon-remove"></i> Delete</button></td>
+                                </tr>
+
+                                <tfoot>
+                                    <tr>
+
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+                            <div class="pull-right">
+                                <span><b>Debit:{{ DebitCal() }}</b></span>
+                                <span><b>Credit:{{ CreditCal() }}</b></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Naration</label>
+                                <textarea class="form-control" rows="2" ng-model="Voucher.Naration" placeholder="Naration"></textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-success " ng-click="SaveVouchers()">   Save   </button>
+                                <button class="btn btn-danger " ng-click="reset()">   Cancel  </button>
+                                <button class="btn btn-default " ng-click="reset()">  Reset   </button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary ">  Print   </button>
+                                <button class="btn btn-warning" ng-click="open(lg)">  Search   </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>*@
+
+    @section scripts{
+        <script>
+            (function () {
+                var financialYearId = parseInt('@ViewData["financialyear"]');
+                if (financialYearId !== undefined && financialYearId > 0) {
+                    //
+                }
+                else {
+                    financialYearId = 0;
+                }
+                var companyId = parseInt('@ViewData["companyid"]');
+                if (companyId !== undefined && companyId > 0) {
+                    //
+                }
+                else {
+                    companyId = 0;
+                }
+                var officeId = parseInt('@ViewData["officeid"]');
+                if (officeId !== undefined && officeId > 0) {
+                    //
+                }
+                else {
+                    officeId = 0;
+                }
+                var vchrType = '@ViewData["type"]';
+                debugger;
+                if (vchrType !== undefined && vchrType.length > 0) {
+                    //
+                }
+                else {
+                    vchrType = '';
+                }
+                app.value('vouchertype', { typeStr: vchrType, financialYearId: financialYearId, companyId: companyId, officeId: officeId });
+            }).call(this);
+        </script>
+        <script src="~/Scripts/Accounts/VoucherController.js"></script>
+    }
+    
+     }
+
+}

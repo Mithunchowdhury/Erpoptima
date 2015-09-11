@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{461AA60A-2614-49CF-A3A3-60EE7E8F9CD4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ERPOptima.Service</RootNamespace>
+    <AssemblyName>ERPOptima.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounts\AnfAdvancetAdjustmentService.cs" />
+    <Compile Include="Accounts\AnfAdvancetListService.cs" />
+    <Compile Include="Accounts\AnFChequeBookService.cs" />
+    <Compile Include="Accounts\AnFClosingBalanceService.cs" />
+    <Compile Include="Accounts\AnFDepriciationRateService.cs" />
+    <Compile Include="Accounts\AnFFixedAssetRevalueService.cs" />
+    <Compile Include="Accounts\AnFFixedAssetService.cs" />
+    <Compile Include="Accounts\AnFMeasurementUnitService.cs" />
+    <Compile Include="Accounts\AnFBankReconciliationItemService.cs" />
+    <Compile Include="Accounts\AnFProductOrServiceTypeService.cs" />
+    <Compile Include="Accounts\AnFProductOrServiceTaxService.cs" />
+    <Compile Include="Accounts\AnFDeliveryMethodService.cs" />
+    <Compile Include="Accounts\AnFPaymentTermService.cs" />
+    <Compile Include="Accounts\AnFPaymentMethodService.cs" />
+    <Compile Include="Accounts\AnFCostCenterService.cs" />
+    <Compile Include="Accounts\AnFMonthLockService.cs" />
+    <Compile Include="Accounts\AnFOpeningBalanceService.cs" />
+    <Compile Include="Accounts\AnFVoucherDetailsService.cs" />
+    <Compile Include="Accounts\AnFExpenseService.cs" />
+    <Compile Include="Accounts\AnFVoucherService.cs" />
+    <Compile Include="Accounts\VoucherApprovalService.cs" />
+    <Compile Include="Accounts\ChartOfAccountService.cs" />
+    <Compile Include="Accounts\VoucherService.cs" />
+    <Compile Include="Common\CmnApprovalProcessLevelService.cs" />
+    <Compile Include="Common\CmnApprovalProcessService.cs" />
+    <Compile Include="Common\CmnApprovalService.cs" />
+    <Compile Include="Common\CmnApprovalUserPermissionService.cs" />
+    <Compile Include="Common\CmnGroupService.cs" />
+    <Compile Include="Common\CmnCurrencyService.cs" />
+    <Compile Include="Common\CmnCountryService.cs" />
+    <Compile Include="Common\CmnFinancialYearService.cs" />
+    <Compile Include="Common\CmnProcessLevelService.cs" />
+    <Compile Include="Common\CmnApprovalCommentService.cs" />
+    <Compile Include="Home\Menu.cs" />
+    <Compile Include="Hrm\HrmDepartmentService.cs" />
+    <Compile Include="Hrm\HrmDesignationService.cs" />
+    <Compile Include="Hrm\HrmEmployeeService.cs" />
+    <Compile Include="Inventory\DamageDetailService.cs" />
+    <Compile Include="Inventory\DamageService.cs" />
+    <Compile Include="Inventory\IssueDetailService.cs" />
+    <Compile Include="Inventory\IssueService.cs" />
+    <Compile Include="Inventory\RequisitionDetailService.cs" />
+    <Compile Include="Inventory\RequisitionService.cs" />
+    <Compile Include="Inventory\StoreService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sales\AreaConfigurationDetailService.cs" />
+    <Compile Include="Sales\AreaConfigurationService.cs" />
+    <Compile Include="Sales\AreaService.cs" />
+    <Compile Include="Sales\ChallenReportService.cs" />
+    <Compile Include="Sales\ChartOfProductService.cs" />
+    <Compile Include="Sales\CollectionEntryService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Sales\CollectionReportService.cs" />
+    <Compile Include="Sales\CollectionTargetServiece.cs" />
+    <Compile Include="Sales\CommissionService.cs" />
+    <Compile Include="Sales\CommissionPackageService.cs" />
+    <Compile Include="Sales\CorporateClientService.cs" />
+    <Compile Include="Sales\CorporateIndustryTypeService.cs" />
+    <Compile Include="Sales\CorporateSalesService.cs" />
+    <Compile Include="Sales\DashboardService.cs" />
+    <Compile Include="Sales\DefectDetailEntryService.cs" />
+    <Compile Include="Sales\DefectEntryService.cs" />
+    <Compile Include="Sales\DeliveryDetailsService.cs" />
+    <Compile Include="Sales\DeliveryService.cs" />
+    <Compile Include="Sales\FieldVisitListService.cs" />
+    <Compile Include="Sales\GeneralDiscountService.cs" />
+    <Compile Include="Sales\IncentivePaymentService.cs" />
+    <Compile Include="Sales\NotificationService.cs" />
+    <Compile Include="Sales\PartyCreditReportService.cs" />
+    <Compile Include="Sales\PartyLedgerReportService.cs" />
+    <Compile Include="Sales\ProductDetailService.cs" />
+    <Compile Include="Sales\ProductReceiveDetailService.cs" />
+    <Compile Include="Sales\ProductReceiveService.cs" />
+    <Compile Include="Sales\ReportInvoiceService.cs" />
+    <Compile Include="Sales\RoutePlanService.cs" />
+    <Compile Include="Sales\RptInvoiceService.cs" />
+    <Compile Include="Sales\RptSalesTargetService.cs" />
+    <Compile Include="Sales\SalesCommissionReportService.cs" />
+    <Compile Include="Sales\SalesIncentiveSettingsService.cs" />
+    <Compile Include="Sales\SalesOrderListReportService.cs" />
+    <Compile Include="Sales\SalesReplacementDetailService.cs" />
+    <Compile Include="Sales\SalesReplacementService.cs" />
+    <Compile Include="Sales\SalesReturnListReportService.cs" />
+    <Compile Include="Sales\SalesReturnService.cs" />
+    <Compile Include="Sales\SalesTargetDetailService.cs" />
+    <Compile Include="Sales\SalesTargetService.cs" />
+    <Compile Include="Sales\SlsProductReceiveService.cs" />
+    <Compile Include="Sales\StockBalanceReportService.cs" />
+    <Compile Include="Sales\StockInService.cs" />
+    <Compile Include="Sales\TargetNAchievementReportService.cs" />
+    <Compile Include="Sales\DailySalesReportService.cs" />
+    <Compile Include="Sales\DealerService.cs" />
+    <Compile Include="Sales\DeliveryProductService.cs" />
+    <Compile Include="Sales\DistributorService.cs" />
+    <Compile Include="Sales\DistrictService.cs" />
+    <Compile Include="Sales\FieldVisitService.cs" />
+    <Compile Include="Sales\FreeProductReportService.cs" />
+    <Compile Include="Sales\FreeProductService.cs" />
+    <Compile Include="Sales\OfficeService.cs" />
+    <Compile Include="Sales\OfficeTypeService.cs" />
+    <Compile Include="Sales\Operation.cs" />
+    <Compile Include="Sales\PartyListReportService.cs" />
+    <Compile Include="Sales\ProductDiscountService.cs" />
+    <Compile Include="Sales\ProductPriceReportService.cs" />
+    <Compile Include="Sales\ProductPriceService.cs" />
+    <Compile Include="Sales\ProductService.cs" />
+    <Compile Include="Sales\ProductUnitService.cs" />
+    <Compile Include="Sales\PromotionalOfferService.cs" />
+    <Compile Include="Sales\RegionService.cs" />
+    <Compile Include="Sales\RetailerService.cs" />
+    <Compile Include="Sales\RouteSetupService.cs" />
+    <Compile Include="Sales\SalesDiscountSettingService.cs" />
+    <Compile Include="Inventory\StoreOpeningService.cs" />
+    <Compile Include="Sales\SalesOrderService.cs" />
+    <Compile Include="Sales\ThanaService.cs" />
+    <Compile Include="Sales\TransferDetailService.cs" />
+    <Compile Include="Sales\TransferService.cs" />
+    <Compile Include="Sales\UnitOfMeasurementService.cs" />
+    <Compile Include="Security\SecCompanyService.cs" />
+    <Compile Include="Security\SecCompanyUserService.cs" />
+    <Compile Include="Security\SecDashboardPermissionService.cs" />
+    <Compile Include="Security\SecModuleService.cs" />
+    <Compile Include="Security\SecResourceService.cs" />
+    <Compile Include="Security\SecRolePermissionService.cs" />
+    <Compile Include="Security\SecRoleService.cs" />
+    <Compile Include="Security\SecUserService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ERPOptima.Data\ERPOptima.Data.csproj">
+      <Project>{dd54644c-1c30-4e11-958f-874a04898817}</Project>
+      <Name>ERPOptima.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ERPOptima.Lib\ERPOptima.Lib.csproj">
+      <Project>{44d853cd-0e35-45ee-be19-af4b6c5e9c12}</Project>
+      <Name>ERPOptima.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ERPOptima.Model\ERPOptima.Model.csproj">
+      <Project>{cd66447c-203e-4527-8971-36d1176b19ba}</Project>
+      <Name>ERPOptima.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helper\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

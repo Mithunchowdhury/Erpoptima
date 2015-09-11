@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "Sales Discount Setting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+<h2 class="text-center section-title">Sales Discount Setting</h2>
+<div ng-controller="SalesDiscountSetting">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Sales Discount Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="SalesDiscounts">
+                    <div class="form-group">
+                        <label for="txtName">Title<span style="color:red">*</span>
+                            <span style="color:red" data-ng-show="SalesDiscounts.nmName.$dirty && SalesDiscounts.nmName.$error.required">Required</span>
+                            <span style="color:red" data-ng-show="SalesDiscounts.nmName.$dirty && SalesDiscounts.nmName.$error.pattern">Invalid title</span>
+                            <span style="color:red" data-ng-show="SalesDiscounts.nmName.$dirty && SalesDiscounts.nmName.$error.unique">Already Exists</span>
+                        </label>
+                        <input type="text" ng-model="SlsDiscountSetting.Title" class="form-control" id="txtName" name="nmName" ng-unique
+                               data-ng-pattern="/^[a-zA-Z0-9\s]{1,64}$/" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtLimit">Lower Limit<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="SalesDiscounts.nmLimit.$dirty && SalesDiscounts.nmLimit.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="SalesDiscounts.nmLimit.$dirty && SalesDiscounts.nmLimit.$error.pattern">Invalid Number</span>
+                        <input type="number" ng-model="SlsDiscountSetting.LowerLimit" class="form-control right-align" id="txtLimit" name="nmLimit" maxlength="10" ng-pattern="/^\d+(\.\d{1,2})?$/" placeholder="" required>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtULimit">Upper Limit<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="SalesDiscounts.nmULimit.$dirty && SalesDiscounts.nmULimit.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="SalesDiscounts.nmULimit.$dirty && SalesDiscounts.nmULimit.$error.maxlength">Max Value 10 digits allow</span>
+                        <input type="number" ng-model="SlsDiscountSetting.UpperLimit" class="form-control right-align" id="txtULimit" name="nmULimit" max="9999999999" ng-maxlength="10" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtDiscount">Discount Percentage<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="SalesDiscounts.txtDiscount.$dirty && SalesDiscounts.txtDiscount.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="SalesDiscounts.txtDiscount.$dirty && SalesDiscounts.txtDiscount.$error.pattern">Invalid percentage</span>
+                        <input type="text" ng-model="SlsDiscountSetting.DiscountPercentage" class="form-control" id="txtDiscount" name="txtDiscount" maxlength="10" ng-pattern="/^\d+(\.\d{1,2})?$/" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="SlsDiscountSetting.Remarks" class="form-control"
+                                  style="text-anchor: middle; max-width: 100%; width: 100%" id="txtRemarks" placeholder=""></textarea>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="SalesDiscounts.$invalid" ng-click="Save(SalesDiscounts.$valid)">Save</button>
+
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Sales Discount List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:25%">Title</th>
+                                <th style="width:25%">Lower Limit</th>
+                                <th style="width:25%">Upper Limit</th>
+                                <th style="width:15%">Discount (%)</th>
+                                <th style="width:8%">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:25%">{{resource.Title}}</td>
+                                    <td style="width:25%">{{resource.LowerLimit}}</td>
+                                    <td style="width:25%">{{resource.UpperLimit}}</td>
+                                    <td style="width:15%">{{resource.DiscountPercentage}}</td>
+
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/SalesDiscountSettingController.js")"></script>
+
+}

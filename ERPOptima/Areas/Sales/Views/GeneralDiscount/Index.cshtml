@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "General Discount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">General Discount</h2>
+<div ng-controller="GeneralDiscount">
+    <section class="margin-top-10 col-sm-4 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">General Discount Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="GeneralDiscounts">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="txtPrefix" class="col-sm-12 col-xs-12">Region<span style="color:red">*</span></label>
+                            <select id="CmbRegion" placeholder="Pick an Region" ng-model="GeneralDiscount.SlsRegionId" name="RegionId" class="col-sm-12 col-xs-12" ui-select2 required>
+                                <option value="0"></option>
+                                <option ng-repeat="data in Regions" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label for="txtType">Discount<span style="color:red">*</span></label>
+                            <input type="number" ng-model="GeneralDiscount.Discount" class="form-control right-align" id="txtType" placeholder="" required>
+                        </div>
+
+                        @*<div class="form-group">
+                            <label for="txtRemarks">Remarks</label>
+                            <textarea cols="20" rows="2" ng-model="GeneralDiscount.Discount" class="form-control" id="txtRemarks" placeholder=""></textarea>
+                        </div>*@
+                        <div class="text-center">
+                            @if (add || edit)
+{
+    <button type="submit" class="btn btn-success" ng-disabled="GeneralDiscounts.$invalid" ng-click="Save(GeneralDiscounts.$valid)">Save</button>
+}
+                            @if (delete)
+                            {
+                                <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                            }
+                            <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                        </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    General Discount List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:40%">Region</th>
+                                <th style="width:30%">Discount</th>
+                                <th style="width: 30%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:40%">{{resource.SlsRegionName}}</td>
+                                    <td style="width:30%">{{resource.Discount}}</td>
+
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:30%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/GeneralDiscountController.js")"></script>
+
+}

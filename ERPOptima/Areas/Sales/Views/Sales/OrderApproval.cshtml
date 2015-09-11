@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = "Sales Order Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+<h2 class="text-center  section-title">Sales Order Approval</h2>
+<div ng-controller="OrderApprovalController">
+    <section class="col-sm-4 col-xs-12 margin-top-10 col-sm-offset-4">
+        <div class="box box-primary ">
+            <div class="box-body no-padding">
+                <form role="form" name="FindSOApprvlForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>From Date<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txtFromDate" ng-model="SOFind.FromDate" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="form-group">
+                            <label>To Date<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txToDate" ng-model="SOFind.ToDate" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success" ng-disabled="FindSOApprvlForm.$invalid" ng-click="Find()">Load</button>
+                            <button type="reset" class="btn btn-default" ng-disabled="ButtonDisabled" ng-click="Reset()">Reset</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Sales Order Approval List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:15%">Ref. No</th>
+                                <th style="width:30%">Party</th>
+                                <th style="width:10%">Order Date</th>
+                                <th style="width:15%">Delivery Date</th>
+                                <th style="width: 10%">Discount</th>
+                                <th style="width: 10%">Total</th>
+                                <th style="width: 10%">Status</th>
+                                <th style="width:10%">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:15%">{{resource.RefNo}}</td>
+                                    <td style="width:30%">{{resource.PartyName}}</td>
+                                    <td style="width:10%">{{resource.OrderDate | jsonDate}}</td>
+                                    <td style="width:15%">{{resource.PreferredDeliveryDate | jsonDate}}</td>
+                                    <td style="width:10%">{{resource.Discount}}</td>
+                                    <td style="width:10%">{{resource.Total}}</td>
+                                    <td style="width:10%">
+                                        <div ng-repeat="data in ApprovalStatusData" ng-show="resource.ApprovalStatus==data.Id">
+                                            {{data.Name}}
+                                        </div>
+                                    </td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{resource.Id}}" ng-click="GetSOApprovalById(resource)"><i class="fa fa-edit"></i>Detail</button>
+                                        </td>
+                                    }
+                                  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+
+            @*for pop up window*@
+
+            <script type="text/ng-template" id="modal">
+                <form name="modules">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Sales Order Information</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="txtRefNo">Ref. No</label>
+                            <input type="text" ng-model="SalesOrder.RefNo" class="form-control" id="txtRefNo" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtPreferredDeliveryDate">Preferred Delivery Date</label>
+                            <input type="text" ng-model="SalesOrder.PreferredDeliveryDate" class="form-control" id="txtPreferredDeliveryDate" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDiscount">Discount</label>
+                            <input type="text" ng-model="SalesOrder.Discount" class="form-control" id="txtDiscount" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtTotal">Total</label>
+                            <input type="text" ng-model="SalesOrder.Total" class="form-control" id="txtTotal" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtAdvance">Advance</label>
+                            <input type="text" ng-model="SalesOrder.Advance" class="form-control" id="txtAdvancen" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtRemarks">Remarks</label>
+                            <input type="text" ng-model="SalesOrder.Remarks" class="form-control" id="txtRemarks" placeholder="" readonly>
+                        </div>
+
+                        <div class="box-header" style="cursor: move;">
+
+                            <h3 class="box-title">
+                                Product Information
+                            </h3>
+                            <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                        </div>
+                        <div class="panel panel-default">
+                            <table class="table  table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:10%">SL</th>
+                                        <th style="width:35%">Product</th>
+                                        <th style="width:20%">Unit</th>
+                                        <th style="width:20%">Quantity</th>
+                                        <th style="width: 15%">Rate</th>
+                                        <th style="width:35%">Price</th>
+                                        <th style="width: 20%">Discount</th>
+                                        <th style="width: 15%">Total</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="div-table-content">
+                                <table class="table  table-striped">
+                                    <tbody>
+                                        <tr ng-repeat="sd in SalesOrder.SalesOrderDetails | filter:SearchList">
+                                            <td style="width:10%">{{$index+1}}</td>
+                                            <td style="width:35%">{{sd.ProductName}}</td>
+                                            <td style="width:20%">{{sd.UnitName}}</td>
+                                            <td style="width:20%">{{sd.SalesOrderQuantity}}</td>
+                                            <td style="width:15%">{{sd.Rate}}</td>
+                                            <td style="width:35%">{{sd.Price}}</td>
+                                            <td style="width:20%">{{sd.Discount}}</td>
+                                            <td style="width:15%">{{sd.Total}}</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Previous Comments</label>
+                            <textarea cols="20" rows="2" ng-model="SalesOrder.PreComments" class="form-control" id="txtPreComments" placeholder=""
+                                      readonly style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Comments<span style="color:red">*</span></label>
+                            <textarea cols="20" rows="1" ng-model="SalesOrder.NewComments" class="form-control" id="txtNewComments" placeholder="" required
+                                      style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" ng-disabled="DisableApproval()" ng-click="Approve()">Approve</button>
+                        <button type="submit" class="btn btn-danger" ng-disabled="DisableApproval()" ng-click="Reject()">Reject</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="DisableApproval()" ng-click="Pass()">Pass</button>
+                        <button class="btn btn-warning" ng-click="cancel()">Close</button>
+                        @*<button class="btn btn-primary" ng-disabled="modules.$invalid" ng-click="ok()">Save</button>*@
+
+                    </div>
+                </form>
+            </script>
+
+
+            @*end pop up window*@
+
+            @*<div class="box-body no-padding">
+                <form role="form" name="SOApprvlForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Previous Comments</label>
+                            <textarea cols="20" rows="2" ng-model="SOApproval.Comment" class="form-control" id="txtRemarks" placeholder=""
+                                      readonly style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Comments<span style="color:red">*</span></label>
+                            <textarea cols="20" rows="1" ng-model="SOApproval.NewComment" class="form-control" id="txtRemarks" placeholder="" required
+                                      style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success" ng-disabled="SOApprvlForm.$invalid" ng-click="Approve()">Approve</button>
+                            <button type="submit" class="btn btn-danger" ng-disabled="SOApprvlForm.$invalid" ng-click="Reject()">Reject</button>
+                            <button type="submit" class="btn btn-default" ng-disabled="SOApprvlForm.$invalid" ng-click="Pass()">Pass</button>
+                        </div>
+                    </div>
+                </form>
+            </div>*@
+
+
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+
+@section scripts{
+
+    <script>
+        (function () {
+            var glbSalesOrderId = parseInt('@ViewData["SalesOrderNumber"]');
+            if (glbSalesOrderId !== undefined && glbSalesOrderId > 0) {
+                app.value('glbsoapproval', { soID: glbSalesOrderId });
+            }
+            else {
+                app.value('glbsoapproval', { soID: 0 });
+            }
+
+        }).call(this);
+    </script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/OrderApprovalController.js")"></script>
+}

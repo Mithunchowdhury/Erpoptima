@@ -1,0 +1,285 @@
+﻿@{
+    ViewBag.Title = "Bank Receipt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/Accounts/receiptVoucherController.js"></script>
+<script src="~/Scripts/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Scripts/plugins/datatables/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="@Url.Content("/Scripts/blockUI.js")"></script>
+
+<h2 class="text-center section-title">Receipt Voucher</h2>
+<div ng-controller="receiptVoucherController">
+    <section class="margin-top-10 col-md-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">Voucher Info</h3>
+            </div>
+            <div class="box-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-4  form-group">
+                            <label for="txtVoucherDate">Voucher Date:&nbsp;</label>
+                            <input type="text" ng-model="Voucher.Date" value="" id="txtVoucherDate" />
+                        </div>
+                        <div class="form-group col-sm-1 ">
+                            <label for="cmbBiz">Business:</label>
+                        </div>
+                        <div class="form-group col-sm-3 ">
+
+                            <select id="cmbBiz" ng-model="Voucher.CmnBusinessesId" class="form-control input-sm" ng-change="loadData()" required>
+                                <option ng-repeat="data in CmnBusinesses" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+
+                        @*<div class="form-group col-xs-4 ">
+                                <label for="txtVoucherNumber col-xs-4">Voucher Number:&nbsp;</label>
+                                <input type="text" ng-model="Voucher.VoucherNumber" value="" id="txtVoucherNumber" disabled />
+                            </div>*@
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="col-sm-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-th-list"></i>
+                <h3 class="box-title">Voucher Details</h3>
+            </div>
+            <div class="box-body">
+                <form>
+                    <div class="col-sm-12">
+                        <table class="table table-responsive">
+                            <tr>
+                                <td class="col-md-3"><label for="cmbAcName">Account Name</label></td>
+                                <td class="col-md-1"><label for="txtAcCode">Account Code:&nbsp;</label></td>
+                                <td class="col-md-2"><label for="cmbProject">Project:</label></td>
+                                <td class="col-md-2"><label for="cmbCostCenter">Cost Center:</label></td>
+                                <td class="col-md-1"><label for="txtShortNarration">Short Narration:</label></td>
+                                @*<td class="col-md-1"><label for="txtSubVoucher">Sub Voucher:</label></td>*@
+                                <td class="col-md-1"><label for="txtDebit">Debit:</label></td>
+                                <td class="col-md-1"><label for="txtCredit">Credit:</label></td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <select id="cmbAcName" ng-model="form.AnFChartOfAccountId" class="form-control input-sm" ng-change="setCode()" required>
+                                        <option ng-repeat="data in AccountNameAndCode" value={{data.Id}}>{{data.Particular}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="form.AcCode" value="" id="txtAcCode" disabled />
+                                </td>
+                                <td>
+                                    <select id="cmbProject" ng-model="form.CmnProjectId" class="form-control input-sm" required>
+                                        <option ng-repeat="data in CmnProjectIds" value={{data.Id}}>{{data.Name}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="cmbCostCenter" ng-model="form.AnFCostCenterId" class="form-control input-sm" required>
+                                        <option ng-repeat="data in CostCenters" value={{data.Id}}>{{data.Name}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="" ng-model="form.ShortNaration" id="txtShortNarration" class="pull-right" />
+                                </td>
+                                @*<td>
+                                        <input type="text" value="" id="" ng-model="form.SubVoucherNumber" class="pull-right" disabled />
+                                    </td>*@
+                                <td>
+                                    <input type="number" value="" ng-model="form.Debit" id="txtAcCode" class="pull-right" />
+                                </td>
+                                <td>
+                                    <input type="number" value="" ng-model="form.Credit" id="txtAcCode" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-original-title="Add new item" ng-click="pushItem(form)"> <i class="glyphicon glyphicon-plus"></i>  Add   </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <script type="text/ng-template" id="modal">
+                        <style type="text/css">
+                            .div-table-content {
+                                height: 200px;
+                                overflow-y: auto;
+                            }
+                        </style>
+                        <div class="modal-header">
+                            <h3 class="modal-title">Search By Items</h3>
+                        </div>
+                        <div class="modal-body margin">
+                            <table class="form-group col-md-12">
+                                <tr>
+                                    <td class="col-sm-3">Voucher Number:</td>
+                                    <td><input type="text" value="" ng-model="search.voucherNumber" id="txtAcCode" /></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="col-sm-3">From Date:</td>
+                                    <td><input type="text" value="" ng-model="search.fromDate" id="txtAcCode" datetimepicker /></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="col-sm-3">To Date:</td>
+                                    <td><input type="text" value="" ng-model="search.toDate" id="txtAcCode" datetimepicker /></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">Business:</td>
+                                    <td>
+                                        <select id="cmbBiz" ng-model="search.CmnBusinessesId" class="col-sm-7 form-control input-sm" ng-change="loadProjects()">
+                                            <option ng-repeat="data in search.CmnBusinesses" value={{data.Id}}>{{data.Name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">Project:</td>
+
+                                    <td>
+                                        <select id="cmbProject" ng-model="search.ProjectId" class="form-control input-sm" required>
+                                            <option ng-repeat="data in Projects" value={{data.Id}}>{{data.Name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-3">Cost Center:</td>
+                                    <td>
+                                        <select id="cmbCostCenter" ng-model="search.CostCenterId" class="form-control input-sm" required>
+                                            <option ng-repeat="data in search.AnfCostCenters" value={{data.Id}}>{{data.Name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                            </div>
+                            <div class="col-md-12 text-center margin">
+                                <button class="btn btn-warning" ng-click="load()"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Load</button>
+                                <button class="btn btn-twitter" ng-click="Clear()">Reset</button>
+                                <button class="btn btn-default" ng-click="cancel()">Close</button>
+                            </div>
+                            @*<button class="btn btn-primary pull-right" ng-click="load()">Load</button>*@
+                            <div class="form-group col-md-12" ng-show="ShowOrHide">
+                                <div class="panel panel-default bg-gray">
+                                    <input type="text" style="margin: 6px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                                    <table id="searchTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th width="22%">Voucher Number</th>
+                                                <th width="12%">Date</th>
+                                                <th width="18%">Total Amount</th>
+                                                <th width="28%">Naration</th>
+                                                <th width="18%">Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="div-table-content">
+                                        <table class="table  table-striped">
+                                            <tbody>
+                                                <tr ng-repeat="data in result | filter:SearchList">
+
+                                                    <td width="22%"> {{ data.VoucherNumber }} </td>
+                                                    <td width="15%"> {{ data.DateString }} </td>
+                                                    <td width="15%">{{ data.TotalAmount }}</td>
+                                                    <td width="28%">{{ data.Naration }} </td>
+                                                    <td width="15%"><button class="btn btn-success btn-xs" ng-click="setId(data)"><i class="fa fa-edit"></i>Edit</button></td>
+                                                </tr>
+                                            </tbody>
+                                            @*<tfoot>
+                                                    <tr>
+                                                        <th>Voucher Number</th>
+                                                        <th>Date</th>
+                                                        <th>Total Amount</th>
+                                                        <th>Naration</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </tfoot>*@
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                @*<button class="btn btn-primary" ng-click="ok()">OK</button>
+                                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>*@
+                            </div>
+                    </script>
+
+
+                    <div>Selection from a modal: {{ VoucherNo }}</div>
+
+                    @* table start *@
+
+                    <table id="gridTable" class="table table-bordered table-striped">
+
+                        <thead>
+                            <tr>
+                                <th>Chart of Account</th>
+                                <th>Account Code</th>
+                                <th>Project</th>
+                                <th>Cost Center</th>
+                                <th>Short Naration</th>
+                                @*<th>Sub Voucher</th>*@
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                        </thead>
+
+                        <tr ng-repeat="data in table">
+
+                            <td> {{ data.AnFChartOfAcountName }} </td>
+                            <td> {{ data.AcCode }} </td>
+                            <td>{{ data.CmnProjectName }}</td>
+                            <td>{{ data.AnFCostCenterName }} </td>
+                            <td>{{ data.ShortNaration }} </td>
+                            @*<td>{{ data.SubVoucherNumber }} </td>*@
+                            <td>{{ data.Debit }}</td>
+                            <td>{{ data.Credit }}</td>
+
+                            @*<td><button class="btn btn-primary" ng-click="remove(data)">Delete</button></td>*@
+                            <td><button class="btn btn-danger btn-xs" ng-click="remove(data)"><i class="glyphicon glyphicon-remove"></i> Delete</button></td>
+                        </tr>
+
+                        <tfoot>
+                            <tr>
+                                <th>Chart of Account</th>
+                                <th>Account Code</th>
+                                <th>Project</th>
+                                <th>Cost Center</th>
+                                <th>Short Naration</th>
+                                @*<th>Sub Voucher</th>*@
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="pull-right">
+                        <span><b>Debit:{{ DebitCal() }}</b></span>
+                        <span><b>Credit:{{ CreditCal() }}</b></span>
+                    </div>
+                    @* table end *@
+                    <div class="form-group">
+                        <label>Naration</label>
+                        <textarea class="form-control" rows="2" ng-model="Voucher.Naration" placeholder="Naration"></textarea>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-success " ng-click="SaveVouchers()">   Save   </button>
+                        <button class="btn btn-danger " ng-click="reset()">   Cancel  </button>
+                        <button class="btn btn-default " ng-click="reset()">  Reset   </button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-primary ">  Print   </button>
+                        <button class="btn btn-warning" ng-click="open(lg)">  Search   </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    $(document).ready(function () {
+        $("[data-toggle='tooltip']").tooltip();
+        $("#searchTable").dataTable();
+    });
+</script>
+<script src="~/Scripts/Accounts/BankReceiveController.js"></script>

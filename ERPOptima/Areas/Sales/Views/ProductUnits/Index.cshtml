@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Product Unit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Product Unit</h2>
+<div ng-controller="ProductUnitController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Product Unit Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="ProductUnitForm">
+                    <div class="form-group">
+                        <label for="selProduct">Product<span style="color:red">*</span></label>
+                                  
+                        <select id="selProduct" data-placeholder="Pick a product" ng-model="ProductUnit.SlsProductId" class="selectUI" 
+                                ng-change="GetUnitsByProductId()" data-ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Products" value={{data.Id}}>{{data.Code}}&nbsp;({{data.Name}})</option>
+                        </select>  
+                       
+                    </div>
+                    <div class="form-group">
+                        <label for="selUnit">Unit<span style="color:red">*</span></label>
+                        <select id="selUnit" data-placeholder="Pick a unit" ng-model="ProductUnit.SlsUnitId" 
+                                class="selectUI" data-ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Units" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selParentUnit">Parent Unit</label>
+                        <select id="selParentUnit" data-placeholder="Pick a parent unit" ng-model="ProductUnit.ParentUnitId" class="selectUI" data-ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in ParentUnits" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtConversionRate">Conversion Rate</label>
+                        <span style="color:red" data-ng-show="ProductUnitForm.nmConversionRate.$dirty && ProductUnitForm.nmConversionRate.$error.max">Invalid</span>
+                        <span style="color:red" data-ng-show="ProductUnitForm.nmConversionRate.$dirty && ProductUnitForm.nmConversionRate.$error.pattern">Invalid Rate</span>
+                        <input type="text" ng-model="ProductUnit.ConversionRate" class="form-control" id="txtConversionRate" maxlength="6" ng-pattern="/^\d+(\.\d{1,2})?$/" name="nmConversionRate">
+                    </div>
+                      
+
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="ProductUnit.Remarks" style="text-anchor: middle; max-width: 100%; width: 100%" class="form-control" id="txtRemarks"></textarea>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+{
+    <button type="submit" class="btn btn-success" ng-disabled="ProductUnitForm.$invalid" ng-click="Save()">Save</button>
+}
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    List of product unit
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:15%">Unit</th>
+                                <th style="width:15%">Parent Unit</th>
+                                <th style="width:30%">Conversion Rate</th>
+                                <th style="width:30%">Remarks</th>
+                                <th style="width:8%">Action</th>    <!--Action Add by Bably-->
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="pu in ProductUnits | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:15%">{{pu.Unit}}</td>
+                                    <td style="width:15%">{{pu.ParentUnit}}</td>
+                                    <td style="width:30%">{{pu.ConversionRate}}</td>
+                                    <td style="width:30%">{{pu.Remarks}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{pu.Id}}" ng-click="setForEdit(pu)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/ProductUnit.js")"></script>
+
+}

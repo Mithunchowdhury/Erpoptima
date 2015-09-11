@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "OpeningBalanceReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/Accounts/Report_AnFChartOfAccount.js"></script>
+
+<section class="content-header text-center">
+
+    <h2 class="text-center section-title">OpeningBalanceReport</h2>
+</section>
+<div class="row content" ng-controller="ChartOfAccountReportController">
+
+    <div class="col-sm-5 col-xs-12 margin-top-10" style="margin-left:314px;">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                @*<i class="fa fa-search"></i>
+                    <h3 class="box-title"> Search</h3>*@
+            </div>
+
+            @using (Html.BeginForm("GetAnFChartOfAccountWIthOpeningbalanceReport", "Report", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search", target = "_blank" }))
+            {
+                <div class="box-body">
+                    <br />
+                    @*<div class="form-group">
+                            <div class="row">
+                                <label for="cmdCompany" class="col-sm-4 col-xs-12">Company :</label>
+                                <select class="col-sm-8 col-xs-12" ui-select2 name="ProjectId" ng-model="Report.Type" ng-change="a()" id="cmdCompany" data-placeholder="Pick a Report Type">
+                                    <option value=""></option>
+                                    <option value="1">Chat Of Account</option>
+                                    <option value="2">Chat Of Accounts With Opening balance</option>
+                                </select>
+                            </div>
+                        </div>*@
+                
+
+                    <div class="form-group">
+
+                        <label>Financial year :</label>
+                        <select class="selectUI" ui-select2 ng-model="YearId" name="YearId" data-placeholder="" ng-change="">
+                            <option value=""></option>
+                            <option ng-repeat="data in Years" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+                    </div>
+
+                    
+
+                    <div class="form-group center-align">
+                        <button type="submit" id="VoucherButton" class="btn btn-primary">Show Report</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+</div>

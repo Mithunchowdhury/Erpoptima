@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    <h2 class="text-center section-title">Voucher Dashboard</h2>
+
+
+<div class="row content" ng-controller="DashBoardController">
+
+
+
+    <div class="col-sm-4 col-xs-12" ng-repeat="item in dashboard">
+        <!-- small box -->
+
+        <div class="small-box bg-green">
+            <div class="inner">
+
+                <h3>
+                    {{"  "+item.Name}}
+                </h3>
+                <h3>
+                    Total: {{"  "+item.Total}}
+                </h3>
+                <p>
+                    <span> Cancelled: {{" " + item.Cancelled}} </span><br />
+                    <span> Posted: {{" " + item.Posted}}  </span><br />
+                    <span>   UnPosted: {{" " + item.UnPosted}} </span><br />
+                    <span ng-show="item.hasOwnProperty('Check')">    {{"Check: " + item.Check}} <br /></span>
+                    <span ng-show="item.hasOwnProperty('Pass')">    {{"Pass: " + item.Pass}} <br /></span>
+                    <span ng-show="item.hasOwnProperty('Approve')">    {{"Approve: " + item.Approve}} <br /></span>
+
+
+
+
+                </p>
+            </div>
+            @*<div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>*@
+
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts{
+
+
+    
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/Dashboard.js")"></script>
+
+
+
+
+
+}

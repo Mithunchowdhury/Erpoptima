@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Module Selection :: ERP Optima";
+    Layout = "~/Views/Shared/_Home.cshtml";
+}
+@model List<ERPOptima.Web.Security.ViewModels.SecPermittedModuleViewModel>
+<section class="content">
+
+    <div class="row">
+        @foreach (var item in Model)
+{
+
+    <div class="col-centered col-md-4">
+        <a href="@item.Url" class="home">
+            <center>
+                <img src="@item.Logo" width="250" height="250" alt="" />
+                <div>@item.Name</div>
+            </center>
+        </a>
+    </div>
+}
+        
+    </div>
+</section>

@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DD54644C-1C30-4E11-958F-874A04898817}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ERPOptima.Data</RootNamespace>
+    <AssemblyName>ERPOptima.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounts\Repository\AnfAdvanceAdjustmentRepository.cs" />
+    <Compile Include="Accounts\Repository\AnfAdvancetListepository.cs" />
+    <Compile Include="Accounts\Repository\AnFChequeBookRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFClosingBalanceRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFDepreciationRateRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFFixedAcquisitionRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFFixedAssetRevalueRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFFixedAssetRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFMeasurementUnitRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFBankReconciliationItemRepository .cs" />
+    <Compile Include="Accounts\Repository\AnFProductOrServiceTaxRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFProductOrServiceTypeRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFCostCenterRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFMonthLockRepository.cs" />
+    <Compile Include="Accounts\Repository\AnfVoucherDetailsRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFPaymentTermRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFPaymentMethodRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFDeliveryMethodRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFVoucherApprovalRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFExpenseRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFVoucherRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFChartOfAccountRepository.cs" />
+    <Compile Include="Accounts\Repository\AnFOpeningBalanceRepository.cs" />
+    <Compile Include="Accounts\Repository\VoucherDetailRepository.cs" />
+    <Compile Include="Accounts\Repository\VoucherRepository.cs" />
+    <Compile Include="Common\Repository\CmnApprovalCommentRepository.cs" />
+    <Compile Include="Common\Repository\CmnApprovalProcessLevelRepository.cs" />
+    <Compile Include="Common\Repository\CmnApprovalProcessRepository.cs" />
+    <Compile Include="Common\Repository\CmnApprovalRepository.cs" />
+    <Compile Include="Common\Repository\CmnApprovalUserPermissionRepository.cs" />
+    <Compile Include="Common\Repository\CmnGroupRepository.cs" />
+    <Compile Include="Common\Repository\CmnCurrencyRepository.cs" />
+    <Compile Include="Common\Repository\CmnCountryRepository.cs" />
+    <Compile Include="Common\Repository\CmnCompanyRepository.cs" />
+    <Compile Include="Common\Repository\CmnFinancialYearRepository.cs" />
+    <Compile Include="Common\Repository\CmnProcessLevelRepository.cs" />
+    <Compile Include="ErpOptimaContext.cs" />
+    <Compile Include="Home\MenuRepository.cs" />
+    <Compile Include="Hrm\Repository\HrmDepartmentRepository.cs" />
+    <Compile Include="Hrm\Repository\HrmDesignationRepository.cs" />
+    <Compile Include="Hrm\Repository\HrmEmployeeRepository.cs" />
+    <Compile Include="Infrastructure\DatabaseFactory.cs" />
+    <Compile Include="Infrastructure\Disposable.cs" />
+    <Compile Include="Infrastructure\IDatabaseFactory.cs" />
+    <Compile Include="Infrastructure\IRepository.cs" />
+    <Compile Include="Infrastructure\IUnitOfWork.cs" />
+    <Compile Include="Infrastructure\BaseRepository.cs" />
+    <Compile Include="Infrastructure\Page.cs" />
+    <Compile Include="Infrastructure\UnitOfWork.cs" />
+    <Compile Include="Inventory\Repository\InvDamageApproval.cs" />
+    <Compile Include="Inventory\Repository\InvDamageDetailRepository.cs" />
+    <Compile Include="Inventory\Repository\InvDamageRepository.cs" />
+    <Compile Include="Inventory\Repository\InvStoreOpeningRepository.cs" />
+    <Compile Include="Inventory\Repository\InvStoreRepository.cs" />
+    <Compile Include="Inventory\Repository\IssueDetailRepository.cs" />
+    <Compile Include="Inventory\Repository\IssueRepository.cs" />
+    <Compile Include="Inventory\Repository\RequisitionApprovalRepository.cs" />
+    <Compile Include="Inventory\Repository\RequisitionDetailRepository.cs" />
+    <Compile Include="Inventory\Repository\RequisitionRepository.cs" />
+    <Compile Include="Inventory\Repository\StockInRepository.cs" />
+    <Compile Include="Mapping\AnFAdjustmentMap.cs" />
+    <Compile Include="Mapping\AnFAdvanceMap.cs" />
+    <Compile Include="Mapping\AnFChartOfAccountMap.cs" />
+    <Compile Include="Mapping\AnFClosingBalanceMap.cs" />
+    <Compile Include="Mapping\AnFExpensMap.cs" />
+    <Compile Include="Mapping\AnFMeasurementUnitMap.cs" />
+    <Compile Include="Mapping\AnFBankReconciliationItemMap.cs" />
+    <Compile Include="Mapping\AnFChequeBookMap.cs" />
+    <Compile Include="Mapping\AnFDeliveryMethodMap.cs" />
+    <Compile Include="Mapping\AnFDepreciationRateMap.cs" />
+    <Compile Include="Mapping\AnFPaymentMethodMap.cs" />
+    <Compile Include="Mapping\AnFPaymentTermMap.cs" />
+    <Compile Include="Mapping\AnFProductOrServiceTaxMap.cs" />
+    <Compile Include="Mapping\AnFProductOrServiceTypeMap.cs" />
+    <Compile Include="Mapping\CmnAccountHeadMapperMap.cs" />
+    <Compile Include="Mapping\CmnCountryMap.cs" />
+    <Compile Include="Mapping\CmnCurrencyMap.cs" />
+    <Compile Include="Mapping\AnFCostCenterMap.cs" />
+    <Compile Include="Mapping\AnFMonthLockMap.cs" />
+    <Compile Include="Mapping\AnFOpeningBalanceMap.cs" />
+    <Compile Include="Mapping\AnFVoucherDetailMap.cs" />
+    <Compile Include="Mapping\AnFVoucherMap.cs" />
+    <Compile Include="Mapping\CmnApprovalCommentMap.cs" />
+    <Compile Include="Mapping\CmnApprovalMap.cs" />
+    <Compile Include="Mapping\CmnApprovalProcessMap.cs" />
+    <Compile Include="Mapping\CmnApprovalUserPermissionMap.cs" />
+    <Compile Include="Mapping\CmnApprovalProcessLevelMap.cs" />
+    <Compile Include="Mapping\CmnFinancialYearMap.cs" />
+    <Compile Include="Mapping\CmnMappingTypeMap.cs" />
+    <Compile Include="Mapping\CmnProcessLevelMap.cs" />
+    <Compile Include="Mapping\FxdAcquisitionMap.cs" />
+    <Compile Include="Mapping\FxdAssetMap.cs" />
+    <Compile Include="Mapping\FxdDepreciationMap.cs" />
+    <Compile Include="Mapping\FxdDisposalMap.cs" />
+    <Compile Include="Mapping\FxdRevaluationMap.cs" />
+    <Compile Include="Mapping\HrmDepartmentMap.cs" />
+    <Compile Include="Mapping\HrmDesignationMap.cs" />
+    <Compile Include="Mapping\HrmEmployeeMap.cs" />
+    <Compile Include="Mapping\InvDamageApprovalMap.cs" />
+    <Compile Include="Mapping\InvDamageApprovalProductMap.cs" />
+    <Compile Include="Mapping\InvDamageDetailMap.cs" />
+    <Compile Include="Mapping\InvDamageMap.cs" />
+    <Compile Include="Mapping\InvIssueDetailMap.cs" />
+    <Compile Include="Mapping\InvIssueMap.cs" />
+    <Compile Include="Mapping\InvProductReceiveDetailMap.cs" />
+    <Compile Include="Mapping\InvProductReceiveMap.cs" />
+    <Compile Include="Mapping\InvProductSendDetailItemMap.cs" />
+    <Compile Include="Mapping\InvProductSendDetailMap.cs" />
+    <Compile Include="Mapping\InvProductSendMap.cs" />
+    <Compile Include="Mapping\InvRequisitionApprovalMap.cs" />
+    <Compile Include="Mapping\InvRequisitionDetailMap.cs" />
+    <Compile Include="Mapping\InvRequisitionMap.cs" />
+    <Compile Include="Mapping\InvStockInOutMap.cs" />
+    <Compile Include="Mapping\InvStoreMap.cs" />
+    <Compile Include="Mapping\InvStoreOpeningMap.cs" />
+    <Compile Include="Mapping\SecCompanyMap.cs" />
+    <Compile Include="Mapping\SecCompanyUserMap.cs" />
+    <Compile Include="Mapping\SecDashboardMap.cs" />
+    <Compile Include="Mapping\SecDashboardPermissionMap.cs" />
+    <Compile Include="Mapping\SecFileMap.cs" />
+    <Compile Include="Mapping\SecGroupMap.cs" />
+    <Compile Include="Mapping\SecModuleMap.cs" />
+    <Compile Include="Mapping\SecResourceMap.cs" />
+    <Compile Include="Mapping\SecRoleMap.cs" />
+    <Compile Include="Mapping\SecRolePermissionMap.cs" />
+    <Compile Include="Mapping\SecUserMap.cs" />
+    <Compile Include="Mapping\SlsAreaConfigurationDetailMap.cs" />
+    <Compile Include="Mapping\SlsAreaConfigurationMap.cs" />
+    <Compile Include="Mapping\SlsAreaMap.cs" />
+    <Compile Include="Mapping\SlsCollectionMap.cs" />
+    <Compile Include="Mapping\SlsCollectionTargetMap.cs" />
+    <Compile Include="Mapping\SlsCommissionMap.cs" />
+    <Compile Include="Mapping\SlsCommissionPackageMap.cs" />
+    <Compile Include="Mapping\SlsCorporateClientMap.cs" />
+    <Compile Include="Mapping\SlsCorporateSalesApplicationDetailMap.cs" />
+    <Compile Include="Mapping\SlsCorporateSalesApplicationMap.cs" />
+    <Compile Include="Mapping\SlsCorporateSalesApprovalMap.cs" />
+    <Compile Include="Mapping\SlsCorporateTypeMap.cs" />
+    <Compile Include="Mapping\SlsDealerMap.cs" />
+    <Compile Include="Mapping\SlsDefectDetailMap.cs" />
+    <Compile Include="Mapping\SlsDefectMap.cs" />
+    <Compile Include="Mapping\SlsDeliverDetailMap.cs" />
+    <Compile Include="Mapping\SlsDeliveryMap.cs" />
+    <Compile Include="Mapping\SlsDiscountSettingMap.cs" />
+    <Compile Include="Mapping\SlsDistributorMap.cs" />
+    <Compile Include="Mapping\SlsDistrictMap.cs" />
+    <Compile Include="Mapping\SlsFieldVisitMap.cs" />
+    <Compile Include="Mapping\SlsFreeProductMap.cs" />
+    <Compile Include="Mapping\SlsGeneralDiscountMap.cs" />
+    <Compile Include="Mapping\SlsIncentiveMap.cs" />
+    <Compile Include="Mapping\SlsIncentiveSettingMap.cs" />
+    <Compile Include="Mapping\SlsNotificationDetailMap.cs" />
+    <Compile Include="Mapping\SlsNotificationMap.cs" />
+    <Compile Include="Mapping\SlsOfficeMap.cs" />
+    <Compile Include="Mapping\SlsOfficeTypeMap.cs" />
+    <Compile Include="Mapping\SlsProductDiscountMap.cs" />
+    <Compile Include="Mapping\SlsProductMap.cs" />
+    <Compile Include="Mapping\SlsProductPriceMap.cs" />
+    <Compile Include="Mapping\SlsProductReceiveDetailMap.cs" />
+    <Compile Include="Mapping\SlsProductReceiveMap.cs" />
+    <Compile Include="Mapping\SlsProductUnitMap.cs" />
+    <Compile Include="Mapping\SlsPromotionalOfferDetailMap.cs" />
+    <Compile Include="Mapping\SlsPromotionalOfferMap.cs" />
+    <Compile Include="Mapping\SlsRegionMap.cs" />
+    <Compile Include="Mapping\SlsReplacementDetailMap.cs" />
+    <Compile Include="Mapping\SlsReplacementMap.cs" />
+    <Compile Include="Mapping\SlsRetailerMap.cs" />
+    <Compile Include="Mapping\SlsRouteDetailMap.cs" />
+    <Compile Include="Mapping\SlsRouteMap.cs" />
+    <Compile Include="Mapping\SlsRoutePlanApprovalMap.cs" />
+    <Compile Include="Mapping\SlsRoutePlanDetailMap.cs" />
+    <Compile Include="Mapping\SlsRoutePlanMap.cs" />
+    <Compile Include="Mapping\SlsSalesOrderApprovalMap.cs" />
+    <Compile Include="Mapping\SlsSalesOrderDetailMap.cs" />
+    <Compile Include="Mapping\SlsSalesOrderMap.cs" />
+    <Compile Include="Mapping\SlsSalesReturnDetailMap.cs" />
+    <Compile Include="Mapping\SlsSalesReturnMap.cs" />
+    <Compile Include="Mapping\SlsSalesTargetDetailMap.cs" />
+    <Compile Include="Mapping\SlsSalesTargetMap.cs" />
+    <Compile Include="Mapping\SlsThanaMap.cs" />
+    <Compile Include="Mapping\SlsTransferDetailMap.cs" />
+    <Compile Include="Mapping\SlsTransferMap.cs" />
+    <Compile Include="Mapping\SlsUnitMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sales\FieldVisitRepository.cs" />
+    <Compile Include="Sales\Repository\AreaConfigurationDetailRepository.cs" />
+    <Compile Include="Sales\Repository\AreaConfigurationRepository.cs" />
+    <Compile Include="Sales\Repository\AreaRepository.cs" />
+    <Compile Include="Sales\Repository\ChartOfProductRepository.cs" />
+    <Compile Include="Sales\Repository\CollectionEntryRepository.cs" />
+    <Compile Include="Sales\Repository\CollectionReportRepository.cs" />
+    <Compile Include="Sales\Repository\CollectionTargetRepository.cs" />
+    <Compile Include="Sales\Repository\CommissionRepository.cs" />
+    <Compile Include="Sales\Repository\CommissionPackageRepository.cs" />
+    <Compile Include="Sales\Repository\CorporateClientRepository.cs" />
+    <Compile Include="Sales\Repository\CorporateIndustryTypeRepository.cs" />
+    <Compile Include="Sales\Repository\CorporateSalesApprovalRepository.cs" />
+    <Compile Include="Sales\Repository\CorporateSalesRepository.cs" />
+    <Compile Include="Sales\Repository\DashboardRepository.cs" />
+    <Compile Include="Sales\Repository\databaseFactory.cs" />
+    <Compile Include="Sales\Repository\DealerRepository.cs" />
+    <Compile Include="Sales\Repository\DefectDetailEntryRepository.cs" />
+    <Compile Include="Sales\Repository\DefectEntryRepository.cs" />
+    <Compile Include="Sales\Repository\DeliveryChallenRepository.cs" />
+    <Compile Include="Sales\Repository\DeliveryDetailRepository.cs" />
+    <Compile Include="Sales\Repository\DeliveryDetailsRepository.cs" />
+    <Compile Include="Sales\Repository\DeliveryRepository.cs" />
+    <Compile Include="Sales\Repository\DistributorRepository.cs" />
+    <Compile Include="Sales\Repository\DistrictRepository.cs" />
+    <Compile Include="Sales\Repository\FieldVisitListRepository.cs" />
+    <Compile Include="Sales\Repository\FreeProductRepository.cs" />
+    <Compile Include="Sales\Repository\GeneralDiscountRepository.cs" />
+    <Compile Include="Sales\Repository\CorporateSalesDetailRepository.cs" />
+    <Compile Include="Sales\Repository\IncentivePaymentRepository.cs" />
+    <Compile Include="Sales\Repository\RoutePlanApprovalRepository.cs" />
+    <Compile Include="Sales\Repository\NotificationDetailRepository.cs" />
+    <Compile Include="Sales\Repository\NotificationRepository.cs" />
+    <Compile Include="Sales\Repository\OfficeRepository.cs" />
+    <Compile Include="Sales\Repository\OfficeTypeRepository.cs" />
+    <Compile Include="Sales\Repository\ProductDiscountRepository.cs" />
+    <Compile Include="Sales\Repository\ProductPriceRepository.cs" />
+    <Compile Include="Sales\Repository\ProductReceiveDetailRepository.cs" />
+    <Compile Include="Sales\Repository\ProductReceiveRrepository.cs" />
+    <Compile Include="Sales\Repository\ProductRepository.cs" />
+    <Compile Include="Sales\Repository\ProductUnitRepository.cs" />
+    <Compile Include="Sales\Repository\PromotionalOfferDetailRepository.cs" />
+    <Compile Include="Sales\Repository\PromotionalOfferRepository.cs" />
+    <Compile Include="Sales\Repository\RegionRepository.cs" />
+    <Compile Include="Sales\Repository\ReportInvoiceRepository.cs" />
+    <Compile Include="Sales\Repository\RetailerRepository.cs" />
+    <Compile Include="Sales\Repository\RoutePlanDetailRepository.cs" />
+    <Compile Include="Sales\Repository\RoutePlanRepository.cs" />
+    <Compile Include="Sales\Repository\RouteSetupDetailRepository.cs" />
+    <Compile Include="Sales\Repository\RouteSetupRepository.cs" />
+    <Compile Include="Sales\Repository\RptSalesTargetRepository.cs" />
+    <Compile Include="Sales\Repository\SalesDiscountSettingRepository.cs" />
+    <Compile Include="Sales\Repository\SalesIncentiveSettingsRepository.cs" />
+    <Compile Include="Sales\Repository\SalesOrderApprovalRepository.cs" />
+    <Compile Include="Sales\Repository\SalesOrderDetailRepository.cs" />
+    <Compile Include="Sales\Repository\SalesOrderRepository.cs" />
+    <Compile Include="Sales\Repository\SalesReplacementDetailRepository.cs" />
+    <Compile Include="Sales\Repository\SalesReplacementRepository.cs" />
+    <Compile Include="Sales\Repository\SalesReturnDetailRepository.cs" />
+    <Compile Include="Sales\Repository\SalesReturnRepository.cs" />
+    <Compile Include="Sales\Repository\SalesTargetDetailRepository.cs" />
+    <Compile Include="Sales\Repository\SalesTargetRepository.cs" />
+    <Compile Include="Sales\Repository\SlsProductReceiveDetailRepository.cs" />
+    <Compile Include="Sales\Repository\SlsProductReceiveRepository.cs" />
+    <Compile Include="Sales\Repository\StoreOpeningRepository.cs" />
+    <Compile Include="Sales\Repository\ThanaRepository.cs" />
+    <Compile Include="Sales\Repository\TransferDetailRepository.cs" />
+    <Compile Include="Sales\Repository\TransferRepository.cs" />
+    <Compile Include="Sales\Repository\UnitOfMeasurementRepository.cs" />
+    <Compile Include="Security\Repository\SecDashboardPermissionRepository.cs" />
+    <Compile Include="Security\Repository\SecModuleRepository.cs" />
+    <Compile Include="Security\Repository\SecResourceRepository.cs" />
+    <Compile Include="Security\Repository\SecRolePermissionRepository.cs" />
+    <Compile Include="Security\Repository\SecRoleRepository.cs" />
+    <Compile Include="Security\Repository\SecCompanyUserRepository.cs" />
+    <Compile Include="Security\Repository\SecUserRepository.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ERPOptima.Lib\ERPOptima.Lib.csproj">
+      <Project>{44d853cd-0e35-45ee-be19-af4b6c5e9c12}</Project>
+      <Name>ERPOptima.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ERPOptima.Model\ERPOptima.Model.csproj">
+      <Project>{cd66447c-203e-4527-8971-36d1176b19ba}</Project>
+      <Name>ERPOptima.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

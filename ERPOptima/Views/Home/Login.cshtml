@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<script src="~/Scripts/Security/loginController.js"></script>
+<div ng-controller="LoginController" >
+
+    <form ng-submit="checkLogin()">
+        <div class="body bg-gray" >
+            <div class=" form-group">
+                <input type="text" class="form-control" ng-model="form.LoginName" placeholder="User ID" autofocus="autofocus" />
+        </div>
+            <div class="form-group">
+                <input type="password" class="form-control" ng-model="form.Password" placeholder="Password" />
+            </div>
+            @*<div class="form-group">
+                <input type="checkbox" name="remember_me" /> Remember me 
+            </div>*@
+        </div>
+        <div class="footer">
+            <button ng-click="checkLogin" class="btn bg-olive btn-block">Sign In</button>
+        </div>
+    </form>
+</div>

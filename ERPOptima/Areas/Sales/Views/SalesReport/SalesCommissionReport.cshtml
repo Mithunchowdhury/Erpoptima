@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Sales Commission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content-header">
+    <h2 class="section-title">Sales Commission Report</h2>
+</section>
+
+<div class="row content" ng-controller="SalesCommissionReportController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                @*<i class="fa fa-search"></i>
+                    <h3 class="box-title"> Search</h3>*@
+            </div>
+
+
+            @using (Html.BeginForm("GetSalesCommissionReport", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">  
+                                
+                    <div class="row">
+                       
+                            <div class="form-group col-sm-6">
+                                <label>Date From</label><span style="color:red">*</span>
+                                <input type="text" class="form-control datetimepicker" ng-model="StartDate" name="StartDate" datetimepicker required>
+                            </div>
+
+                            <div class="form-group col-sm-6">
+                                <label>Date To</label><span style="color:red">*</span>
+                                <input type="text" class="form-control datetimepicker" ng-model="EndDate" name="EndDate" datetimepicker required>
+                            </div>
+                           
+                        </div>
+                    <br />
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Show</button>
+                        <button type="reset" class="btn btn-default" onclick="Reset()">Reset</button>
+                    </div>
+                </div>
+
+
+
+
+            }
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/SalesCommissionReportController.js")"></script>
+
+}

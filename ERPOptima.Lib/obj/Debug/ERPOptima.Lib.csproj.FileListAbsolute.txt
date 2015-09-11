@@ -1,0 +1,5 @@
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Lib\bin\Debug\ERPOptima.Lib.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Lib\bin\Debug\ERPOptima.Lib.pdb
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Lib\obj\Debug\ERPOptima.Lib.dll
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Lib\obj\Debug\ERPOptima.Lib.pdb
+D:\SCSL Collection\ErpOptima_MEP_Sales\Source\ERPOptima.Web\ERPOptima.Lib\obj\Debug\ERPOptima.Lib.csprojResolveAssemblyReference.cache

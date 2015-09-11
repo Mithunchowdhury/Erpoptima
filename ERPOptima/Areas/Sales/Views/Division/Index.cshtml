@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Division";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center section-title">Division</h2>
+<div ng-controller="business">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Division Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="Businesses">
+                    <div class="form-group">
+                        <label for="txtPrefix">Region<span style="color:red">*</span></label>
+                        <select id="CmbMoule" placeholder="Pick an Employee" ng-model="ModuleId" class="form-control input-sm" ng-change="ResourceInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in CompanyModuleIdNName" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="txtName">Code<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Business.Name" class="form-control" id="txtName" placeholder="" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtType">Name<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Business.Type" class="form-control" id="txtType" placeholder="Name">
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="Business.Remarks" class="form-control" id="txtRemarks" placeholder=""></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" ng-disabled="Businesses.$invalid" ng-click="Save()">Save</button>
+                        <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Division List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:25%">Region</th>
+                                <th style="width:15%">Code</th>
+                                <th style="width:35%">Name</th>
+                                <th style="width: 25%">Remarks</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList">
+                                    <td style="width:25%">{{resource.Name}}</td>
+                                    <td style="width:15%">{{resource.Name}}</td>
+                                    <td style="width:35%"></td>
+                                    <td style="width:25%"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>

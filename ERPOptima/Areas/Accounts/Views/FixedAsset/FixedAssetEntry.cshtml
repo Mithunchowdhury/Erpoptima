@@ -1,0 +1,227 @@
+﻿@{
+    ViewBag.Title = "FixedAssetEntry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Fixed Asset Entry</h2>
+<div ng-controller="FixedAssetEntry">
+    <section class="margin-top-10 col-sm-4 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Fixed Asset Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="fxdEntry">
+                    <div class="form-group">
+                        <label for="lblCode">Code<span style="color:red">*</span></label>
+                        @*<span style="color:red" data-ng-show="WebForm.txtCode.$dirty && Regions.txtCode.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="WebForm.txtCode.$dirty && WebForm.txtCode.$error.pattern">Invalid code.</span>
+                        <span style="color:red" data-ng-show="WebForm.txtCode.$dirty && WebForm.txtCode.$error.minlength">Minimum 2 characters required</span>*@
+                        <input type="text" ng-model="Code" class="form-control" id="lblCode" name="txtCode" maxlength="2" ng-minlength="2" placeholder="" data-ng-pattern="/^[a-zA-Z0-9]{2}$/" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblName">Fixed Asset Name<span style="color:red">*</span></label>
+                        <select id="Asset" placeholder="" ng-model="FxdAssetId" name="Asset" class="form-control" required>
+                            <option value=""></option>
+                            <option ng-repeat="data in FixedAssests" value="{{data.Id}}">{{data.Name}}</option>
+                        </select>                        
+                    </div>
+                    <div class="form-group">
+                        <label for="lblFxdName">Asset Name</label>
+                        <input type="text" ng-model="Name" class="form-control" id="lblFxdName" placeholder="" >
+                    </div>
+                    <div class="form-group">
+                        <label for="lblModel">Model<span style="color:red">*</span></label>
+                        <input type="text" ng-model="ModelOrBatchNo" class="form-control" id="lblModel" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblSrNo">Serial No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="SerialNo" class="form-control" id="lblSrNo" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cmbUnit">Unit</label>
+                        <select id="cmbUnit" placeholder="" ng-model="SlsUnitId" name="txtUnit" class="form-control" >
+                            <option value=" ">
+                            </option>
+                            <option ng-repeat="data in Units" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblQuantity">Quantity<span style="color:red">*</span></label>
+                        <input type="number" ng-model="Quantity" class="form-control" id="lblQuantity" placeholder="" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lblDepRate">Depreciation rate<span style="color:red">*</span></label>
+                        <input type="number" step="any" ng-model="DepreciationRate" class="form-control" id="lblDepRate" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblDepMethod">Depreciation method<span style="color:red">*</span></label>
+                        <select id="selDepMethod" placeholder="" ng-model="DepreciationMethod" name="selDepMethod" class="form-control" required>                            
+                            <option value="1">Reducing Method</option>
+                            <option  value="2">Straight Forward Method</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblacqcost">Purchase/acquisition cost<span style="color:red">*</span></label>
+                        <input type="number" step="any" ng-model="AcquisitionCost" class="form-control" id="lblacqcost" placeholder="" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lblLffTym">Life time<span style="color:red">*</span></label>
+                        <input type="number" ng-model="LifeTime" class="form-control" id="lblLffTym" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblManufacturer">Manufacturer<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Manufacturer" class="form-control" id="lblManufacturer" placeholder="" required>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="cmbSupplier">Supplier</label>
+                        <select id="cmbSupplier" placeholder="" ng-model="Supplier" name="txtSupplier" class=" form-control" ng-change="ResourceInfo()">
+                            <option value=""></option>
+                            <option ng-repeat="data in Employee" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="lblLocation">Location<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Location" class="form-control" id="lblLocation" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblAcqDate">Acquisition date</label>
+                        <input type="text" class="form-control dpkr " id="lblAcqDate" ng-model="Date" placeholder="" datetimepicker >
+                    </div>
+                    <div class="form-group">
+                        <label for="lblDepDate">Depreciation start date</label>
+                        <input type="text" class="form-control dpkr " id="lblDepDate" ng-model="DrepreciationStartDate" placeholder="" datetimepicker >
+                    </div>
+                    <div class="form-group">
+                        <label for="lblEndDate">Depreciation end date</label>
+                        <input type="text" class="form-control dpkr " id="lblEndDate" ng-model="DepresiationEndDate" placeholder="" datetimepicker >
+                    </div>
+                    <div class="form-group">
+                        <label for="lblWarStDate">Warranty expire date </label>
+                        <input type="text" class="form-control dpkr " id="lblWarStDate" ng-model="WarrantyExpreDate" placeholder="" datetimepicker >
+                    </div>
+                    <div class="form-group">
+                        <label for="lblDescription">Description</label>
+                        <textarea cols="20" rows="2" ng-model="Description" class="form-control" id="lblDescription" placeholder=""></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="lblRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="Remarks" class="form-control" id="lblRemarks" placeholder=""></textarea>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            Status <input type="checkbox" name="active" ng-model="Status" checked="checked" ng-checked="true">
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lblAttachment">Attachment</label>
+                        <input type="file" class="filestyle" onchange="angular.element(this).scope().selectFileforUpload(this.files)">
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+{
+    <button type="button" class="btn btn-success" ng-disabled="fxdEntry.$invalid" ng-click="Save(fxdEntry.$valid)">Save</button>
+}
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-8 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Asset List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:15%">Code</th>
+                                <th style="width:20%">Fixed Asset Name</th>
+                                <th style="width:20%">Asset Name</th>
+                                <th style="width:30%">Acquisition Date</th>
+                                <th style="width:30%">Quantity</th>
+                                <th style="width: 15%">Total Acquisition Cost</th>
+                                <th style="width:8%"></th>
+                                <!--<th style="width:8%"></th>-->
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="fixedAcquisition in FixedAcquisitions | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:15%">{{fixedAcquisition.Code}}</td>
+                                    <td style="width:20%">{{fixedAcquisition.fxdName}}</td>
+                                    <td style="width:20%">{{fixedAcquisition.Name}}</td>
+                                    <td style="width:30%">{{fixedAcquisition.Date|jsonDate}}</td>
+                                    <td style="width:15%">{{fixedAcquisition.Quantity}}</td>
+                                    <td style="width:15%">{{fixedAcquisition.TotalAcquisitionCost}}</td>                                   
+
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">                                            
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{fixedAcquisition.Id}}" ng-click="setFortEdit(fixedAcquisition)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="~/Scripts/Accounts/FixedAssetEntryController.js"></script>
+<script src="~/Scripts/blockUI.js"></script>

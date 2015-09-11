@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "AdvanceAdjustmentReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+
+    <h2 class="text-center  section-title">Advance Adjustment Report</h2><hr />
+</section>
+<div class="row content" ng-controller="AdvanceAdjustmentReportController">
+
+    <section class="margin-top-10 col-sm-6 col-sm-offset-3 col-xs-12">
+
+        <div class="box box-primary">
+
+
+            @using (Html.BeginForm("GetAnFAdvanceAdjustmentReport", "Advance", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search", target = "_blank" }))
+            {
+                <div class="box-body">
+
+                    <div class="form-group">
+                        <label for="CmbEmployee">Employee<span style="color:red">*</span></label>
+                        <select id="CmbEmployee" name="txtEmployee" placeholder="Pick a Name" ng-model="EmployeeId" class="selectUI" ui-select2 
+                               ng-change="EmployeeChange()" >
+                            <option value=""></option>
+                            <option ng-repeat="data in Employee" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    @*<div class="form-group">
+                        <label for="cmbRefNo">Advance Ref No :</label>
+                        <select class="selectUI" ui-select2 ng-model="" name="txtRefNo" id="cmbRefNo" data-placeholder="">
+                            <option value=""></option>
+                            <option ng-repeat="data in Invoice" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+                    </div>*@
+                    <div class="form-group">
+                        <label for="txtRef">Advance Ref No<span style="color:red">*</span></label>
+                        <select class="selectUI" data-placeholder="Pick a Ref No" data-ui-select2="AnFAdvanceId" id="AnFAdvanceId" name="AnFAdvanceId" ng-model="AnFAdvanceId">
+                            <option value=""></option>
+                            <option ng-repeat="advance in advances" value="{{advance.Id}}">{{advance.RefNo}}</option>
+                        </select>
+                    </div>
+
+
+                    <br />
+
+                    <div class="form-group text-center">
+                        @*<button type="submit" class="btn btn-primary">Show</button>*@
+                        <button type="submit" class="btn btn-success" ng-disabled="Search.$invalid" @*ng-click="Save(WebForm.$valid)"*@>Show</button>
+
+                        <button type="reset" class="btn btn-default" ng-click="type=0">Reset</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/Report_AdvanceAdjustmentController.js")"></script>
+
+}
+

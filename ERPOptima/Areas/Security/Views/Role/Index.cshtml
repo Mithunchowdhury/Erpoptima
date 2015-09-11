@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Role</h2>
+<div ng-controller="role">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">Role Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="Roles">
+                    <div class="form-group">
+                        <label for="txtName">Role </label><label style="color:red">*</label>
+                        <span style="color:red" data-ng-show="Roles.txtName.$dirty && Roles.txtName.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="Roles.txtName.$dirty && Roles.txtName.$error.pattern">Invalid role name.</span>
+                        <input type="text" ng-model="Role.Name" class="form-control" id="txtName" name="txtName" placeholder="Role Name..." data-ng-pattern="/^[a-zA-Z0-9\s]{5,32}$/" required>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="active" ng-model="Role.Status"> Status
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="Roles.$invalid" ng-click="Save(Roles.$valid)">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="button" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="margin-top-10 col-sm-7  col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-table"></i>
+
+                <h3 class="box-title">Role Table</h3>
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table table-responsive">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'S.L'" sortable="'Name'">{{$index+1}}</td>
+                                <td class="rowTd" data-title="'Role Name'" sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Status'" sortable="'Status'"><span ng-class="{'badge bg-color': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit($index)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+                                @*<td class="text-left" data-title="'Action'">
+                                        <a data-container="body" data-original-title="Edit" href="#" data-toggle="tooltip" class="btn btn-xs btn-default add-tooltip" ng-click="setFortEdit($index)"><i class="fa fa-pencil"></i></a>
+                                        <a data-container="body" data-original-title="Delete" href="#" data-toggle="tooltip" class="btn btn-xs btn-danger add-tooltip"><i class="fa fa-times"></i></a>
+                                    </td>*@
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Security/Role.js")"></script>
+
+}

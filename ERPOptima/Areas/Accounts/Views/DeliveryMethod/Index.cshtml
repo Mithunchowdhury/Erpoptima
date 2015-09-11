@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Delivery Method";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center">Delivery Method</h2>
+<div ng-controller="deliveryMethod">
+    <section class="margin-top-10 col-xs-5">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Delivery Method Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="DeliveryMethods">
+                    <div class="form-group">
+                        <label for="txtName">Name<span style="color:red">*</span></label>
+                        <input type="text" ng-model="DeliveryMethod.Name" class="form-control" id="txtName" placeholder="Name" required>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="active" ng-model="DeliveryMethod.Status"> Status
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="DeliveryMethods.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-xs-7">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Delivery Method Table</h3>
+            </div>
+            <div class="box-body">
+                <div>
+                    <table ng-table="tableParams" class="table">
+                        <tbody ng-repeat="data in $data">
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" data-sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Status'" data-sortable="'Status'"><span ng-class="{'badge bg-green': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/DeliveryMethod.js")"></script>
+}

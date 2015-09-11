@@ -1,0 +1,211 @@
+﻿@{
+    ViewBag.Title = "Product Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Product Transfer</h2>
+<div ng-controller="TransferController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Product Transfer Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="Transfer">
+                    
+                    <div class="form-group">
+                        <label for="txtRefNo">Ref. No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="RefNo" class="form-control" id="txtRefNo" placeholder="" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="selFrom">From Office<span style="color:red">*</span></label>
+                        <select id="selFrom" placeholder="Pick a from office" ng-model="Transfer.From" class="selectUI" ng-change="GetFromStore()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in FromOffices" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selTo">To Office<span style="color:red">*</span></label>
+                        <select id="selTo" placeholder="Pick a to office" ng-model="Transfer.To" class="selectUI" ng-change="GetToStore()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in ToOffices" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dtpDate">Date</label><label style="color:red">*</label>
+                        <input type="text" ng-model="Transfer.Date" class="form-control datetimepicker" id="dtpDate" datetimepicker required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtVehicleNo">Vehicle No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Transfer.VehicleNo" class="form-control" id="txtVehicleNo" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtChallanNo">Challan No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Transfer.ChallenNo" class="form-control" id="txtChallanNo" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtGatePassNo">Gate Pass No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Transfer.GatepassNo" class="form-control" id="txtGatePassNo" placeholder="" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="Transfer.Remarks" class="form-control" id="txtRemarks"></textarea>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Transfer List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:15%">Ref. No</th>
+                                <th style="width:15%">From</th>
+                                <th style="width:15%">To</th>
+                                <th style="width:15%">Date</th>
+                                <th style="width:15%">Vehicle No</th>
+                                <th style="width:10%">Remarks</th>
+                                <th style="width: 8%; text-wrap: normal">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="transfer in Transfers | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:5%">{{$index+1}}</td>
+                                    <td style="width:15%">{{transfer.RefNo}}</td>
+                                    <td style="width:15%">{{transfer.From}}</td>
+                                    <td style="width:15%">{{transfer.To}}</td>
+                                    <td style="width:15%">{{transfer.Date}}</td>
+                                    <td style="width:15%">{{transfer.VehicleNo}}</td>
+                                    <td style="width:10%">{{transfer.Remarks}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">
+                                            <button class="btn btn-success btn-xs" ng-click="setFortEdit(transfer);GetTransferDetailByTransferId()"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Transfer Detail
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:35%">Product</th>
+                                <th style="width:30%">Quantity</th>
+                                <th style="width:30%">Unit</th>
+                                <th style="width:40%; text-wrap: normal">
+                                    Action
+                                    <button ng-if="TransferDetails.length==0" class="btn btn-success btn-xs" ng-click="AddNewRow()"><i class="fa fa-plus-square"></i>Add</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="transferdetail in TransferDetails">
+                                <td style="width:10%">{{$index+1}}</td>
+                                <td class="col-sm-2">
+                                    <div>
+                                        <select class="form-control" ng-model="transferdetail.SlsProductId" ng-options='data.Id as (data.Code +" ("+ data.Name +")") for data in Products' ng-change="GetUnitsByProductId(transferdetail.SlsProductId)"></select>
+                                    </div>
+                                </td>
+                                <td class="col-sm-2">
+                                    <div><input class="form-control right-align" type="number" ng-model="transferdetail.Quantity" /></div>
+                                </td>
+                                <td class="col-sm-2">
+                                    <div>
+                                        <select class="form-control" ng-model="transferdetail.SlsUnitId" ng-options="data.SlsUnitId as data.Unit for data in Units[$index]"></select>
+                                    </div>
+                                </td>
+                                <td style="width:40%">
+                                    <button class="btn btn-success btn-xs" ng-click="AddNewRow()"><i class="fa fa-plus-square"></i>Add</button>
+                                    <button ng-if="TransferDetails.length>0" class="btn btn-success btn-xs" ng-click="DeleteDetail($index,transferdetail.Id)"><i class="fa fa-minus-square"></i>Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="text-center">
+                    @if (add || edit)
+                    {
+                        <button type="submit" class="btn btn-success" ng-disabled="Transfer.$invalid" ng-click="Save()">Save</button>
+                    }
+                    @if (delete)
+                    {
+                        <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                    }
+                    <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/TransferController.js")"></script>
+
+}

@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Sales Replacement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Sales Replacement</h2>
+<div ng-controller="SalesReplacement">
+    <section class="col-sm-6 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class=" box-header" style="cursor: move;">
+                <i class="fa fa-refresh"></i>
+                <h3 class="box-title">
+                    Sales Replacement Information
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <form role="form" name="SalesReplacements">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="txtRefNo">Ref No<span style="color:red">*</span></label>
+                            <input type="text" ng-model="SalesReplacement.RefNo" class="form-control" id="txtName" placeholder="Reference Number" required readonly>
+                        </div>
+                        <div class="form-group">
+                                <label for="txtName">Date</label>
+                            <input type="text" class="form-control" id="txtDate" ng-model="SalesReplacement.Date" placeholder="" datetimepicker>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for=" txtprefix" class="col-sm-12 col-xs-12">Sales Order<span style="color:red">*</span></label>
+                                <select id="CmbSalesOrder" placeholder="Pick an Sales Order" ng-model="SalesOrderObj" class="col-sm-12 col-xs-12" ng-change="GetBySalesOrderId()" ui-select2 required>
+                                    <option value="0"></option>
+                                    <option ng-repeat="data in SalesOrders" value={{data}}>{{data.RefNo}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="box box-primary">
+                            <div class="box-header" style="cursor: move;">
+                                <i class="fa fa-table"></i>
+                                <h3 class="box-title">
+                                    Product List
+                                </h3>
+                                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchCategoryList" placeholder="Search" />
+                            </div>
+                            <div class="box-body no-padding">
+                                <div class="panel panel-default">
+                                    <table class="table  table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th style="width:5%">SL</th>
+                                                <th style="width:20%">Product</th>
+                                                <th style="width:20%">Quantity</th>
+                                                <th style="width:15%">Unit</th>
+                                                <th style="width:20%">Adjusted Amount</th>
+                                                <th style="width:20%">Reason</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="div-secondary-table-content">
+                                        <table class="table  table-striped">
+                                            <tbody>
+                                                <tr ng-repeat="category in SalesReplacement.SlsReplacementDetailVMs | filter:SearchCategoryList">
+                                                    <td><input type="hidden" ng-model="category.Id" readonly></td>
+                                                    <td style="width:5%">{{$index+1}}</td>
+                                                    <td style="width:20%">{{category.SlsProductName}}</td>
+                                                    <td style="width:20%">{{category.Quantity}}</td>
+                                                    <td style="width:15%">{{category.SlsUnitName}}</td>
+
+                                                    <td style="width:20%">
+                                                        <input style="width:80%" type="number" class="right-align" ng-model="category.AdjustedAmount" />
+                                                    </td>
+                                                    <td style="width:20%">
+                                                        <input style="width:80%" type="text" ng-model="category.Reason" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" ng-model="category.SlsUnitId" readonly>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div>
+                                </div>
+                                <div ng-class="{overlay:ShowLoading}"></div>
+                                <div class="{loading-img:ShowLoading}"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtRemarks">Remarks</label>
+                            <textarea cols="20" rows="2" ng-model="SalesReplacement.Remarks" class="form-control" id="txtRemarks" placeholder=""></textarea>
+                        </div>
+                    </div><!-- /.box-body -->
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="SalesOrders.$invalid" ng-click="Save()">Save</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                    <br />
+                </form>
+            </div><!-- /.box-body-->
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="col-sm-6 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Sales Replacement List
+                </h3>
+                <input type="text" style="margin:8px" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:15%">SL</th>
+                                <th style="width:40%">RefNo</th>
+                                <th style="width:30%">Remarks</th>
+                                <th style="width:13%">Action</th>
+                                <th style="width:2%"></th> 
+                               
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:15%">{{$index+1}}</td>
+                                    <td style="width:40%">{{resource.RefNo}}</td>
+                                    <td style="width:30%">{{resource.Remarks}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:13%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                @*<th></th>*@
+                                @*<th class="bg-green">Total Stock: 10000</th>*@
+                                @*<th class="bg-light-blue">Credit:{{"  " +TotalCredit}}</th>*@
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div><!-- /.box-body-->
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/SalesReplacementController.js")"></script>
+
+}

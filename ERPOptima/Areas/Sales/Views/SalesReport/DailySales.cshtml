@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "DailySales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/Sales/Report_DailySalesController.js"></script>
+
+<section class="content-header ">
+    <h2 class="text-center section-title">DailySales</h2>
+</section>
+
+<div class="row content" ng-controller="DailySalesReport">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+
+            @using (Html.BeginForm("GetDailySalesReport", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12">
+                                Start Date<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " id="txtStartDate" name="StartDate" ng-model="StartDate" required placeholder=""
+                                       datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12">
+                                End Date<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " id="txtEndDate" name="EndDate" ng-model="EndDate" placeholder=""
+                                       required datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12">Office:</label>
+                            <select class="col-sm-8  col-xs-12" ui-select2 ng-model="OfficeId" name="OfficeId" data-placeholder="Pick a Office">
+                                <option value=""></option>
+                                <option ng-repeat="data in Office" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12">Category:<span style="color:red">*</span></label>
+                            <select class="col-sm-8  col-xs-12" ui-select2 ng-model="CategoryId" name="CategoryId" data-placeholder="Pick a Category" ng-change="GetSubCategoryByCategoryId()" required>
+                                <option value=""></option>
+                                <option ng-repeat="data in Category" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12">Sub Category:</label>
+                            <select class="col-sm-8  col-xs-12" ui-select2 ng-model="SubCategoryId" name="SubCategoryId" data-placeholder="Pick a Sub Category">
+                                <option value=""></option>
+                                <option ng-repeat="data in SubCategory" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary">Show</button>
+                        <button type="reset" id="SearchButton" ng-click="Reset()" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>

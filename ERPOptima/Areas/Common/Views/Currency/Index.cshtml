@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Currency";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center">Currency Information</h2>
+<div ng-controller="currency">
+    <div class="margin-top-10 col-md-5 col-sm-6">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Currency Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="Currencies">
+
+                    <div class="form-group">
+                        <label for="txtName">Name<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Currency.Name" class="form-control" id="txtName" placeholder="Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtType">Short Name</label>
+                        <input type="text" ng-model="Currency.ShortName" class="form-control" id="txtType" placeholder="Type">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-xs-12" for="cmbCountry">Country<span style="color:red">*</span></label>
+                            <select id="cmbCountry" data-placeholder="Pick a Country" class="col-xs-12" ng-model="CountryId" data-ui-select2 required>
+                                <option class=""></option>
+                                <option ng-repeat="data in CmnCountries" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtType">Exchange Rate</label>
+                        <input type="number" ng-model="Currency.ExchangeRate" class="form-control" id="txtType" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtType">Symbol</label>
+                        <input type="text" ng-model="Currency.Symbol" class="form-control" id="txtType" placeholder="Symbol">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="active" ng-model="Currency.Status"> Status
+                        </label>
+                    </div>
+                    <div class="box-footer text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="Currencies.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="margin-top-10 col-md-7 col-sm-6">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Currency Table</h3>
+            </div>
+            <div class="box-body">
+                <div>
+                    <table ng-table="tableParams" class="table">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" data-sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Short Name'" data-sortable="'ShortName'">{{data.ShortName}}</td>
+                                <td class="rowTd" data-title="'Exchange Rate'" data-sortable="'ExchangeRate'">{{data.ExchangeRate}}</td>
+                                <td class="rowTd" data-title="'Symbol'" data-sortable="'Symbol'">{{data.Symbol}}</td>
+                                <td class="rowTd" data-title="'Status'" data-sortable="'Status'"><span ng-class="{'badge bg-green': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+
+                                <td class="rowTd text-center" data-title="'Action'">
+                                    @if (edit)
+                                    {
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                    }
+                                    @if (delete)
+                                    {
+                                        <button class="btn btn-danger btn-xs" id="editRowBtn{{data.Id}}" ng-click="Delete(data.Id)"><i class="glyphicon glyphicon-remove"></i> Delete</button>
+                                    }
+                                </td>
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:-45px !important">
+                        <button class="btn btn-default" ng-click="previous()">Previous</button>
+                        <button class="btn btn-default" ng-click="next()">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Common/Currency.js")"></script>
+
+}

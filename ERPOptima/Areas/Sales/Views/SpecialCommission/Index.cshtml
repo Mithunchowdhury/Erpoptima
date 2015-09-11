@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "Special Commission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Special Commission</h2>
+<div ng-controller="business">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Special Commission Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="Businesses">
+                    <div class="form-group">
+                        <label for="txtPrefix">From<span style="color:red">*</span></label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select id="CmbMoule" placeholder="Pick a Year" ng-model="ModuleId" class="form-control input-sm" ng-change="ResourceInfo()" ui-select2>
+                                    <option value="">2015</option>
+                                    <option ng-repeat="data in CompanyModuleIdNName" value={{data.Id}}>{{data.Name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="CmbMoule" placeholder="Pick a Month" ng-model="ModuleId" class="form-control input-sm" ng-change="ResourceInfo()" ui-select2>
+                                    <option value="">January</option>
+                                    <option ng-repeat="data in CompanyModuleIdNName" value={{data.Id}}>{{data.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPrefix">To<span style="color:red">*</span></label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select id="CmbMoule" placeholder="Pick a Year" ng-model="ModuleId" class="form-control input-sm" ng-change="ResourceInfo()" ui-select2>
+                                    <option value="">2015</option>
+                                    <option ng-repeat="data in CompanyModuleIdNName" value={{data.Id}}>{{data.Name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="CmbMoule" placeholder="Pick a Month" ng-model="ModuleId" class="form-control input-sm" ng-change="ResourceInfo()" ui-select2>
+                                    <option value="">June</option>
+                                    <option ng-repeat="data in CompanyModuleIdNName" value={{data.Id}}>{{data.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPrefix">Distributor<span style="color:red">*</span></label>
+                        <select id="CmbMoule" placeholder="Pick a Distributor" ng-model="ModuleId" class="form-control input-sm" ng-change="ResourceInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in CompanyModuleIdNName" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Net Amount<span style="color:red">*</span></label>
+                        <input type="number" ng-model="Business.Name" class="form-control" id="txtName" placeholder="" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Percentage(%)<span style="color:red">*</span></label>
+                        <input type="number" ng-model="Business.Name" class="form-control" id="txtName" placeholder="" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtName">Amount<span style="color:red">*</span></label>
+                        <input type="number" ng-model="Business.Name" class="form-control" id="txtName" placeholder="" required="required">
+
+                        <div class="text-center">
+                            @if (add || edit)
+                            {
+                            <button type="submit" class="btn btn-success" ng-disabled="Businesses.$invalid" ng-click="Save()">Save</button>
+                            }
+                            @if (delete)
+                            {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                            }
+                            <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+            min-width: 620px !important;
+            overflow-x: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Special Commission List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:13%">From</th>
+                                <th style="width:12%">To</th>
+                                <th style="width: 15%">Distributor</th>
+                                <th style="width: 15%">Net Amount</th>
+                                <th style="width: 15%">Percentage(%)</th>
+                                <th style="width: 15%">Amount</th>
+                                <th style="width: 10%; text-wrap: normal">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList">
+                                    <td style="width:10%">{{resource.Name}}</td>
+                                    <td style="width:15%">{{resource.Name}}</td>
+                                    <td style="width:20%"></td>
+                                    <td style="width:15%">{{resource.Name}}</td>
+                                    <td style="width:15%">{{resource.Name}}</td>
+                                    <td style="width:15%"></td>
+                                    @if (edit || delete)
+                                    {
+                                    <td style="width:8%">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>

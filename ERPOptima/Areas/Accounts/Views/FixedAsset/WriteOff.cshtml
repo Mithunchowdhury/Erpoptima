@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "WriteOff";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Write Off</h2>
+<div ng-controller="WriteOffController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Fixed Assets Write off</h3>
+            </div>
+            <div class="box-body">
+                <form name="WebForm">
+
+                    <div class="form-group">
+                        <label for="txtRefNo">Ref No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="RefNo" class="form-control" id="txtRefNo" name="txtRefNo" placeholder="" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dtpDate">Date of Write off</label><label style="color:red">*</label>
+                        <input type="text" ng-model="Transfer.Date" class="form-control datetimepicker" id="dtpDate" name="txtDate" datetimepicker required>
+                    </div>
+                    <div class="form-group">
+                        <label for="selAsset">Asset<span style="color:red">*</span></label>
+                        <select id="selAsset" placeholder="Pick a from office" ng-model="Transfer.From" name="txtAsset" class="form-control" ng-change="GetFromStore()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in FromOffices" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtWriteOff">Write Off Value<span style="color:red">*</span></label>
+                        <input type="number" ng-model="Transfer.VehicleNo" class="form-control" id="txtWriteOff" name="txtWriteOff" placeholder="" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="Transfer.Remarks" class="form-control" id="txtRemarks" name="txtRemarks"></textarea>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                            {
+                                <button type="submit" class="btn btn-success" ng-disabled="WebForm.$invalid" ng-click="Save()">Save</button>
+                            }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Write off List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:15%">Ref. No</th>
+                                <th style="width:15%">Date</th>
+                                <th style="width:15%">Asset</th>
+                                <th style="width:15%">Write off Value</th>
+                                <th style="width:10%">Remarks</th>
+                                <th style="width: 8%; text-wrap: normal">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="transfer in Transfers | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:5%">{{$index+1}}</td>
+                                    <td style="width:15%">{{transfer.RefNo}}</td>
+                                    <td style="width:15%">{{transfer.Date}}</td>
+                                    <td style="width:15%">{{transfer.From}}</td>
+                                    <td style="width:15%">{{transfer.To}}</td>
+                                    <td style="width:10%">{{transfer.Remarks}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">
+                                            <button class="btn btn-success btn-xs" ng-click="setFortEdit(transfer);GetTransferDetailByTransferId()"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="~/Scripts/Accounts/FixedAssetWriteOffController.js"></script>

@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "Receipt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/Accounts/VoucherApproval.js"></script>
+<h2 class="text-center">Receive Voucher Approval</h2>
+<div ng-controller="VoucherApprovalController">
+    <section class="margin-top-10 col-sm-4 col-xs-12">
+
+        <div class="box box-info">
+            <div class="box-header">
+                <label> &nbsp; Voucher Type : </label>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-3 col-xs-12">Business</label>
+                        <select class="col-sm-9 col-xs-12" ui-select2 ng-model="Voucher.CmnBusinessesId" ng-change="ProjectInfo()" required>
+                            <option ng-repeat="data in CmnBusinesses" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-sm-3 col-xs-12">Projects</label>
+                        <select class="col-sm-9 col-xs-12" ui-select2 ng-model="Voucher.CmnProjectId" required>
+                            <option ng-repeat="data in CmnProjectIds" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-xs-6">
+                        <label>Date From</label>
+                        <input type="text" class="form-control datetimepicker" ng-model="Voucher.FromDate" name="FromDate" datetimepicker required>
+                    </div>
+
+                    <div class="form-group col-sm-6 col-xs-6">
+                        <label>Date To</label>
+                        <input type="text" class="form-control" ng-model="Voucher.ToDate" name="ToDate" datetimepicker required>
+                    </div>
+                </div>
+                @*<div class="row">*@
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success col-sm-12 col-xs-12" ng-disabled="ButtonDisabled" ng-click="loadData()">Load</button>
+                    </div>
+                @*</div>*@
+                <br />
+                <br />
+                
+                <div class="row">
+                    <div class=" form-group col-sm-12 div-table-content">
+                        <table class="table table-bordered table-striped">                            
+                            <thead>
+                                <tr>
+                                    <th width="60%">Voucher No</th>
+                                    <th width="25%"></th>
+                                    <th width="15%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in VoucherList">
+                                    <td width="60%">{{data.VoucherNumber}}</td>
+                                    <td width="25%"><input type="button" class="btn btn-instagram btn-xs" ng-click="GetVoucherDetails(data)" value="Details" /></td>
+                                    <td width="15%"><input type="button" class="btn btn-success btn-xs" ng-click="Load(data)" value="Edit" /></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-sm-8 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <label class="col-sm-2">Voucher No</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" ng-model="VoucherNo" name="VoucherNo">
+                    </div>
+                    <label class="col-sm-2">Voucher Date</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " ng-model="Date" name="ToDate" datetimepicker required>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class=" form-group col-sm-12 div-table-content1">
+                        <table id="gridTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="36%">Particulars</th>
+                                    <th width="22%">Project</th>
+                                    <th width="18%">Cost Center</th>
+                                    <th width="17%">Amount in Tk(Dr)</th>
+                                    <th width="17%">Amount in Tk(Cr)</th>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="data in VoucherDetail">
+                                <td width="36%"> {{ data.AnFChartOfAcountName }} </td>
+                                <td width="22%">{{ data.CmnProjectName }}</td>
+                                <td width="18%">{{ data.AnFCostCenterName }} </td>
+                                <td width="17%" class="text-right">{{ data.Debit }}</td>
+                                <td width="17%" class="text-right">{{ data.Credit }}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label>Comments</label>
+                    <textarea class="form-control" rows="2" ng-model="PreviouComments" readonly></textarea>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" rows="1" ng-model="Voucher.Naration"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success" ng-disabled="ButtonDisabled" ng-click="SaveApproval()">Check</button>
+                    <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Reject()">Reject</button>
+                    <button type="submit" class="btn btn-instagram" ng-disabled="ButtonDisabled" ng-click="Comments()">Comments</button>
+                    @*<button type="submit" class="btn btn-default" ng-disabled="ButtonDisabled" ng-click="Load()">Close</button>*@
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<style type="text/css">
+    table {
+        table-layout: fixed;
+    }
+
+        table tr td {
+            padding: 1px !important;
+        }
+
+    .div-table-content {
+        height: 260px;
+        overflow-y: auto;
+    }
+
+    .div-table-content1 {
+        height: 230px;
+        overflow-y: auto;
+    }
+</style>

@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "Corporate Client";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+<h2 class="text-center section-title">Corporate Client</h2>
+<div ng-controller="CorporateClient">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Client Entry</h3>
+            </div>
+
+            <div class="box-body">
+                <form name="CorporateClients">
+                    <div class="form-group">
+
+                        <label for="txtPrefix">Region<span style="color:red">*</span></label>
+                        <select id="CmbMoule" placeholder="Pick an Region" ng-model="RegionId" name="RegionId" class="selectUI" ng-change="OfficeInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in Region" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label for="txtPrefix">Office<span style="color:red">*</span></label>
+                        <select id="CmbMoule" placeholder="Pick an Office" ng-model="OfficeId" name="OfficeId" class="selectUI" ng-change="DistrictInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in Office" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label for="txtPrefix">District<span style="color:red">*</span></label>
+                        <select id="CmbMoule" placeholder="Pick an District" ng-model="DistrictId" name="DistrictId" class="selectUI" ng-change="CorporateClientInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in District" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtType">Name<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="CorporateClients.nmName.$dirty && CorporateClients.nmName.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="CorporateClients.nmName.$dirty && CorporateClients.nmName.$error.pattern">Invalid Name</span>
+                        <span style="color:red" data-ng-show="CorporateClients.nmName.$dirty && CorporateClients.nmName.$error.unique">Already Exists</span>
+                        <input type="text" ng-model="CorporateClient.Name" class="form-control" id="txtName" name="nmName" data-ng-pattern="/^[a-zA-Z0-9\s]{1,100}$/" 
+                               maxlength="32" ng-unique required placeholder="Name">
+                    </div>
+                    <div class="form-group">
+
+                        <label for="txtPrefix">Type<span style="color:red">*</span></label>
+                        <select id="CmbMoule" placeholder="Pick an Type" ng-model="CorporateTypeId" name="CorporateTypeId" class="selectUI" ng-change="CorporateTypeInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in CorporateType" value={{data.Id}}>{{data.Type}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label for="txtCode">Code<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="CorporateClients.nmCode.$dirty && CorporateClients.nmCode.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="CorporateClients.nmCode.$dirty && CorporateClients.nmCode.$error.pattern">Invalid code</span>
+                        <span style="color:red" data-ng-show="CorporateClients.nmCode.$dirty && CorporateClients.nmCode.$error.unique">Already Exists</span>
+                        <input type="text" ng-model="CorporateClient.Code" class="form-control" id="txtCode" name="nmCode" maxlength="5" ng-minlength="5" 
+                               data-ng-pattern="/^[a-zA-Z0-9]{5,5}$/" cc-unique placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Business type<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="CorporateClients.txtBusinessType.$dirty && CorporateClients.txtBusinessType.$error.required">Required</span>
+                        <input type="text" ng-model="CorporateClient.BusinessType" class="form-control" id="txtBusinessType" name="txtBusinessType" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Email</label>
+                        <input type="text" ng-model="CorporateClient.Email" class="form-control" id="txtEmail" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Phone</label>
+                        <input type="text" ng-model="CorporateClient.Phone" class="form-control" id="txtPhone" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Contact Person</label>
+                        <input type="text" ng-model="CorporateClient.ContactPerson" class="form-control" id="txtContactPerson" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtName">Contact Person Email</label>
+                        <input type="text" ng-model="CorporateClient.ContactPersonEmail" class="form-control" id="txtContactPersonEmail" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Contact Person Phone</label>
+                        <input type="text" ng-model="CorporateClient.ContactPersonPhone" class="form-control" id="txtContactPersonPhone" placeholder="">
+                    </div>
+                    <div class="form-group">
+
+                        <label for="txtPrefix">Executive Name</label>
+                        <select id="CmbMoule" placeholder="Pick an Employee" ng-model="EmployeeId" class="selectUI" ng-change="ResourceInfo()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in Employee" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Default Credit Limit<span style="color:red">*</span></label>
+                        <input type="number" ng-model="CorporateClient.DefaultCreditLimit" class="form-control right-align" id="txtName" placeholder="" required>
+                    </div>
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="CorporateClients.$invalid" ng-click="Save()">Save</button>
+
+
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Corporate Client List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">Code</th>
+                                <th style="width:20%">Name</th>
+                                <th style="width:10%">Phone</th>
+                                <th style="width: 25%">Email</th>
+                                <th style="width: 23%">Contact Person</th>
+                                <th style="width:10%">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:10%">{{resource.Code}}</td>
+                                    <td style="width:20%">{{resource.Name}}</td>
+                                    <td style="width:10%">{{resource.Phone}}</td>
+                                    <td style="width:25%">{{resource.Email}}</td>
+                                    <td style="width:23%">{{resource.ContactPerson}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/CorporateClient.js")"></script>
+
+}

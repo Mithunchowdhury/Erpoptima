@@ -1,0 +1,519 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<h1>From Voucher Controller</h1>
+
+<div style="display: none;" class="preloader">
+    <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader">
+</div>
+<div id="ajax-content">
+    <div class="row">
+        <div id="breadcrumb" class="col-md-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Tables</a></li>
+                <li><a href="#">Data Tables</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box ui-draggable ui-droppable">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-linux"></i>
+                        <span>LinuxJournal Readers' Choice Awards 2013 Linux distro</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content no-padding table-responsive">
+                    <div id="datatable-2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="box-content">
+                            <div class="col-sm-6">
+                                <div id="datatable-2_filter" class="dataTables_filter">
+                                    <label>
+                                        <input placeholder="Search" aria-controls="datatable-2" type="text">
+
+                                    </label>
+                                </div>
+                            </div><div class="col-sm-6 text-right"><div class="dataTables_length" id="datatable-2_length"><label><div id="s2id_autogen9" class="select2-container"><a href="javascript:void(0)" onclick="return false;" class="select2-choice" tabindex="-1">   <span class="select2-chosen">10</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow"><b></b></span></a><input id="s2id_autogen10" class="select2-focusser select2-offscreen" type="text"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" type="text">   </div>   <ul class="select2-results">   </ul></div></div><select class="select2-offscreen" tabindex="-1" aria-controls="datatable-2" size="1" name="datatable-2_length"><option selected="selected" value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div></div><div class="clearfix"></div>
+                        </div><table aria-describedby="datatable-2_info" class="table table-bordered table-striped table-hover table-heading table-datatable dataTable" id="datatable-2">
+                            <thead>
+                                <tr role="row"><th aria-label=": activate to sort column descending" aria-sort="ascending" colspan="1" rowspan="1" aria-controls="datatable-2" tabindex="0" role="columnheader" class="sorting_asc"><label><input name="search_rate" value="Search rate" class="search_init" type="text"></label></th><th aria-label=": activate to sort column ascending" colspan="1" rowspan="1" aria-controls="datatable-2" tabindex="0" role="columnheader" class="sorting"><label><input name="search_name" value="Search distro" class="search_init" type="text"></label></th><th aria-label=": activate to sort column ascending" colspan="1" rowspan="1" aria-controls="datatable-2" tabindex="0" role="columnheader" class="sorting"><label><input name="search_votes" value="Search votes" class="search_init" type="text"></label></th><th aria-label=": activate to sort column ascending" colspan="1" rowspan="1" aria-controls="datatable-2" tabindex="0" role="columnheader" class="sorting"><label><input name="search_homepage" value="Search homepage" class="search_init" type="text"></label></th><th aria-label=": activate to sort column ascending" colspan="1" rowspan="1" aria-controls="datatable-2" tabindex="0" role="columnheader" class="sorting"><label><input name="search_version" value="Search versions" class="search_init" type="text"></label></th></tr>
+                            </thead>
+
+                            <tfoot>
+                                <tr><th colspan="1" rowspan="1">Rate</th><th colspan="1" rowspan="1">Distro</th><th colspan="1" rowspan="1">Votes</th><th colspan="1" rowspan="1">Homepage</th><th colspan="1" rowspan="1">Version</th></tr>
+                            </tfoot>
+                            <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                <tr class="odd">
+                                    <td class="  sorting_1">1</td>
+                                    <td class=" ">Ubuntu</td>
+                                    <td class=" ">16%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://ubuntu.com" target="_blank">http://ubuntu.com</a></td>
+                                    <td class=" ">13.10</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">2</td>
+                                    <td class=" ">Debian</td>
+                                    <td class=" ">14.1%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://debian.org" target="_blank">http://debian.org</a></td>
+                                    <td class=" ">7.4</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">3</td>
+                                    <td class=" ">Arch Linux</td>
+                                    <td class=" ">10.8%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://archlinux.org" target="_blank">http://archlinux.org</a></td>
+                                    <td class=" ">2014.02.01</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">4</td>
+                                    <td class=" ">Linux Mint</td>
+                                    <td class=" ">10.5%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://linuxmint.com" target="_blank">http://linuxmint.com</a></td>
+                                    <td class=" ">16</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">5</td>
+                                    <td class=" ">Fedora</td>
+                                    <td class=" ">6.9%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://fedoraproject.org" target="_blank">http://fedoraproject.org</a></td>
+                                    <td class=" ">20</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">6</td>
+                                    <td class=" ">openSUSE</td>
+                                    <td class=" ">5.2%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://opensuse.org" target="_blank">http://opensuse.org</a></td>
+                                    <td class=" ">13.1</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">7</td>
+                                    <td class=" ">SolydK</td>
+                                    <td class=" ">4.7%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://solydxk.com" target="_blank">http://solydxk.com</a></td>
+                                    <td class=" ">201401</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">8</td>
+                                    <td class=" ">CentOS</td>
+                                    <td class=" ">4.1%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://centos.org" target="_blank">http://centos.org</a></td>
+                                    <td class=" ">6.5</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">9</td>
+                                    <td class=" ">Kubuntu</td>
+                                    <td class=" ">3.8%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://www.kubuntu.org" target="_blank">http://www.kubuntu.org</a></td>
+                                    <td class=" ">13.10</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">10</td>
+                                    <td class=" ">PCLinuxOS</td>
+                                    <td class=" ">3.7%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://www.pclinuxos.com" target="_blank">http://www.pclinuxos.com</a></td>
+                                    <td class=" ">2013</td>
+                                </tr>
+                            </tbody>
+                        </table><div class="box-content"><div class="col-sm-6"><div id="datatable-2_info" class="dataTables_info">Showing 1 to 10 of 29 entries</div></div><div class="col-sm-6 text-right"><div class="dataTables_paginate paging_bootstrap"><ul class="pagination"><li class="prev disabled"><a href="#">← Previous</a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li class="next"><a href="#">Next → </a></li></ul></div></div><div class="clearfix"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div style="top: 0px; left: 0px; opacity: 1; z-index: 1999;" class="box ui-draggable ui-droppable">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-usd"></i>
+                        <span>The World's billionaries</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content no-padding">
+                    <div id="datatable-1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="box-content"><div class="col-sm-6"><div id="datatable-1_filter" class="dataTables_filter"><label><input placeholder="Search" aria-controls="datatable-1" type="text"></label></div></div><div class="col-sm-6 text-right"><div class="dataTables_length" id="datatable-1_length"><label><div id="s2id_autogen7" class="select2-container"><a href="javascript:void(0)" onclick="return false;" class="select2-choice" tabindex="-1">   <span class="select2-chosen">25</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow"><b></b></span></a><input id="s2id_autogen8" class="select2-focusser select2-offscreen" type="text"></div><select class="select2-offscreen" tabindex="-1" aria-controls="datatable-1" size="1" name="datatable-1_length"><option selected="selected" value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div></div><div class="clearfix"></div></div><table aria-describedby="datatable-1_info" class="table table-bordered table-striped table-hover table-heading table-datatable dataTable" id="datatable-1">
+                            <thead>
+                                <tr role="row"><th aria-label="Rank: activate to sort column descending" aria-sort="ascending" style="width: 49px;" colspan="1" rowspan="1" aria-controls="datatable-1" tabindex="0" role="columnheader" class="sorting_asc">Rank</th><th aria-label="Name: activate to sort column ascending" style="width: 356px;" colspan="1" rowspan="1" aria-controls="datatable-1" tabindex="0" role="columnheader" class="sorting">Name</th><th aria-label="Net Worth: activate to sort column ascending" style="width: 93px;" colspan="1" rowspan="1" aria-controls="datatable-1" tabindex="0" role="columnheader" class="sorting">Net Worth</th><th aria-label="Age: activate to sort column ascending" style="width: 40px;" colspan="1" rowspan="1" aria-controls="datatable-1" tabindex="0" role="columnheader" class="sorting">Age</th><th aria-label="Source: activate to sort column ascending" style="width: 207px;" colspan="1" rowspan="1" aria-controls="datatable-1" tabindex="0" role="columnheader" class="sorting">Source</th><th aria-label="Country of Citizenship: activate to sort column ascending" style="width: 198px;" colspan="1" rowspan="1" aria-controls="datatable-1" tabindex="0" role="columnheader" class="sorting">Country of Citizenship</th></tr>
+                            </thead>
+
+                            <tfoot>
+                                <tr><th colspan="1" rowspan="1">Rank</th><th colspan="1" rowspan="1">Name</th><th colspan="1" rowspan="1">Net Worth</th><th colspan="1" rowspan="1">Age</th><th colspan="1" rowspan="1">Source</th><th colspan="1" rowspan="1">Country of Citizenship</th></tr>
+                            </tfoot>
+                            <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                <tr class="odd">
+                                    <td class="  sorting_1">1</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/carlos-slim-helu_50x50.jpg" alt="">Carlos Slim Helu &amp; family</td>
+                                    <td class=" ">$73 B</td>
+                                    <td class=" ">74</td>
+                                    <td class=" ">telecom</td>
+                                    <td class=" ">Mexico</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">2</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/bill-gates_50x50.jpg" alt="">Bill Gates</td>
+                                    <td class=" ">$67 B</td>
+                                    <td class=" ">58</td>
+                                    <td class=" ">Microsoft</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">3</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/amancio-ortega_50x50.jpg" alt="">Amancio Ortega</td>
+                                    <td class=" ">$57 B</td>
+                                    <td class=" ">77</td>
+                                    <td class=" ">Zara</td>
+                                    <td class=" ">Spain</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">4</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/warren-buffett_50x50.jpg" alt="">Warren Buffett</td>
+                                    <td class=" ">$53.5 B</td>
+                                    <td class=" ">83</td>
+                                    <td class=" ">Berkshire Hathaway</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">5</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/larry-ellison_50x50.jpg" alt="">Larry Ellison</td>
+                                    <td class=" ">$43 B</td>
+                                    <td class=" ">69</td>
+                                    <td class=" ">Oracle</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">6</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/charles-koch_50x50.jpg" alt="">Charles Koch</td>
+                                    <td class=" ">$34 B</td>
+                                    <td class=" ">78</td>
+                                    <td class=" ">diversified</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">6</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/david-koch_50x50.jpg" alt="">David Koch</td>
+                                    <td class=" ">$34 B</td>
+                                    <td class=" ">73</td>
+                                    <td class=" ">diversified</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">8</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/li-ka-shing_50x50.jpg" alt="">Li Ka-shing</td>
+                                    <td class=" ">$31 B</td>
+                                    <td class=" ">85</td>
+                                    <td class=" ">diversified</td>
+                                    <td class=" ">Hong Kong</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">9</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/liliane-bettencourt_50x50.jpg" alt="">Liliane Bettencourt &amp; family</td>
+                                    <td class=" ">$30 B</td>
+                                    <td class=" ">91</td>
+                                    <td class=" ">L'Oreal</td>
+                                    <td class=" ">France</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">10</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/bernard-arnault_50x50.jpg" alt="">Bernard Arnault &amp; family</td>
+                                    <td class=" ">$29 B</td>
+                                    <td class=" ">64</td>
+                                    <td class=" ">LVMH</td>
+                                    <td class=" ">France</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">11</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/christy-walton_50x50.jpg" alt="">Christy Walton &amp; family</td>
+                                    <td class=" ">$28.2 B</td>
+                                    <td class=" ">59</td>
+                                    <td class=" ">Wal-Mart</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">12</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/stefan-persson_50x50.jpg" alt="">Stefan Persson</td>
+                                    <td class=" ">$28 B</td>
+                                    <td class=" ">66</td>
+                                    <td class=" ">H&amp;M</td>
+                                    <td class=" ">Sweden</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">13</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/michael-bloomberg_50x50.jpg" alt="">Michael Bloomberg</td>
+                                    <td class=" ">$27 B</td>
+                                    <td class=" ">71</td>
+                                    <td class=" ">Bloomberg LP</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">14</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/jim-walton_50x50.jpg" alt="">Jim Walton</td>
+                                    <td class=" ">$26.7 B</td>
+                                    <td class=" ">66</td>
+                                    <td class=" ">Wal-Mart</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">15</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/sheldon-adelson_50x50.jpg" alt="">Sheldon Adelson</td>
+                                    <td class=" ">$26.5 B</td>
+                                    <td class=" ">80</td>
+                                    <td class=" ">casinos</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">16</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/alice-walton_50x50.jpg" alt="">Alice Walton</td>
+                                    <td class=" ">$26.3 B</td>
+                                    <td class=" ">64</td>
+                                    <td class=" ">Wal-Mart</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">17</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/s-robson-walton_50x50.jpg" alt="">S. Robson Walton</td>
+                                    <td class=" ">$26.1 B</td>
+                                    <td class=" ">70</td>
+                                    <td class=" ">Wal-Mart</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">18</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/no-pic_50x50.jpg" alt="">Karl Albrecht</td>
+                                    <td class=" ">$26 B</td>
+                                    <td class=" ">93</td>
+                                    <td class=" ">Aldi</td>
+                                    <td class=" ">Germany</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">19</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/jeff-bezos_50x50.jpg" alt="">Jeff Bezos</td>
+                                    <td class=" ">$25.2 B</td>
+                                    <td class=" ">50</td>
+                                    <td class=" ">Amazon.com</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">20</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/larry-page_50x50.jpg" alt="">Larry Page</td>
+                                    <td class=" ">$23 B</td>
+                                    <td class=" ">40</td>
+                                    <td class=" ">Google</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">21</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/sergey-brin_50x50.jpg" alt="">Sergey Brin</td>
+                                    <td class=" ">$22.8 B</td>
+                                    <td class=" ">40</td>
+                                    <td class=" ">Google</td>
+                                    <td class=" ">United States</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">22</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/mukesh-ambani_50x50.jpg" alt="">Mukesh Ambani</td>
+                                    <td class=" ">$21.5 B</td>
+                                    <td class=" ">56</td>
+                                    <td class=" ">petrochemicals, oil &amp; gas</td>
+                                    <td class=" ">India</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">23</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/michele-ferrero_50x50.jpg" alt="">Michele Ferrero &amp; family</td>
+                                    <td class=" ">$20.4 B</td>
+                                    <td class=" ">88</td>
+                                    <td class=" ">chocolates</td>
+                                    <td class=" ">Italy</td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">24</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/lee-shau-kee_50x50.jpg" alt="">Lee Shau Kee</td>
+                                    <td class=" ">$20.3 B</td>
+                                    <td class=" ">86</td>
+                                    <td class=" ">diversified</td>
+                                    <td class=" ">Hong Kong</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">24</td>
+                                    <td class=" "><img class="img-rounded" src="http://i.forbesimg.com/media/lists/people/david-thomson_50x50.jpg" alt="">David Thomson &amp; family</td>
+                                    <td class=" ">$20.3 B</td>
+                                    <td class=" ">56</td>
+                                    <td class=" ">media</td>
+                                    <td class=" ">Canada</td>
+                                </tr>
+                            </tbody>
+                        </table><div class="box-content"><div class="col-sm-6"><div id="datatable-1_info" class="dataTables_info">Showing 1 to 25 of 100 entries</div></div><div class="col-sm-6 text-right"><div class="dataTables_paginate paging_bootstrap"><ul class="pagination"><li class="prev disabled"><a href="#">← Previous</a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li class="next"><a href="#">Next → </a></li></ul></div></div><div class="clearfix"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box ui-draggable ui-droppable">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-linux"></i>
+                        <span>Most popular Linux distro</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content no-padding">
+                    <div id="datatable-3_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="DTTT btn-group"><a id="ToolTables_datatable-3_0" class="btn DTTT_button_copy"><span>Copy</span><div style="position: absolute; left: 0px; top: 0px; width: 60px; height: 26px; z-index: 99;"><embed id="ZeroClipboard_TableToolsMovie_1" src="plugins/datatables/copy_csv_xls_pdf.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboard_TableToolsMovie_1" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=60&amp;height=26" wmode="transparent" height="26" width="60" align="middle"></div></a><a title="View print view" id="ToolTables_datatable-3_1" class="btn DTTT_button_print"><span>Print</span></a><a id="ToolTables_datatable-3_2" class="btn DTTT_button_collection"><span>Save <span class="caret"></span></span></a></div><div class="box-content"><div class="col-sm-6"><div id="datatable-3_filter" class="dataTables_filter"><label><input placeholder="Search" aria-controls="datatable-3" type="text"></label></div></div><div class="col-sm-6 text-right"><div class="dataTables_length" id="datatable-3_length"><label><div id="s2id_autogen11" class="select2-container"><a href="javascript:void(0)" onclick="return false;" class="select2-choice" tabindex="-1">   <span class="select2-chosen">10</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow"><b></b></span></a><input id="s2id_autogen12" class="select2-focusser select2-offscreen" type="text"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" type="text">   </div>   <ul class="select2-results">   </ul></div></div><select class="select2-offscreen" tabindex="-1" aria-controls="datatable-3" size="1" name="datatable-3_length"><option selected="selected" value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div></div><div class="clearfix"></div></div><table aria-describedby="datatable-3_info" class="table table-bordered table-striped table-hover table-heading table-datatable dataTable" id="datatable-3">
+                            <thead>
+                                <tr role="row"><th aria-label="Rate: activate to sort column descending" aria-sort="ascending" style="width: 71px;" colspan="1" rowspan="1" aria-controls="datatable-3" tabindex="0" role="columnheader" class="sorting_asc">Rate</th><th aria-label="Distro: activate to sort column ascending" style="width: 267px;" colspan="1" rowspan="1" aria-controls="datatable-3" tabindex="0" role="columnheader" class="sorting">Distro</th><th aria-label="Votes: activate to sort column ascending" style="width: 83px;" colspan="1" rowspan="1" aria-controls="datatable-3" tabindex="0" role="columnheader" class="sorting">Votes</th><th aria-label="Homepage: activate to sort column ascending" style="width: 331px;" colspan="1" rowspan="1" aria-controls="datatable-3" tabindex="0" role="columnheader" class="sorting">Homepage</th><th aria-label="Version: activate to sort column ascending" style="width: 125px;" colspan="1" rowspan="1" aria-controls="datatable-3" tabindex="0" role="columnheader" class="sorting">Version</th><th aria-label="Icon: activate to sort column ascending" style="width: 67px;" colspan="1" rowspan="1" aria-controls="datatable-3" tabindex="0" role="columnheader" class="sorting">Icon</th></tr>
+                            </thead>
+
+                            <tfoot>
+                                <tr><th colspan="1" rowspan="1">Rate</th><th colspan="1" rowspan="1">Distro</th><th colspan="1" rowspan="1">Votes</th><th colspan="1" rowspan="1">Homepage</th><th colspan="1" rowspan="1">Version</th><th colspan="1" rowspan="1">Icon</th></tr>
+                            </tfoot>
+                            <tbody aria-relevant="all" aria-live="polite" role="alert">
+                                <tr class="odd">
+                                    <td class="  sorting_1">1</td>
+                                    <td class=" ">Ubuntu</td>
+                                    <td class=" ">16%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://ubuntu.com" target="_blank">http://ubuntu.com</a></td>
+                                    <td class=" ">13.10</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">2</td>
+                                    <td class=" ">Debian</td>
+                                    <td class=" ">14.1%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://debian.org" target="_blank">http://debian.org</a></td>
+                                    <td class=" ">7.4</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">3</td>
+                                    <td class=" ">Arch Linux</td>
+                                    <td class=" ">10.8%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://archlinux.org" target="_blank">http://archlinux.org</a></td>
+                                    <td class=" ">2014.02.01</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">4</td>
+                                    <td class=" ">Linux Mint</td>
+                                    <td class=" ">10.5%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://linuxmint.com" target="_blank">http://linuxmint.com</a></td>
+                                    <td class=" ">16</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">5</td>
+                                    <td class=" ">Fedora</td>
+                                    <td class=" ">6.9%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://fedoraproject.org" target="_blank">http://fedoraproject.org</a></td>
+                                    <td class=" ">20</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">6</td>
+                                    <td class=" ">openSUSE</td>
+                                    <td class=" ">5.2%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://opensuse.org" target="_blank">http://opensuse.org</a></td>
+                                    <td class=" ">13.1</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">7</td>
+                                    <td class=" ">SolydK</td>
+                                    <td class=" ">4.7%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://solydxk.com" target="_blank">http://solydxk.com</a></td>
+                                    <td class=" ">201401</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">8</td>
+                                    <td class=" ">CentOS</td>
+                                    <td class=" ">4.1%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://centos.org" target="_blank">http://centos.org</a></td>
+                                    <td class=" ">6.5</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="odd">
+                                    <td class="  sorting_1">9</td>
+                                    <td class=" ">Kubuntu</td>
+                                    <td class=" ">3.8%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://www.kubuntu.org" target="_blank">http://www.kubuntu.org</a></td>
+                                    <td class=" ">13.10</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                                <tr class="even">
+                                    <td class="  sorting_1">10</td>
+                                    <td class=" ">PCLinuxOS</td>
+                                    <td class=" ">3.7%</td>
+                                    <td class=" "><i class="fa fa-home"></i><a href="http://www.pclinuxos.com" target="_blank">http://www.pclinuxos.com</a></td>
+                                    <td class=" ">2013</td>
+                                    <td class=" "><i class="fa fa-linux"></i></td>
+                                </tr>
+                            </tbody>
+                        </table><div class="box-content"><div class="col-sm-6"><div id="datatable-3_info" class="dataTables_info">Showing 1 to 10 of 29 entries</div></div><div class="col-sm-6 text-right"><div class="dataTables_paginate paging_bootstrap"><ul class="pagination"><li class="prev disabled"><a href="#">← Previous</a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li class="next"><a href="#">Next → </a></li></ul></div></div><div class="clearfix"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // Run Datables plugin and create 3 variants of settings
+        function AllTables() {
+            TestTable1();
+            TestTable2();
+            TestTable3();
+            LoadSelect2Script(MakeSelect2);
+        }
+        function MakeSelect2() {
+            $('select').select2();
+            $('.dataTables_filter').each(function () {
+                $(this).find('label input[type=text]').attr('placeholder', 'Search');
+            });
+        }
+        $(document).ready(function () {
+            // Load Datatables and run plugin on tables
+            LoadDataTablesScripts(AllTables);
+            // Add Drag-n-Drop feature
+            WinMove();
+        });
+    </script>
+</div>

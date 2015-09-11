@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 class="text-center section-title">Menu Ordering</h2>
+
+<div class="" ng-controller="SecMenuController">
+
+    <section class="col-sm-5">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                <i class="fa fa-info"></i>
+                <h3 class="box-title"> </h3>
+            </div>
+
+            <div class="box-body">
+
+                <div class="form-group">
+                   
+                        <label>Module<label style="color:red">*</label></label>
+                        <select ng-model="SelectedModule" placeholder="Pick a module" class="selectUI" ui-select2 ng-change="GetResourceByModuleId()" required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Modules" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" ng-click="Save()" ng-disabled="SaveDisabled">Save </button>
+                    <button type="submit" class="btn btn-default" ng-click="Reset()">Reset </button>
+                </div>
+
+            </div><!-- /.box-body-->
+            @*<div><pre class="code">{{ ResourceTree | json }}</pre></div>*@
+        </div>
+
+    </section>
+    <section class="col-sm-7">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                <i class="fa fa-adjust"></i>
+                <h3 class="box-title"> Menu Ordering </h3>
+            </div>
+
+            <div class="box-body" style="height:470px;overflow-y:auto">
+
+
+                <script type="text/ng-template" id="nodes_renderer.html">
+                    <div ui-tree-handle class="tree-node tree-node-content">
+                        <a class="btn btn-success btn-xs" ng-if="node.items && node.items.length > 0" nodrag ng-click="toggle(this)"><i ng-class="{'fa fa-toggle-right': collapsed, 'fa fa-toggle-down': !collapsed}"></i></a>
+                        {{node.DisplayName}}
+                    </div>
+                    <ol ui-tree-nodes="" ng-model="node.items" ng-class="{hidden: collapsed}">
+                        <li ng-repeat="node in node.items" ui-tree-node ng-include="'nodes_renderer.html'">
+                        </li>
+                    </ol>
+                </script>
+                <div ui-tree id="tree-root">
+                    <ol ui-tree-nodes="" ng-model="ResourceTree" id="tree-root">
+                        <li ng-repeat="node in ResourceTree" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                    </ol>
+                </div>
+
+            </div><!-- /.box-body-->
+
+
+        </div>
+
+    </section>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Security/SecMenu.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/plugins/angularUi-tree/angular-ui-tree.js")"></script>
+
+}
+
+
+@section css{
+
+
+    <link href="~/Content/angularUi-tree/angular-ui-tree.css" rel="stylesheet" />
+}

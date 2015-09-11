@@ -1,0 +1,248 @@
+﻿@{
+    ViewBag.Title = "Requisition Approval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+<h2 class="text-center  section-title">Requisition Approval</h2>
+<div ng-controller="RequisitionApprovalController">
+
+    <section class="col-sm-4 col-xs-12 margin-top-10 col-sm-offset-4">
+        <div class="box box-primary ">
+            <div class="box-body no-padding">
+                <form role="form" name="FindReqApprvlForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>From Date<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txtFromDate" ng-model="ReqFind.FromDate" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="form-group">
+                            <label>To Date<span style="color:red">*</span></label>
+                            <input type="text" class="form-control dpkr" id="txToDate" ng-model="ReqFind.ToDate" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success" ng-disabled="FindReqApprvlForm.$invalid" ng-click="Find()">Load</button>
+                            <button type="reset" class="btn btn-default" ng-disabled="ButtonDisabled" ng-click="Reset()">Reset</button>
+                        </div>
+
+                    </div>
+
+
+                   
+
+
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="margin-top-10 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Requisition Approval List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:6%">SL</th>
+                                <th style="width:25%">Code</th>
+                                <th style="width:25%">Company</th>
+                                <th style="width: 15%">Requisition Date</th>
+                                <th style="width: 15%">Preferred Delivery Date</th>
+                                <th style="width:10%">Status</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+
+                                    <td style=" width:6%">
+                                        {{$index+1}}
+                                    </td>
+                                    <td style="width:25%">{{resource.RequisitionCode}}</td>
+                                    <td style="width:25%">{{resource.CompanyName}}</td>
+                                    <td style="width:15%">{{resource.CreatedDate | jsonDate}}</td>
+                                    <td style="width:15%">{{resource.PreferredDeliveryDate | jsonDate}}</td>
+                                    <td style="width:10%">
+                                        <div ng-repeat="data in ApprovalStatusData" ng-show="resource.ApprovalStatus==data.Id">
+                                            {{data.Name}}
+                                        </div>
+                                    </td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" ng-click="GetReqApprovalById(resource)">                                              
+                                                <i class="fa fa-edit"></i>Detail
+                                            </button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+
+            <style>
+                .selected {
+                    background-color: #FAA61A;
+                    color: white;
+                    font-weight: bold;
+                }
+            </style>
+
+
+            @*for pop up window*@
+
+            <script type="text/ng-template" id="modal">
+                <form name="modules">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Requisition Information</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="txtRefNo">Ref. No</label>
+                            <input type="text" ng-model="Reqs.RequisitionCode" class="form-control" id="txtRefNo" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtPreferredDeliveryDate">Preferred Delivery Date</label>
+                            <input type="text" ng-model="Reqs.PreferredDeliveryDate" class="form-control" id="txtPreferredDeliveryDate" placeholder="" readonly>                           
+                        </div>
+                        <div class="form-group">
+                            <label for="txtRemarks">Remarks</label>
+                            <textarea ng-model="Reqs.Remarks" class="form-control" id="txtRemarks" readonly></textarea>
+                        </div> 
+                        <div class="box-header" style="cursor: move;">
+                            
+                            <h3 class="box-title">
+                                Product Information
+                            </h3>
+                            <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                          </div>
+                            <div class="panel panel-default">
+                                <table class="table  table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%">SL</th>
+                                            <th style="width:35%">Product</th>
+                                            <th style="width:20%">Quantity</th>
+                                            <th style="width: 15%">Unit</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div class="div-table-content">
+                                    <table class="table  table-striped">
+                                        <tbody>
+                                            <tr ng-repeat="rd in Reqs.ReqDetails | filter:SearchList">
+                                                <td style="width:10%">{{$index+1}}</td>
+                                                <td style="width:35%">{{rd.ProductName}}</td>
+                                                <td style="width:20%">{{rd.RequiredQuantity}}</td>
+                                                <td style="width:15%">{{rd.UnitName}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Previous Comments</label>
+                                <textarea cols="20" rows="2" ng-model="Reqs.PreComments" class="form-control" id="txtPreComments" placeholder=""
+                                          readonly style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Comments<span style="color:red">*</span></label>
+                                <textarea cols="20" rows="1" ng-model="Reqs.NewComments" class="form-control" id="txtNewComments" placeholder="" required
+                                          style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" ng-disabled="DisableApproval()" ng-click="Approve()">Approve</button>
+                        <button type="submit" class="btn btn-danger" ng-disabled="DisableApproval()" ng-click="Reject()">Reject</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="DisableApproval()" ng-click="Pass()">Pass</button>
+                        <button class="btn btn-warning" ng-click="cancel()">Close</button>
+                        @*<button class="btn btn-primary" ng-disabled="modules.$invalid" ng-click="ok()">Save</button>*@
+                        
+                    </div>
+                </form>
+            </script>
+
+
+            @*end pop up window*@
+
+
+            @*<div class="box-body no-padding">
+                <form role="form" name="ReqApprvlForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Previous Comments</label>
+                            <textarea cols="20" rows="2" ng-model="ReqApproval.Comment" class="form-control" id="txtRemarks" placeholder=""
+                                      readonly style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Comments<span style="color:red">*</span></label>
+                            <textarea cols="20" rows="1" ng-model="ReqApproval.NewComment" class="form-control" id="txtRemarks" placeholder="" required
+                                      style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success" ng-disabled="ReqApprvlForm.$invalid" ng-click="Approve()">Approve</button>
+                            <button type="submit" class="btn btn-danger" ng-disabled="ReqApprvlForm.$invalid" ng-click="Reject()">Reject</button>
+                            <button type="submit" class="btn btn-default" ng-disabled="ReqApprvlForm.$invalid" ng-click="Pass()">Pass</button>
+                        </div>
+                    </div>
+                </form>
+            </div>*@
+
+
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+
+@section scripts{
+
+    <script>
+
+        (function () {
+            var glbRequisitionId = parseInt('@ViewData["RequisitionNumber"]');
+            if (glbRequisitionId !== undefined && glbRequisitionId > 0) {
+                app.value('glbreqapproval', { reqID: glbRequisitionId });
+            }
+            else {
+                app.value('glbreqapproval', { reqID: 0 });
+            }
+
+        }).call(this);
+    </script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/Inventory/RequisitionApprovalController.js")"></script>
+}

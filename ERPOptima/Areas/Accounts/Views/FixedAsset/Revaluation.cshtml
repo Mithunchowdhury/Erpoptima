@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "Revaluation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Revaluation</h2>
+<div ng-controller="RevaluationController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Fixed Assets Revaluation</h3>
+            </div>
+            <div class="box-body">
+                <form role="form" name="WebForm">
+                    <div class="form-group">
+                        <label for="txtRefNo">Ref. No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="RefNo" class="form-control" id="txtRefNo" name="txtRefNo" placeholder="" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dtpDate">Date of revaluation</label><label style="color:red">*</label>
+                        <input type="text" ng-model="FxdRevaluation.Date" class="form-control datetimepicker" id="dtpDate" name="dtpDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="selAsset">Asset<span style="color:red">*</span></label>
+                        <select class="selectUI" data-placeholder="Pick a Asset" data-ui-select2="Asset" ng-model="FxdRevaluation.FxdAcquisitionId" id="selAsset" name="selAsset" required>
+                            <option cost="" value=""></option>
+                            <option ng-repeat="data in FxdNRvlList" cost="{{data.Cost}}" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRevalue">Acquisition value</label>
+                        <input type="number" ng-model="Acquisitionvalue" class="form-control" id="Acquisitionvalue" name="Acquisitionvalue" placeholder="" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRevalue">Present value<span style="color:red">*</span></label>
+                        <input type="number" ng-model="FxdRevaluation.Presentvalue" class="form-control" id="Presentvalue" name="Presentvalue" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRevalue">
+                            Revalue<span style="color:red"></span>
+                            <span id="lossOrProfit" style="color:red"></span>
+                        </label>
+                        <input type="number" ng-model="Revalue" class="form-control" id="Revalue" name="Revalue" placeholder="" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="FxdRevaluation.Remarks" class="form-control" id="txtRemarks" name="txtRemarks"></textarea>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success reset" ng-disabled="WebForm.$invalid" ng-click="Save(WebForm.$valid)">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger reset" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" id="reset" name="reset" class="btn btn-default reset" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Fixed Asset List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:20%">Ref. No</th>
+                                <th style="width:15%">Date</th>
+                                <th style="width:20%">Asset</th>
+                                <th style="width:15%">Revalue</th>
+                                <th style="width:15%">Remarks</th>
+                                <th style="width: 10%; text-wrap: normal">Action</th>
+                                
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="RevaluationLists in RevaluationList | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:5%">{{$index+1}}</td>
+                                    <td style="width:20%">{{RevaluationLists.RefNo}}</td>
+                                    <td style="width:15%">{{RevaluationLists.Date  | jsonDate}}</td>
+                                    <td style="width:20%">{{RevaluationLists.AssetName}}</td>
+                                    <td style="width:15%">{{RevaluationLists.Revalue}}</td>
+                                    <td style="width:15%">{{RevaluationLists.Remarks}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{RevaluationLists.Id}}" ng-click="setForEdit(RevaluationLists)"><i class="fa fa-edit"></i> Edit</button>
+                                           
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/RevaluationController.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/blockUI.js")"></script>
+}

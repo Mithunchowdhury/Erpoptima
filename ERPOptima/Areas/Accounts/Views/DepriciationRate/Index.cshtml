@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Depriciation Rate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2>Depriciation Rate</h2>
+<div ng-controller="DepriciationRate">
+    <div class="margin-top-10 col-xs-5">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+
+                <h3 class="box-title">Depriciation Rate Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="WebForm">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-xs-12" for="cmbAcName">Account Name<span style="color:red">*</span></label>
+                            <select class="col-xs-12" id="cmbAcName" ng-model="accountName" ui-select2 data-placeholder="Pick an Account" required>
+                                <option class=""></option>
+                                <option ng-repeat="data in AccountNameAndCode" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRate">Rate</label>
+                        <input type="number" ng-model="DepriciationRate.Rate" class="form-control" id="txtRate" placeholder="">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtDate">Date</label>
+                        <input type="text" ng-model="DepriciationRate.Date" class="form-control daterangepicker" id="txtDate" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <input type="text" ng-model="DepriciationRate.Remarks" class="form-control" id="txtRemarks" placeholder="Remarks">
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="WebForm.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="margin-top-10 col-xs-7">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-table"></i>
+
+                <h3 class="box-title">Depriciation Rate Table</h3>
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Location'" sortable="'Location'">{{data.Location}}</td>
+                                <td class="rowTd" data-title="'Contact Person'" sortable="'ContactPerson'">{{data.ContactPerson}}</td>
+                                <td class="rowTd" data-title="'Contact No'" sortable="'ContactNo'">{{data.ContactNo}}</td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+
+                                        @*<input type=button id="editRowBtn{{data.Id}}" value="Modify"
+                                            ng-click="setFortEdit(data)">*@
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/DepriciationRate.js")"></script>
+
+}

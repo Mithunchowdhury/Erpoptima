@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "AdjustmentEntry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Adjustment Entry</h2>
+<div ng-controller="AdjustmentEntryController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Adjustment Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="WebForm">
+                    <div class="form-group">
+                        <label for="txtRef">Advance Ref No<span style="color:red">*</span></label>
+                        <select class="selectUI" data-placeholder="Pick a Ref No" data-ui-select2="AnFAdvanceId" id="AnFAdvanceId" name="AnFAdvanceId" ng-model="AnFAdvanceId" required>
+                            <option value=""></option>
+                            <option ng-repeat="advance in advances" value="{{advance.Id}}">{{advance.RefNo}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtDate">Date<span style="color:red">*</span></label>
+                        <input type="text" class="form-control dpkr " id="txtDate" name="txtDate" ng-model="Date" placeholder="" datetimepicker required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtAdvance">Adjusted Amount<span style="color:red">*</span></label>
+                        <input type="number" ng-model="AdjustedAmount" class="form-control" id="txtAdvance" name="txtAdvance" placeholder="" required>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+{
+    <button type="submit" class="btn btn-success" ng-disabled="WebForm.$invalid" ng-click="Save(WebForm.$valid)">Save</button>
+}
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary margin">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Adjustment List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:25%">Ref No</th>
+                                <th style="width:25%">Name</th>
+                                <th style="width:20%">Date</th>
+                                <th style="width:13%">Amount</th>
+                                <th style="width:12%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="row in rows| filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:5%">{{$index+1}}</td>
+                                    <td style="width:25%">{{row.AdvanceRefNo}}</td>
+                                    <td style="width:25%">{{row.EmployeeName}}</td>
+                                    <td style="width:20%">{{row.Date | jsonDate}}</td>
+                                    <td style="width:13%">{{row.AdjustedAmount}}</td>
+                                    
+                                    <td style="width:12%">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{row.Id}}" ng-click="setForEdit(row)"><i class="fa fa-edit"></i> Edit</button>
+                                        @*<button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="eidtDetails(row)"><i class="fa fa-edit"></i> Remove</button>*@
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+
+                </div>
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/AdjustmentEntryController.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/blockUI.js")"></script>
+}

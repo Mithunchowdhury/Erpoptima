@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Party Ledger";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/Accounts/Report_TrialBalanceDetailsController.js"></script>
+
+<section class="content-header text-center">
+    <h2 class="section-title">Party Ledger</h2>
+</section>
+
+<div class="row content" ng-controller="TrialBalanceDetailsController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                @*<i class="fa fa-search"></i>
+                    <h3 class="box-title"> Search</h3>*@
+            </div>
+
+
+            @using (Html.BeginForm("GetAnFTrialBalanceDetailsReport", "Report", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search", target = "_blank" }))
+            {
+                <div class="box-body">
+                    @*<form name="Search">*@
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4  col-xs-12">Date range  :</label>
+                            <select class="col-sm-8  col-xs-12" ui-select2 ng-model="BusinessId" name="CmnBusinessId" data-placeholder="Pick a Date range" ng-change="ProjectInfo()">
+                                <option value=""></option>
+                                <option ng-repeat="data in Businesses" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4  col-xs-12">Party  :</label>
+                            <select class="col-sm-8  col-xs-12" ui-select2 ng-model="BusinessId" name="CmnBusinessId" data-placeholder="Pick a Party" ng-change="ProjectInfo()">
+                                <option value=""></option>
+                                <option ng-repeat="data in Businesses" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary">Show</button>
+                        <button type="reset" id="SearchButton" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+
+
+
+
+            }
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>

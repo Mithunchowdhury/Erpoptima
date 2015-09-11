@@ -1,0 +1,185 @@
+﻿@{
+    ViewBag.Title = "Cost Center";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Cost Center</h2>
+<div ng-controller="costCenter">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                 
+                <h3 class="box-title">Cost Center Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="CostCenters">
+
+                    <div class="form-group">
+                        <label for="txtName">Name</label><label style="color:red">*</label>
+                        <span style="color:red" data-ng-show="CostCenters.nmName.$dirty && CostCenters.nmName.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="CostCenters.nmName.$dirty && CostCenters.nmName.$error.pattern">Need Atleast 5 Characters</span>
+                        <input type="text" ng-model="CostCenter.Name" class="form-control" id="txtName" name="nmName" ng-maxlength="128" ng-minlength="5" data-ng-pattern="/^[a-zA-Z0-9\s]{5,128}$/" required placeholder="Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtLocation">Location</label>
+                        <span style="color:red" data-ng-show="CostCenters.nmLocation.$dirty && CostCenters.nmLocation.$error.minlength">Need Atleast 5 Characters</span>
+                        <span style="color:red" data-ng-show="CostCenters.nmLocation.$dirty && CostCenters.nmLocation.$error.maxlength">You are Exceeding the Limit</span>
+                        <textarea cols="20" rows="1" ng-model="CostCenter.Location" class="form-control" id="txtLocation" name="nmLocation" ng-maxlength="256" ng-minlength="5" placeholder=""></textarea>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtContactPerson">Contact Person</label>
+                        <span style="color:red" data-ng-show="CostCenters.nmCPerson.$dirty && CostCenters.nmCPerson.$error.minlength">Need Atleast 5 Characters</span>
+                        <span style="color:red" data-ng-show="CostCenters.nmCPerson.$dirty && CostCenters.nmCPerson.$error.maxlength">You are Exceeding the Limit</span>
+                        <input type="text" ng-model="CostCenter.ContactPerson" class="form-control" id="txtContactPerson" name="nmCPerson" ng-maxlength="128" ng-minlength="5" placeholder="Contact Person">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtContactNo">Contact No</label>
+                        <span style="color:red" data-ng-show="CostCenters.nmCNo.$dirty && CostCenters.nmCNo.$error.pattern">Need Numeric Atleast 5 Degits</span>
+                        <input type="text" ng-model="CostCenter.ContactNo" class="form-control" id="txtContactNo" name="nmCNo" ng-maxlength="64" ng-minlength="5" ng-pattern="/^\d+(\.\d{3,64})?$/" placeholder="Contact No">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        
+                        <span style="color:red" data-ng-show="CostCenters.nmRemarks.$dirty && CostCenters.nmRemarks.$error.pattern">Invalid Name</span>
+                        <input type="text" ng-model="CostCenter.Remarks" class="form-control" id="txtRemarks" ng-maxlength="256" ng-minlength="5" name="nmRemarks" ng-pattern="/^[a-zA-Z0-9]{3,256}$/" placeholder="Remarks">
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            Status<input type="checkbox" name="active" ng-model="CostCenter.Status">
+                        </label>
+                    </div>
+                    <div class="form-group  checkbox">
+                        <label>
+                            Is Default<input type="checkbox" name="default" ng-model="CostCenter.IsDefault">
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="CostCenters.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                            {
+                                <button type="submit" class="btn btn-danger" ng-disabled="CostCenters.$invalid" ng-click="Delete()">Delete</button>
+                            }
+                            <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    @*<section class="margin-top-10 col-sm-7  col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-table"></i>
+
+                <h3 class="box-title">Cost Center Table</h3>
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Location'" sortable="'Location'">{{data.Location}}</td>
+                                <td class="rowTd" data-title="'Contact Person'" sortable="'ContactPerson'">{{data.ContactPerson}}</td>
+                                <td class="rowTd" data-title="'Contact No'" sortable="'ContactNo'">{{data.ContactNo}}</td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>*@
+    <section class="col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Cost Center Table
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:25%">Name</th>
+                                <th style="width:25%">Location</th>
+                                <th style="width: 25%">Contact Person</th>
+                                <th style="width: 25%">Contact No</th>
+                                <th style="width: 25%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList">
+                                    <td style="width:25%">{{resource.Name}}</td>
+                                    <td style="width:25%">{{resource.Location}}</td>
+                                    <td style="width:25%">{{resource.ContactPerson}}</td>
+                                    <td style="width:25%">{{resource.ContactNo}}</td>
+                                    <td style="width:25%">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        @*<button class="btn btn-danger btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Remove</button>*@
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            max-height: 405px;
+            min-height: 405px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/CostCenter.js")"></script>
+
+}

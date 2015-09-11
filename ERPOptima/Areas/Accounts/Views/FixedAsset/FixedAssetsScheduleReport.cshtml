@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "FixedAssetsScheduleReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content-header">
+
+    <h2 class="text-center  section-title">Fixed Assets Schedule Report</h2><hr />
+</section>
+<div class="row content" ng-controller="ScheduleReportController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+
+
+            @using (Html.BeginForm("GetPartyListReport", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="cmbAsset" class="col-sm-4 col-xs-12">Asset:</label>
+                            <select id="cmbAsset" class="col-sm-6 col-xs-12" ui-select2 ng-model="type" name="txtAsset" data-placeholder="Pick a Assets">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Show</button>
+                        <button type="reset" class="btn btn-default" ng-click="type=0">Reset</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+<script src="~/Scripts/Accounts/Rpt_FixedAssetsScheduleController.js"></script>

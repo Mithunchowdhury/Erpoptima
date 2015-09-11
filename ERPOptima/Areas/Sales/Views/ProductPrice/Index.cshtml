@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = "Product Price";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+<h2 class="text-center section-title">Product Price</h2>
+<div ng-controller="ProductPrice">
+    <section class="margin-top-10 col-sm-4 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Price Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="ProductPrices">
+                    <div class="form-group">
+
+                        <label for="txtPrefix">Product<span style="color:red">*</span></label>
+                        <select id="selProductName" placeholder="Pick a Product" ng-model="ProductId" class="selectUI" ng-change="UnitInfoByProductId()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Product" value={{data.Id}}>{{data.Code}}&nbsp;({{data.Name}})</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label for="txtPrefix">Unit<span style="color:red">*</span></label>
+                        <select id="selUnit" placeholder="Pick an Unit" ng-model="UnitId" class="selectUI" ng-change="ProductPriceInfo()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Unit" value={{data.SlsUnitId}}>{{data.Unit}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Factory Cost<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="ProductPrices.nmFactoryCost.$dirty && ProductPrices.nmFactoryCost.$error.required">Required</span>                                              
+                        <span style="color:red" data-ng-show="ProductPrices.nmFactoryCost.$dirty && ProductPrices.nmFactoryCost.$error.pattern">Invalid Number</span>                         
+                        <input type="text" ng-model="ProductPrice.FactoryCost" class="form-control" id="txtFactoryCost"
+                               name="nmFactoryCost" maxlength="18" ng-pattern="/^\d+(\.\d{1,2})?$/"
+                               placeholder="" required>
+                       
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">MRP<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="ProductPrices.nmMRP.$dirty && ProductPrices.nmMRP.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="ProductPrices.nmMRP.$dirty && ProductPrices.nmMRP.$error.pattern">Invalid Number</span>                        
+                        <input type="text" ng-model="ProductPrice.MRP" class="form-control" id="txtMRP" name="nmMRP"
+                               maxlength="18" ng-pattern="/^\d+(\.\d{1,2})?$/" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Distributor Commission<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="ProductPrices.nmDistributorCommission.$dirty && ProductPrices.nmDistributorCommission.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="ProductPrices.nmDistributorCommission.$dirty && ProductPrices.nmDistributorCommission.$error.pattern">Invalid percentage</span>                        
+                        <input type="text" ng-model="ProductPrice.DistributorCommission" class="form-control" id="txtDistributorCommission" name="nmDistributorCommission" maxlength="5" ng-pattern="/^\d+(\.\d{1,2})?$/" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Retail Commission<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="ProductPrices.nmRetailCommission.$dirty && ProductPrices.nmRetailCommission.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="ProductPrices.nmRetailCommission.$dirty && ProductPrices.nmRetailCommission.$error.pattern">Invalid percentage</span>
+                        
+                        <input type="text" ng-model="ProductPrice.RetailCommission" class="form-control" id="txtRetailCommission"
+                               name="nmRetailCommission" maxlength="5" ng-pattern="/^\d+(\.\d{1,2})?$/" placeholder="" required>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+{
+                        <button type="submit" class="btn btn-success" ng-disabled="ProductPrices.$invalid" ng-click="Save(ProductPrices.$valid)">Save</button>
+}
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-8 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Price List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:10%">Code</th>
+                                <th style="width:10%">Product</th>
+                                <th style="width:10%">Unit</th>
+                                <th style="width:10%">Factory Cost (BDT)</th>
+                                <th style="width:15%">Distributor Commission (%)</th>
+                                <th style="width:10%">Retail Commission (%)</th>
+                                <th style="width:10%">MRP (BDT)</th>
+                                <th style="width:10%">Declaration Date</th>
+                                <th style="width:8%">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:5%">{{$index+1}}</td>
+                                    <td style="width:10%">{{resource.Code}}</td>
+                                    <td style="width:10%">{{resource.Name}}</td>
+                                    <td style="width:10%">{{resource.Unit}}</td>
+                                    <td style="width:10%">{{resource.FactoryCost}}</td>
+                                    <td style="width:15%">{{resource.DistributorCommission}}</td>
+                                    <td style="width:10%">{{resource.RetailCommission}}</td>
+                                    <td style="width:10%">{{resource.MRP}}</td>
+                                    <td style="width:10%">{{resource.DeclarationDate | jsonDate}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/ProductPriceController.js")"></script>
+
+}

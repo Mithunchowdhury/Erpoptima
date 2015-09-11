@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Stock Balance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content-header text-center">
+    <h2 class="section-title">Stock Balance</h2>
+</section>
+
+<div class="row content" ng-controller="StockBalanceReportController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+           
+
+            @using (Html.BeginForm("GetStockBalanceReport", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">                   
+                     
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-12 col-xs-12">Store</label>
+                            <select id="selStore" placeholder="Pick a store" ui-select2 ng-model="StoreId" name="StoreId" class="col-sm-12 col-xs-12">
+                                <option value=""></option>
+                                <option ng-repeat="data in Stores" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Show</button>
+                        <button type="reset" class="btn btn-default" ng-click="StoreId=0">Reset</button>
+                    </div>
+                </div>
+
+
+
+
+            }
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/StockBalanceReportController.js")"></script>
+
+}

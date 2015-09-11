@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+<script type="text/javascript">
+    
+    app.controller('Test', function ($scope, $http, Erpmodal) {
+        $scope.roles = [
+          { id: 1, text: 'guest' },
+          { id: 2, text: 'user' },
+          { id: 3, text: 'customer' },
+          { id: 4, text: 'admin' }
+        ];
+        $scope.user = {
+            roles: [2, 4]
+        };
+        $scope.Routes = [];
+        //$scope.Routes = [
+        //    { Id: 19, Name: 'abc' },
+        //    { Id: 29, Name: 'test' }
+        //];
+        function loadRoutes() {
+            $http({
+                url: '/Sales/RouteSetup/GetAllByOfficeId',
+                method: 'GET',
+                params: { officeId: 2 },
+                headers: { 'Content-Type': 'application/json' }
+            }).success(function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var obj = new Object();
+                    obj.Id = data[i].Id;
+                    obj.Name = data[i].Name
+                    $scope.Routes.push(obj);
+                }
+               
+            });
+        }
+        loadRoutes();
+        $scope.a = {
+            Routes: [19]
+        };
+        $scope.Save = function () {
+             ;
+            $scope.a.Routes.push(19);
+             ;
+        };
+    });
+</script>
+<div ng-controller="Test">
+    
+    <label ng-repeat="role in roles">
+        <input type="checkbox" checklist-model="user.roles" checklist-value="role.id"> {{role.text}}
+    </label>
+    <fieldset class="fieldset1">
+        <legend class="legend1">Saturday {{days[0]}}</legend>
+        <div class="checkbox">
+            <ul style="list-style:none;">
+                <li ng-repeat="route in Routes">
+                    <input type="checkbox" checklist-model="a.Routes" checklist-value="route.Id" /> {{route.Name}}
+
+                </li>
+            </ul>
+
+        </div>
+    </fieldset>
+    <fieldset class="fieldset1">
+        <legend class="legend1">Saturday {{days[0]}}</legend>
+        <div class="checkbox">
+            <ul style="list-style:none;">
+                <li ng-repeat="route in Routes">
+                    <input type="checkbox" checklist-model="a.Routes" checklist-value="route.Id" /> {{route.Name}}
+
+                </li>
+            </ul>
+
+        </div>
+    </fieldset>
+    <button type="submit" class="btn btn-success" ng-click="Save()">Save</button>
+</div>
+    @section scripts{
+
+
+        <script type="text/javascript" src="@Url.Content("/Scripts/date.js")"></script>
+        <script type="text/javascript" src="@Url.Content("/Scripts/moment.js")"></script>
+        <script type="text/javascript" src="@Url.Content("/Scripts/checklist-model.js")"></script>
+    }

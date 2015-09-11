@@ -1,0 +1,270 @@
+﻿@{
+    ViewBag.Title = "Distributor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+<h2 class="text-center section-title">Distributor</h2>
+<div ng-controller="DistributorController">
+    <section class="margin-top-10 col-sm-4 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Distributor Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="DistributorForm">
+                    <div class="form-group">
+                        
+                            <label>
+                                Region<span style="color:red">*</span>
+
+                                <span style="color:red" data-ng-show="DistributorForm.distRegionId.$dirty && DistributorForm.distRegionId.$error.required">Required</span>
+                            </label>
+                            <select id="CmbRegion" name="distRegionId" data-placeholder="Pick a Region" ng-model="Distributor.RegionId"
+                                    class="selectUI" required data-ui-select2 ng-change="RegionChangeHandler()">
+                                <option value=""></option>
+                                <option ng-repeat="region in RegionList" value={{region.Id}}>{{region.Name}}</option>
+                            </select>
+                        
+                    </div>
+                    <div class="form-group">
+
+                        <label>
+                            Branch Office<span style="color:red">*</span>
+
+                            <span style="color:red" data-ng-show="DistributorForm.distOfficeId.$dirty && DistributorForm.distOfficeId.$error.required">Required</span>
+                        </label>
+                        <select id="CmbOffice" name="distOfficeId" data-placeholder="Pick an Office" ng-model="Distributor.OfficeId"
+                                class="selectUI" required data-ui-select2 ng-change="OfficeChangeHandler()">
+                            <option value=""></option>
+                            <option ng-repeat="office in OfficeList" value={{office.Id}}>{{office.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label>
+                            Distirct<span style="color:red">*</span>
+
+                            <span style="color:red" data-ng-show="DistributorForm.distDistrictId.$dirty && DistributorForm.distDistrictId.$error.required">Required</span>
+                        </label>
+                        <select id="CmbDistrict" name="distDistrictId" data-placeholder="Pick a District" ng-model="Distributor.DistrictId"
+                                class="selectUI" required data-ui-select2 ng-change="DistrictChangeHandler()">
+                            <option value=""></option>
+                            <option ng-repeat="district in DistrictList" value={{district.Id}}>{{district.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label>
+                            Thana<span style="color:red">*</span>
+
+                            <span style="color:red" data-ng-show="DistributorForm.distThanaId.$dirty && DistributorForm.distThanaId.$error.required">Required</span>
+                        </label>
+                        <select id="CmbThana" name="distThanaId" data-placeholder="Pick a Thana" ng-model="Distributor.ThanaId"
+                                class="selectUI" required data-ui-select2 ng-change="ThanaChangeHandler()">
+                            <option value=""></option>
+                            <option ng-repeat="thana in ThanaList" value={{thana.Id}}>{{thana.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Distributor Code<span style="color:red">*</span>
+
+                            <span style="color:red" data-ng-show="DistributorForm.distCode.$dirty && DistributorForm.distCode.$error.required">Required</span>
+                            <span style="color:red" data-ng-show="DistributorForm.distCode.$dirty && DistributorForm.distCode.$error.pattern">Invalid distributor code.</span>
+                            <span style="color:red" data-ng-show="DistributorForm.distCode.$dirty && DistributorForm.distCode.$error.unique">Distributor code already exists.</span>
+                        </label>
+
+                        <input type="text" name="distCode" ng-model="Distributor.Code" class="form-control" id="txtCode" placeholder="Distributor Code"
+                               data-ng-pattern="/^[a-zA-Z0-9]{3}$/" ng-unique required ng-readonly="CodeState" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Name<span style="color:red">*</span>
+
+                            <span style="color:red" data-ng-show="DistributorForm.distName.$dirty && DistributorForm.distName.$error.required">Required</span>
+                            <span style="color:red" data-ng-show="DistributorForm.distName.$dirty && DistributorForm.distName.$error.pattern">Invalid distributor name.</span>
+                            <span style="color:red" data-ng-show="DistributorForm.distName.$dirty && DistributorForm.distName.$error.unique">Distributor name already exists.</span>
+                        </label>
+
+                        <input type="text" name="distName" ng-model="Distributor.Name" class="form-control" id="txtName" placeholder="Distributor Name" data-ng-pattern="/^[a-zA-Z0-9\s]{1,100}$/"
+                               dn-unique required ng-readonly="CodeState">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Description
+
+                            <!--<span style="color:red" data-ng-show="DistributorForm.distDescription.$dirty && DistributorForm.distDescription.$error.required">Required</span>-->
+                            <!--<span style="color:red" data-ng-show="DistributorForm.distDescription.$dirty && DistributorForm.distDescription.$error.pattern">Invalid description.</span>-->
+                        </label>
+                        <textarea cols="20" rows="1" name="distDescription" ng-model="Distributor.Description" class="form-control" id="txtDescription"
+                                  placeholder="" style="text-anchor: middle; max-width: 100%; width: 100%"
+                                  data-ng-pattern="/^[a-zA-Z0-9,.-_\s]{1,100}$/" ></textarea>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label>
+                            Address
+                        </label>
+                        <textarea cols="20" rows="1" ng-model="Distributor.Address" class="form-control" id="txtAddress" placeholder=""
+                                  style="text-anchor: middle; max-width: 100%; width: 100%"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Phone
+                            <span style="color:red" data-ng-show="DistributorForm.distPhone.$dirty && DistributorForm.distPhone.$error.pattern">Invalid Phone.</span>
+                        </label>
+                        <input type="text" name="distPhone" ng-model="Distributor.Phone" class="form-control" id="txtPhone"
+                               ng-pattern="/^[0-9]{2,4}[-]{1}[0-9]{6,7}$/">
+
+                    </div>
+                    <div class="form-group">
+                        <label>Responsible Person</label>
+                        <input type="text" ng-model="Distributor.ResponsiblePerson" class="form-control" id="txtRespPerson">
+                    </div>
+                    <div class="form-group">
+                        <label>Bank Name</label>
+                        <input type="text" ng-model="Distributor.BankName" class="form-control" id="txtBankName">
+                    </div>
+                    <div class="form-group">
+                        <label>Bank A/C</label>
+                        <input type="text" ng-model="Distributor.BankAccount" class="form-control" id="txtBankAccount">
+                    </div>
+                    <div class="form-group">
+                        <label>Credit Limit<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="DistributorForm.txtCreditLimit.$dirty && DistributorForm.txtCreditLimit.$error.required">Required</span>
+                        <input type="number" ng-model="Distributor.CreditLimit" class="form-control right-align" id="txtCreditLimit" name="txtCreditLimit">
+                    </div>
+                    <div class="form-group">
+
+                        <label>
+                            Security deposit<span style="color:red">*</span>
+
+                            <span style="color:red" data-ng-show="DistributorForm.SecurityDeposit.$dirty && DistributorForm.SecurityDeposit.$error.required">Required</span>
+                        </label>
+                        <input type="number" name="SecurityDeposit" ng-model="Distributor.SecurityDeposit" class="form-control right-align" id="SecurityDeposit" required>
+
+                    </div>
+                    <div class="form-group">
+                        <label>Sales Target</label>
+                        <span style="color:red" data-ng-show="DistributorForm.txtSalesTarget.$dirty && DistributorForm.txtSalesTarget.$error.pattern">Invalid Amount</span>
+                        <span style="color:red" data-ng-show="DistributorForm.txtSalesTarget.$dirty && DistributorForm.txtSalesTarget.$error.maxlength">Max Value 10 digits allow </span>
+                                               
+                        <input type="number" ng-model="Distributor.SalesTarget" class="form-control right-align" id="txtSalesTarget" name="txtSalesTarget" value="0" min="0" max="9999999999" ng-maxlength="10" placeholder="" /> 
+                    </div>
+                    <div class="form-group">
+                        <label>Rate of Commision</label>
+                        <input type="number" ng-model="Distributor.RateOfCommission" class="form-control right-align" id="txtRateOfCommission">
+
+                    </div>
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <textarea cols="20" rows="1" ng-model="Distributor.Remarks" class="form-control" id="txtRemarks" placeholder=""
+                                  style="text-anchor: middle; max-width: 100%; width: 100%"></textarea>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="distIsAllCompany" ng-model="Distributor.IsAllCompany" />All company
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="DistributorForm.$invalid" ng-click="Save(DistributorForm.$valid)">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-8 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Distributor List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:8%">Code</th>
+                                <th style="width:22%">Name</th>
+                                <th style="width:25%">Description</th>
+                                <th style="width: 13%">Phone</th>
+                                <th style="width: 20%">Address</th>
+                                <th style="width:10%">Action</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in DistributorList | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:8%">{{resource.Code}}</td>
+                                    <td style="width:22%">{{resource.Name}}</td>
+                                    <td style="width:25%">{{resource.Description}}</td>
+                                    <td style="width:13%">{{resource.Phone}}</td>
+                                    <td style="width:20%">{{resource.Address}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/DistributorController.js")"></script>
+
+}

@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Target List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Sales Target List</h2>
+<div ng-controller="SalesTargetController" ng-init="GetTargetList()">
+    <section class="margin-top-10 col-sm-8 col-sm-offset-2 col-xs-12">
+        <div class="box box-primary margin">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Target List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:7%">SL</th>
+                                <th style="width:20%">Ref. No</th>
+                                <th style="width:10%">Month</th>
+                                <th style="width:20%">Employee</th>
+                                <th style="width:15%">Target Amount</th>
+                                <th style="width:18%">Remarks</th>
+                                <th style="width:8%">Action</th>
+                                <th style="width:2%"></th> 
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="t in TargetList | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:7%">{{$index+1}}</td>
+                                    <td style="width:20%">{{t.RefNo}}</td>
+                                    <td style="width:10%">{{t.MonthName}}</td>
+                                    <td style="width:20%">{{t.Employee}}</td>
+                                    <td style="width:15%">{{t.TargetSalesAmount}}</td>
+                                    <td style="width:18%">{{t.Remarks}}</td>
+                                    <td style="width:8%">
+                                        <button class="btn btn-success btn-xs" ng-click="GoToSalesTarget(t)"><i class="fa fa-edit"></i>Details</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/SalesTargetController.js")"></script>
+
+}

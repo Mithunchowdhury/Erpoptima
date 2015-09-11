@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Receipt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content-header">
+
+    <h2 class="text-center section-title">Receipt Report</h2>
+</section>
+
+<div class="row content" ng-controller="VoucherReportController">
+    <section class="margin-top-10 col-sm-6 col-sm-offset-3 col-xs-12">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                @*<i class="fa fa-search"></i>
+                    <h3 class="box-title"> Search</h3>*@
+            </div>
+
+            @using (Html.BeginForm("GetAnfVoucherList", "Report", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search", target = "_blank" }))
+            {
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label>Date From</label>
+                            <input type="text" class="form-control datetimepicker" name="DateFrom" ng-model="Voucher.DateFrom" required>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label>Date To</label>
+                            <input type="text" class="form-control datetimepicker" name="ToDate" ng-model="Voucher.ToDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Cost Center :</label>
+                        <select class="selectUI" name="CostcenterId" ng-model="Voucher.CostcenterId" data-placeholder="Pick a CostCenter" data-ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="costcenter in CostCenters" value="{{costcenter.Id}}">{{costcenter.Name}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="radio" ng-init="Voucher.VoucherTypeId=0">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="0" />
+                                Both Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="1" />
+                                Cash Receive Voucher
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="">
+                                <input type="radio" name="VoucherTypeId" ng-model="Voucher.VoucherTypeId" value="2" />
+                                Bank Receive Voucher
+                            </label>
+                        </div>
+
+                    </div>
+                    <input type="hidden" name="ReportType" value="6" />
+                    <input type="hidden" name="VoucherTypeId" value="2" />
+
+                    <div class="form-group center-align" ng-show="SumbitShow">
+                        <button type="submit" id="VoucherButton" class="btn btn-primary" ng-disabled="Search.$invalid" @*ng-click="GetVoucher()"*@>Show Report</button>
+                    </div>
+
+                    @*</form>*@
+                </div><!-- /.box-body-->
+
+
+
+
+            }
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/Report_Voucher.js")"></script>
+
+}

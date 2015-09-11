@@ -1,0 +1,193 @@
+﻿@{
+    ViewBag.Title = "Expense";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Expense</h2>
+<div ng-controller="ExpenseListController">
+
+    <section class="col-sm-4 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-refresh"></i>
+                <h3 class="box-title">
+                    Expense
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <form role="form" name="WebForm">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="txtName">Ref No<span style="color:red">*</span></label>
+                            <input type="text" ng-model="Code" class="form-control" id="txtName" placeholder="" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="cmbMode">Cost Center :<span style="color:red">*</span></label>
+                            <select class="selectUI" data-placeholder="Pick a Cost Center" data-ui-select2="costCenter" id="CostcenterId" name="CostcenterId" ng-model="Ledger.CostcenterId">
+                                <option value=""></option>
+                                <option ng-repeat="costcenter in CostCenters" value="{{costcenter.Id}}">{{costcenter.Name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cmbMode">Transactional Head :<span style="color:red">*</span></label>
+                            <select class="selectUI" data-placeholder="Pick a Transactional Head" data-ui-select2="transactionalHead" id="AnFChartOfAccountId" name="AnFChartOfAccountId" ng-model="Ledger.AnFChartOfAccountId" required>
+                                <option value=""></option>
+                                <option ng-repeat="transactionalHead in TransactionalHeads" value="{{transactionalHead.Id}}">{{ transactionalHead.Name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtParticular">
+                                Particular<span style="color:red">*</span>
+                                @*<span style="color:red" data-ng-show="monthlocks.monthName.$dirty && monthlocks.monthName.$error.required">Required</span>*@
+                            </label>
+                            <input type="text" class="form-control" id="txtParticular" name="txtParticular" ng-model="Expens.Particular" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtExpDate">
+                                Date<span style="color:red">*</span>
+
+                            </label>
+                            <input type="text" class="form-control datetimepicker" id="txtExpDate" name="txtExpDate" ng-model="Expens.Date" placeholder="" datetimepicker required>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtExpBill">Bill No</label>
+                            <input type="text" class="form-control" id="txtExpBill" name="txtExpBill" ng-model="Expens.BillNo" placeholder="">
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="cmbMode">
+                                Mode<span style="color:red">*</span>
+                            </label>
+                            <select class="selectUI" data-placeholder="Pick a Mode" data-ui-select2="mode" id="cmbMode" name="txtMode" ng-model="Expens.Mode" ng-change="" required>
+
+                                <option value="0"></option>
+                                <option value="1">Cash</option>
+                                <option value="2">Check</option>
+                                @*<option ng-repeat="" value={{soRefNo.Id}}>{{soRefNo.RefNo}}</option>*@
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtNarration">Narration<span style="color:red">*</span></label>
+                            <input type="text" class="form-control" id="txtNarration" name="txtNarration" ng-model="Expens.Narration" placeholder="" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Attachment</label>
+                            <input type="file" class="filestyle" ng-model="Expens.FileLocation" placeholder="">
+                        </div>
+
+
+                    </div><!-- /.box-body -->
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="WebForm.$invalid" ng-click="Save(WebForm.$valid)">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-model="Delete" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                    <br />
+
+
+
+                </form>
+            </div><!-- /.box-body-->
+        </div>
+
+    </section>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Expense List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">SL</th>
+                                <th style="width:20%">Particular</th>
+                                <th style="width:17%">Date</th>
+                                <th style="width:15%">Bill No</th>
+                                <th style="width:13%">Mode</th>
+                                <th style="width:20%">Narration</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="allexpense in ExpensListEntry | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:5%">{{$index+1}}</td>
+                                    <td style="width:20%">{{allexpense.Particular}}</td>
+                                    <td style="width:17%">{{allexpense.Date | jsonDate}}</td>
+                                    <td style="width:15%">{{allexpense.BillNo}}</td>
+                                    <td style="width:13%">{{allexpense.Mode}}</td>
+                                    <td style="width:20%">{{allexpense.Narration}}</td>
+
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{allexpense.Id}}" ng-click="setForEdit(allexpense)"><i class="fa fa-edit"></i>Edit</button>
+                                        </td>
+                                        @*<td style="width:8%">
+                                                <button class="btn btn-success btn-xs" id="printRowBtn{{allexpense.Id}}" ng-click="printExpense(resource)"><i class="fa fa-edit"></i>Print</button>
+                                            </td>*@
+
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+    </form>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/ExpenseListController.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/blockUI.js")"></script>
+}

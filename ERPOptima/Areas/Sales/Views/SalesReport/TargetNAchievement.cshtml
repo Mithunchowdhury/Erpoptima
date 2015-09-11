@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "TargetNAchievement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/Sales/Report_TargetNAchievementController.js"></script>
+
+<section class="content-header ">
+    <h2 class="text-center section-title">TargetNAchievement</h2>
+</section>
+
+<div class="row content" ng-controller="TargetNAchievementReport">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-info">
+
+            @using (Html.BeginForm("GetTargetNAchievementReport", "SalesReport", FormMethod.Get, new { area = "Sales", name = "Search", id = "Search", target = "_blank" }))
+            {
+                <div class="box-body">
+                    <div class="form-group">
+                        
+                            <label>
+                                Month<span style="color:red">*</span>
+                            </label>
+                            <select class="selectUI" ui-select2 ng-model="MonthId" name="MonthId" data-placeholder="Pick a Month" required>
+                                    <option value="0"></option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                              </select>                            
+                        
+                    </div>
+                    <div class="form-group">
+                        
+                            <label>
+                                Year<span style="color:red">*</span>
+                            </label>
+                            <select class="selectUI" ui-select2 ng-model="YearId" name="YearId" data-placeholder="Pick a Year" required>
+                                <option value="0"></option>
+                                @{
+                int y = DateTime.Now.Year;
+                for (int i = y - 10; i <= y; i++)
+                {
+                    var year = i;
+                        <option value=@year>@year</option>
+
+                }
+
+                                }
+
+
+                            </select>
+
+
+                           
+                        
+                    </div>
+                   
+                        <div class="form-group">
+                            <label>SR/Sales Executive/Sales Person</label>
+                            <select class="selectUI" ui-select2 ng-model="EmployeeId" name="EmployeeId" data-placeholder="Pick a Person">
+                                <option value="0"></option>
+                                <option ng-repeat="data in Employee" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    
+
+
+                    <br />
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary">Show</button>
+                        <button type="reset" id="SearchButton" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+    </section>
+
+        <style type="text/css">
+            table {
+                table-layout: fixed;
+            }
+
+            .div-table-content {
+                height: 400px;
+                overflow-y: auto;
+            }
+        </style>
+    </div>

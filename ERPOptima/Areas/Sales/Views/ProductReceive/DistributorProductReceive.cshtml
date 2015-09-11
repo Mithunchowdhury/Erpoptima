@@ -1,0 +1,218 @@
+﻿@{
+    ViewBag.Title = "Product Receive (Distributor)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Product Receive</h2>
+<div ng-controller="ProductRecievedDistController">
+    <section class="col-sm-6 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class=" box-header" style="cursor: move;">
+                <i class="fa fa-refresh"></i>
+                <h3 class="box-title">
+                    Product Received Information (Distributor)
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <form role="form" name="ProductRecieved">
+                    <div class="box-body">
+                        <div class="form-group">
+                           
+                                <label class="col-sm-12 col-xs-12">
+                                    Sales Order<span style="color:red">*</span>
+                                    <span style="color:red" data-ng-show="ProductRecieved.nmCmbRequisition.$dirty && ProductRecieved.nmCmbRequisition.$error.required">Required</span>
+                                </label>
+                                <select id="CmbRequisition" name="nmCmbRequisition" data-placeholder="Pick a Sales Order Ref No." ng-model="SalesOrderId" class="selectUI"
+                                        ng-change="GetDeliveryBySO()" data-ui-select2 required>
+                                    <option value=""></option>
+                                    <option ng-repeat="data in SalesOrder" value={{data.Id}}>{{data.RefNo}}</option>
+                                </select>
+                         
+                        </div>
+                        <div class="form-group">
+                            
+                                <label class="col-sm-12 col-xs-12">
+                                    Issue<span style="color:red">*</span>
+                                    <span style="color:red" data-ng-show="ProductRecieved.nmCmbIssue.$dirty && ProductRecieved.nmCmbIssue.$error.required">Required</span>
+                                </label>
+                                <select id="CmbIssue" name="nmCmbIssue" data-placeholder="Delivery Challan No." ng-model="DeliveryId" class="selectUI"
+                                        ng-change="GetProductListByDelivery()" data-ui-select2 required ng-disabled="DeliveryComboDisable">
+                                    <option value=""></option>
+                                    <option ng-model="Deliveries" value={{Deliveries.Id}}>{{Deliveries.ChallanNo}}</option>
+                                </select>
+                           
+                        </div>
+                        @*<div class="form-group">
+                                <label>Challan No<span style="color:red">*</span></label>
+                                <span style="color:red" data-ng-show="ProductRecieved.nmChallanNo.$dirty && ProductRecieved.nmChallanNo.$error.required">Required</span>
+                                <span style="color:red" data-ng-show="ProductRecieved.nmChallanNo.$dirty && ProductRecieved.nmChallanNo.$error.pattern">Invalid Number</span>
+                                <input type="text" ng-model="ProductRecieve.ChallanNo" class="form-control" id="txtChallan" name="nmChallanNo" maxlength="32" ng-pattern="/^\w+(\s\w)?$/" placeholder="" required>
+                            </div>*@
+
+                        <div class="box box-primary">
+                            <div class="box-header" style="cursor: move;">
+                                <i class="fa fa-table"></i>
+                                <h3 class="box-title">
+                                    Product List
+                                </h3>
+                                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchCategoryList" placeholder="Search" />
+                            </div>
+                            <div class="box-body no-padding">
+                                <div class="panel panel-default">
+                                    <table class="table  table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th style="width:10%">SL</th>
+                                                <th style="width:30%">Product</th>
+                                                <th style="width:15%">Delivered Quantity</th>
+                                                <th style="width:15%">Received Quantity</th>
+                                                <th style="width:30%">Remarks</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="div-secondary-table-content">
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <tr ng-repeat="category in Categories | filter:SearchCategoryList">
+                                                    <td><input type="hidden" ng-model="category.Id" readonly></td>
+                                                    <td style="width:10%">{{$index+1}}</td>
+                                                    <td style="width:30%">
+                                                        <select id="CmbProduct" placeholder="Pick a Product" ng-model="category.SlsProductId" disabled="true"
+                                                                class="selectUI" ui-select2>
+                                                            <option value="0"></option>
+                                                            <option value={{category.SlsProductId}}>{{category.PrName}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="width:15%">
+                                                        <input style="width:80%" type="number" name="nmIssuedQuantity{{$index.Id}}" class="right-align" maxlength="15" ng-pattern="/^\d+$/" ng-model="category.DeliveryQuantity" readonly />
+                                                    </td>
+                                                    <td style="width:15%">
+                                                        @*As quantity can't be decimal .00 is considered for 18 length value, active length 18 - 3 = 15 *@
+                                                        <input style="width:80%" type="number" name="nmReceivedQuantity{{$index.Id}}" class="right-align" maxlength="15" ng-pattern="/^\d+$/" ng-model="category.ReceivedQuantity" />
+
+                                                    </td>
+                                                    <td style="width:30%">
+                                                        <input style="width:80%" type="text" ng-model="category.Remarks" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" ng-model="category.SlsUnitId" readonly>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div>
+                                </div>
+                                <div ng-class="{overlay:ShowLoading}"></div>
+                                <div class="{loading-img:ShowLoading}"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Invoice No
+                            </label>
+                            <input type="text" name="invoiceNo" ng-model="ProductRecieve.InvoiceNo" class="form-control" id="txtInvoiceNo" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Vehicle No
+                            </label>
+                            <input type="text" name="vehicleNo" ng-model="ProductRecieve.VehicleNo" class="form-control" id="txtVehicleNo" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Received Date<span style="color:red">*</span>
+                                <span style="color:red" data-ng-show="ProductRecieved.rcvDate.$dirty && ProductRecieved.rcvDate.$error.required">Required</span>
+                            </label>
+                            <input type="text" name="rcvDate" class="form-control datetimepicker" ng-model="ProductRecieve.RcvDate" datetimepicker required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtRemarks">Remarks</label>
+                            <textarea cols="20" rows="2" ng-model="ProductRecieve.Remarks" class="form-control" id="txtRemarks" placeholder=""></textarea>
+                        </div>
+                    </div><!-- /.box-body -->
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="ProductRecieved.$invalid" ng-click="Save()">Save</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                    <br />
+                </form>
+            </div><!-- /.box-body-->
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="col-sm-6 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Product List
+                </h3>
+                <input type="text" style="margin:8px" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:30%">Product</th>
+                                <th style="width:13%">Unit</th>
+                                <th style="width:15%">Delivered Quantity</th>
+                                <th style="width:15%">Received Quantity</th>
+                                <th style="width:15%">Remarks</th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList">
+                                    <td style="width:10%">{{$index+1}}</td>
+                                    <td style="width:30%">{{resource.PrName}}</td>
+                                    <td style="width:13%">{{resource.UName}}</td>
+                                    <td style="width:15%">{{resource.DeliveryQuantity}}</td>
+                                    <td style="width:15%">{{resource.ReceivedQuantity}}</td>
+                                    <td style="width:15%">{{resource.Remarks}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div><!-- /.box-body-->
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+    </section>
+</div>
+<script src="~/Scripts/Sales/ProductRecievedDistController.js"></script>

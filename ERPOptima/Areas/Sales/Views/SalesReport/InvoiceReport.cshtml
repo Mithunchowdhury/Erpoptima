@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "InvoiceReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/Sales/ReportInvoiceController.js"></script>
+<h2 class="text-center section-title">Invoice</h2>
+
+
+<div class="row content" ng-controller="ReportInvoice">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+
+                @*<i class="fa fa-search"></i>
+                    <h3 class="box-title"> Search</h3>*@
+            </div>
+
+
+            @using (Html.BeginForm("GetInvoiceList", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">                 
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4  col-xs-12">Invoice No :</label>
+                            <select class="col-sm-8  col-xs-12" ui-select2 ng-model="InvoiceId" name="InvoiceId" data-placeholder="Pick a Invoice No">
+                                <option value=""></option>                               
+                                <option ng-repeat="data in Invoice" value={{data.InvoiceNo}}>{{data.InvoiceNo}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary">Show</button>
+                        <button type="reset" id="SearchButton" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </div>
+
+
+
+
+            }
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+

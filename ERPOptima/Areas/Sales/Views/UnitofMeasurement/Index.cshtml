@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Unit O fMeasurement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+
+}
+
+<h2 class="text-center section-title">Unit of Measurement </h2>
+<div ng-controller="UnitOfMeasurement">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Measurement Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="UnitOfMeasurements">
+
+                    <div class="form-group">
+
+                        <label for="txtName">Name<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="UnitOfMeasurements.txtName.$dirty && UnitOfMeasurements.txtName.$error.required">Required</span>                        
+                        <span style="color:red" data-ng-show="UnitOfMeasurements.txtName.$dirty && UnitOfMeasurements.txtName.$error.pattern">Invalid Name</span>                        
+                        <input type="text" ng-model="UnitOfMeasurement.Name" class="form-control" id="txtName" name="txtName" placeholder="" data-ng-pattern="/^[a-zA-Z0-9\s]{3,32}$/" required>
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="txtType">Prefix/Short Name<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="UnitOfMeasurements.txtShortName.$dirty && UnitOfMeasurements.txtShortName.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="UnitOfMeasurements.txtShortName.$dirty && UnitOfMeasurements.txtShortName.$error.pattern">Invalid code</span>                        
+                        
+                        <input type="text" name="txtShortName" ng-model="UnitOfMeasurement.ShortName" class="form-control" id="txtShortName" placeholder="" data-ng-pattern="/^[a-zA-Z]{1,10}$/" required>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+{
+    <button type="submit" class="btn btn-success" ng-disabled="UnitOfMeasurements.$invalid" ng-click="Save(UnitOfMeasurements.$valid)">Save</button>
+}
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Measurement List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:50%">Name</th>
+                                <th style="width: 38%">Prefix/Short Name</th>
+                                <th></th>
+                                <th style="width:2%"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:50%">{{resource.Name}}</td>
+                                    <td style="width:38%">{{resource.ShortName}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:10%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(resource)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/UnitofMeasurement.js")"></script>
+
+}

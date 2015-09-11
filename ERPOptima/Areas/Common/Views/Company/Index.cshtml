@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Company";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Company Information</h2>
+<div ng-controller="company">
+    <div class="margin-top-10 col-md-4 col-sm-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Company Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="CompanyForm">
+                    @*<div class="form-group">
+                            <div class="row">
+                                <label class="col-xs-12" for="cmbCountry">Group</label>
+                                <select id="cmbGroup" data-placeholder="Pick a Group" class="col-xs-12" ng-model="Company.SecGroupId" data-ui-select2>
+                                    <option class=""></option>
+                                    <option ng-repeat="data in SecGroups" value={{data.Id}}>{{data.Name}}</option>
+                                </select>
+                            </div>
+                        </div>*@
+                    <div class="form-group">
+                        <label for="txtName">Name<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="CompanyForm.txtName.$dirty && CompanyForm.txtName.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="CompanyForm.txtName.$dirty && CompanyForm.txtName.$error.pattern">Invalid company name.</span>
+                        <input type="text" ng-model="Company.Name" class="form-control" id="txtName" name="txtName" placeholder="Name" data-ng-pattern="/^[a-zA-Z\s]{3,64}$/" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtAddress">Address</label>
+                        <input type="text" ng-model="Company.Address" class="form-control" id="txtAddress" maxlength="128" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtContactNo">Contact No</label>
+                        <input type="text" ng-model="Company.ContactNo" class="form-control" id="txtContactNo" maxlength="64" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmail">Email</label>
+                        <input type="email" ng-model="Company.Email" class="form-control" id="txtEmail" maxlength="64" placeholder="example@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <input type="text" ng-model="Company.Remarks" class="form-control" id="txtRemarks" maxlength="256" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtWeb">Web</label>
+                        <input type="text" ng-model="Company.Web" class="form-control" id="txtWeb" maxlength="64" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPrefix">Prefix<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="CompanyForm.txtPrefix.$dirty && CompanyForm.txtPrefix.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="CompanyForm.txtPrefix.$dirty && CompanyForm.txtPrefix.$error.pattern">Invalid prefix.</span>
+                        <input type="text" ng-model="Company.Prefix" class="form-control" id="txtPrefix" name="txtPrefix" maxlength="5" data-ng-pattern="/^[a-zA-Z\s]{3,5}$/" required="required">
+                    </div>
+                    <div class="box-footer text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="CompanyForm.$invalid" ng-click="Save(CompanyForm.$valid)">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="CompanyForm.$invalid" ng-click="Delete(CompanyForm.$valid)">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="margin-top-10 col-md-8 col-sm-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Company Table</h3>
+            </div>
+            <div class="box-body">
+                <div>
+                    <table ng-table="tableParams" class="table">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'S.L'">{{$index+1}}</td>
+                                <td class="rowTd" data-title="'Name'" data-sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Address'" data-sortable="'Address'">{{data.Address}}</td>
+                                <td class="rowTd" data-title="'Contact No'" data-sortable="'ContactNo'">{{data.ContactNo}}</td>
+                                <td class="rowTd" data-title="'Email'" data-sortable="'Email'">{{data.Email}}</td>
+                                <td class="rowTd" data-title="'Web'" data-sortable="'Web'">{{data.Web}}</td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd text-center" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                        @*<button class="btn btn-danger btn-xs" id="editRowBtn{{data.Id}}" ng-click="Delete(data.Id)"><i class="glyphicon glyphicon-remove"></i> Delete</button>*@
+
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+                    </table>
+                    @*<div style="margin-top:-45px !important">
+                            <button class="btn btn-default" ng-click="previous()">Previous</button>
+                            <button class="btn btn-default" ng-click="next()">Next</button>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Common/Company.js")"></script>
+
+}

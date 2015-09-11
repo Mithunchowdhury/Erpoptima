@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Chart Of Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Chart Of Product</h2>
+<div class="row margin" ng-controller="ChartOfProductController">
+    <section class="col-lg-6 col-md-6 col-sm-6">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-refresh"></i>
+                <h3 class="box-title">
+                    Chart Of Product
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <abn-tree tree-data="my_data" tree-control="my_tree" on-select="my_tree_handler(branch)" expand-level="2"></abn-tree>
+            </div><!-- /.box-body-->
+            <div ng-class="{overlay:ShowLoading}"></div>
+            <div class="{loading-img:ShowLoading}"></div>
+        </div>
+    </section>
+    <section class="col-lg-6 col-md-6 col-sm-6">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">
+                    Information
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <form role="form" name="Product">
+                    <div class="box-body">
+                        <div class="form-group" ng-hide="HideCatSubCat">
+                            <label for="selCategory">Category</label>
+                            <select id="selCategory" placeholder="Pick a category" ui-select2 ng-model="CategoryId" class="selectUI" ng-change="GetSubCategory()">
+                                <option value=""></option>
+                                <option ng-repeat="data in Category" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-hide="HideSubCat">
+                            <label for="selSubCategory">Sub Category</label>
+                            <select id="selSubCategory" placeholder="Pick a sub category" ui-select2 ng-model="SubCategoryId" class="selectUI">
+                                <option value=""></option>
+                                <option ng-repeat="data in SubCategory" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="productCode">Code</label><label style="color:red">*</label>
+                            <span style="color:red" data-ng-show="Product.nmCode.$dirty && Product.nmCode.$error.required">Required</span>
+                            <span style="color:red" data-ng-show="Product.nmCode.$dirty && Product.nmCode.$error.pattern">Invalid Code</span>
+                            <input type="text" class="form-control" id="productCode" name="nmCode" ng-model="SlsChartOfProduct.information.Code" maxlength="32" data-ng-pattern="/^[a-zA-Z0-9]{1,32}$/" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productName">Name</label><label style="color:red">*</label>
+                            <span style="color:red" data-ng-show="Product.nmName.$dirty && Product.nmName.$error.required">Required</span>
+                            <span style="color:red" data-ng-show="Product.nmName.$dirty && Product.nmName.$error.pattern">Invalid Name</span>
+                            <input type="text" class="form-control" name="nmName" id="productName" ng-model="SlsChartOfProduct.information.Name" data-ng-pattern="/^[a-zA-Z0-9\s]{3,32}$/" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtDescription">Description/Specification</label>@*<label style="color:red">*</label>*@
+                            @*<span style="color:red" data-ng-show="Product.txtDescription.$dirty && Product.txtDescription.$error.required">Required</span>*@
+                            <textarea cols="20" rows="2" ng-model="SlsChartOfProduct.information.Description" class="form-control" id="txtDescription" name="txtDescription" placeholder=""></textarea>
+                        </div>
+                        <div class="checkbox" ng-hide="HideIsProduct">
+                            <label>
+                                <input type="checkbox" name="isProduct" ng-disabled="ProductDisable" ng-model="SlsChartOfProduct.information.IsProduct"> Is Product
+                            </label>
+                        </div>
+                        <div class="checkbox"> @*ng-hide="HideNoCredit"*@
+                            <label>
+                                <input type="checkbox" name="status" ng-model="SlsChartOfProduct.information.NoCredit"> No credit
+                            </label>
+                        </div>
+                    </div><!-- /.box-body -->
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="Product.$invalid" ng-click="Save(Product.$valid)">Save</button>
+
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDeleteDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div><!-- /.box-body-->
+        </div>
+    </section>
+</div>
+<div class="row">
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/abn_tree_directive.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/ChartOfProductController.js")"></script>
+
+}
+
+
+@section css{
+    <link href="~/Content/tree/abn_tree.css" rel="stylesheet" />
+}

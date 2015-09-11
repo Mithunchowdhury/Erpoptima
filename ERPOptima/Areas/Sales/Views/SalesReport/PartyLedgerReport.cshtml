@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "PartyLedgerReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header text-center">
+    <h2 class="section-title">Party Ledger</h2>
+</section>
+
+<div class="row content" ng-controller="PartyLedgerReportController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+
+            @using (Html.BeginForm("GetPartyLedgerReport", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12">
+                                Date From<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " name="dateFrom" ng-model="DateFrom" required placeholder="" datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12">
+                                Date To<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " name="dateTo" ng-model="DateTo" placeholder="" required datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-10 col-xs-10">Party Type<span style="color:red">*</span></label>
+                            <select class="col-sm-10 col-xs-10" ui-select2 ng-model="typeId" name="type" data-placeholder="Pick a Party Type" ng-change="GetParty()" required>
+                                <option value=""></option>
+                                <option value="1">Distributor</option>
+                                <option value="2">Retailer</option>
+                                <option value="3">Corporate Client</option>
+                                <option value="4">Dealer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-10 col-xs-10">Party<span style="color:red">*</span></label>
+                            <select data-placeholder="Pick a Party" ng-model="partyId" name="partyId" class="col-sm-10 col-xs-10" ui-select2 required>
+                                <option value=""></option>
+                                <option ng-repeat="data in Parties" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Show</button>
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </div>
+
+
+
+
+            }
+        </div>
+    </section>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/PartyLedgerReportController.js")"></script>
+
+}

@@ -1,0 +1,66 @@
+﻿
+@*<script>
+    $(function () {
+        var html = '';
+        var dt;
+        $.getJSON("/Home/GetMenuByUserIdAndModuleId", function (data) {
+            dt = data;
+            for (var i = 0; i < dt.length; i++) {
+
+                if (dt[i].SecResourcesId == 0) {
+
+                    html += '<li id=' + dt[i].Id + ' class="treeview roottree"><div><i class="fa fa-th"></i> <span>' + dt[i].DisplayName + '</span></div></li>';
+                    dt.splice(i, 1);
+                    i -= 1;
+                }
+
+            }
+
+            $(".sidebar-menu").append(html);
+
+            for (var i = 0; i < dt.length; i++) {
+
+                if ($("#" + dt[i].SecResourcesId + " .treeview-menu").length == 0) {
+                    $("#" + dt[i].SecResourcesId + "").append('<ul class="treeview-menu" style="display: none;"></ul>');
+                }
+                var markup = '<li id=' + dt[i].Id + ' class="treeview childmenu"><a href="' + dt[i].Name + '"><i class="fa fa-th"></i> <span>' + dt[i].DisplayName + '</span></a></li>';
+                $("#" + dt[i].SecResourcesId + " .treeview-menu").append(markup);
+
+                dt.splice(i, 1);
+                i -= 1;
+            }
+
+        });
+
+        $(document).on("click", ".treeview", function (e) {
+            e.stopPropagation();
+            if ($(this).children(".treeview-menu").css("display") == "none") {
+                $(this).children(".treeview-menu").css("display", "block").css("margin-left", "7%");
+
+            }
+
+            else {
+                $(this).children(".treeview-menu").css("display", "none");
+            }
+        });
+
+
+
+
+    })
+</script>*@
+
+
+
+    <ul class="sidebar-menu" ng-controller="menuController" family="Menus" menu>
+
+    </ul>
+
+
+
+
+
+    
+
+
+

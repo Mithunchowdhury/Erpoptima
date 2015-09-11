@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "DepositAndPrepaymentReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content-header ">
+    <h2 class="text-center section-title">Deposit And Prepayment Report</h2>
+</section>
+
+<div ng-controller="DepositAndPrepaymentController">
+
+    <section class="margin-top-10 col-sm-6 col-sm-offset-3 col-xs-12">
+
+        <div class="box box-primary">
+
+            @using (Html.BeginForm("GetDailySalesReport", "Report", FormMethod.Get, new { area = "Accounts", target = "_blank" }))
+            {
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="lblDateFrom">
+                                Date From:<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control" id="startDate" name="DateFrom" ng-model="StartDate" required datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="lblDateTo">
+                                Date To:<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control" id="endDate" name="ToDate" ng-model="EndDate" required datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <label>Deposit/Prepayment:</label>
+                        <select class="selectUI" ng-model="" name="depositAndPrepayment" data-placeholder="Select one" data-ui-select2>
+                            <option value=""></option>
+                            <option value="1">Deposit</option>
+                            <option value="2">Prepayment</option>
+                        </select>
+                       
+                    </div>
+
+                    <br />
+
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary" ng-disabled="Search.$invalid">Show</button>
+                        <button type="reset" id="SearchButton" ng-click="Reset()" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Accounts/Report_DepositAndPrepaymentController.js")"></script>
+    
+}

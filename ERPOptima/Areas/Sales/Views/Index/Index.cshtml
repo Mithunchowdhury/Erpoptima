@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/canvasjs.min.js"></script>
+<script src="~/Scripts/Sales/DashboardController.js"></script>
+<h2 class="text-center section-title">Dashboard</h2>
+<style>
+    .container {
+        margin-top: 10px;
+        width: 100% !important;
+    }
+
+    #chartContainer {
+        margin-top: 10px;
+        height: 100% !important;
+        width: 100%;
+    }
+</style>
+
+<div class="container" ng-controller="ChartController">
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs" mc-toggle-active>               
+
+                <li ng-repeat="dashboard in dashboards" ng-class="{active: dashboard.IsActive}" ng-init="dashboard.IsActive==true?changeDashboard(dashboard.Tag):''">
+                    <a href="" ng-click="changeDashboard(dashboard.Tag)">{{dashboard.Name}}</a>
+                </li>
+                
+            
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="chartContainer"></div>
+        </div>
+    </div>
+</div>

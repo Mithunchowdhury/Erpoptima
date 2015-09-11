@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="AnF">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title :: ERP Optima</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/themes")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")*@
+
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/scripts")
+    @Scripts.Render("~/bundles/angular")
+    <script src="~/Scripts/ui-bootstrap-custom-tpls-0.10.0.min.js"></script>
+    <script src="~/Scripts/rwd-table.min.js"></script>
+    <script src="~/Scripts/checklist-model.js"></script>
+    @RenderSection("scripts", required: false)
+    @if (Request.IsAuthenticated)
+    {
+
+        <script type="text/javascript" src="@Url.Content("/Scripts/Home/menuController.js")"></script> 
+                <script type="text/javascript" src="@Url.Content("/Scripts/Security/ChangePassword.js")"></script>
+    }  
+    <style>
+        a[ng-click] {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="skin-blue" style="background-color: #F2F2F2">
+
+    @*style="background-image: url(/Images/escheresque.png)"*@
+
+    <header class="header">
+        @*@Html.ActionLink("ERP Optima", "Index", "Home", new { area = "" }, new { @class = "logo" })*@ 
+        <a class="logo" href="#" target="_blank"><img src="../../Content/Images/MEP_logo.gif" height="54" alt="Logo" /></a>
+        @*@Html.ActionLink("ERP Optima", "ErpUrl", "Home", new { area = "" }, new { target = "_blank", @class = "logo" })*@
+        
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-right" ng-controller="passwordChange">
+                    
+                    <ul class="nav navbar-nav">
+                        @*<li class="dropdown tasks-menu open">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-tasks"></i>
+                    <span class="label label-danger">{{User.Id}}</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="header">You have 9 tasks</li>
+                    <li>
+                        <!-- inner menu: contains the actual data -->
+                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
+                            <ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                <li>
+                                    <!-- Task item -->
+                                    <a href="#">
+                                        <h3>
+                                            Design some buttons
+                                            <small class="pull-right">20%</small>
+                                        </h3>
+                                        <div class="progress xs">
+                                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="sr-only">20% Complete</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li><!-- end task item -->
+                                <li>
+                                    <!-- Task item -->
+                                    <a href="#">
+                                        <h3>
+                                            Create a nice theme
+                                            <small class="pull-right">40%</small>
+                                        </h3>
+                                        <div class="progress xs">
+                                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="sr-only">40% Complete</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li><!-- end task item -->
+                                <li>
+                                    <!-- Task item -->
+                                    <a href="#">
+                                        <h3>
+                                            Some task I need to do
+                                            <small class="pull-right">60%</small>
+                                        </h3>
+                                        <div class="progress xs">
+                                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="sr-only">60% Complete</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li><!-- end task item -->
+                                <li>
+                                    <!-- Task item -->
+                                    <a href="#">
+                                        <h3>
+                                            Make beautiful transitions
+                                            <small class="pull-right">80%</small>
+                                        </h3>
+                                        <div class="progress xs">
+                                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="sr-only">80% Complete</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li><!-- end task item -->
+                            </ul><div class="slimScrollBar" style="width: 3px; position: absolute; top: 0px; opacity: 0.4; display: none; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px; z-index: 99; right: 1px; height: 188.679245283019px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div>
+                        </div>
+                    </li>
+                    <li class="footer">
+                        <a href="#">View all tasks</a>
+                    </li>
+                </ul>
+            </li>*@
+                        <li>
+                            <a href="~/Home/Index"><img src="../../Images/home.png" height="30" style=" margin-top: -5px" /></a>
+                        </li>
+                        <li style=" margin-top: 15px; color: palegoldenrod">
+                            <span>Welcome {{User.LoginName}}</span>
+                            @*<i class="fa fa-spin fa-gear"></i>*@
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav">
+                        @if (Request.IsAuthenticated)
+                        {
+
+                            <text>
+                                <li class="dropdown user user-menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                        <span>Profile <i class="caret"></i></span>
+                                    </a>
+                                    @*<ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header bg-light-blue">
+                                    <img src="../../Images/House.png" class="img-circle" alt="User Image">
+                                    <p>
+                                        Jane Doe - Web Developer
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <li class="user-body">
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Sales</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+                                        {
+                                            <a class="btn btn-danger" href="javascript:document.getElementById('logoutForm').submit()">Sign out</a>
+                                        }
+                                    </div>
+                                </li>
+
+                            </ul>*@
+                                    <ul class="dropdown-menu">
+                                        @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+                                        {
+                                            <li class="pull-right"><a class="btn btn-danger" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+
+                                        }
+                                    </ul>
+                                </li>
+                            </text>
+                        }
+                    </ul>
+
+                </div>
+            </nav>
+
+</header>
+    <div class="wrapper row-offcanvas row-offcanvas-left" >
+        <aside class="left-side sidebar-offcanvas ">
+
+            <section class="sidebar">
+              
+                     @Html.Partial("_MenuPartial")
+              
+                   
+                
+            </section>
+        </aside>
+        <aside class="right-side">
+            @RenderSection("featured", required: false)
+            @RenderBody()
+        </aside>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-right">
+                <p class="header footerLogo"><a target="_blank" href="http://www.erpoptima.com/" class="logo">ERP Optima</a></p><br clear="all" />
+                <p class="rights">All rights reserved &copy; @DateTime.Now.Year - ERP. Powered By: <a href="http://www.stargroup-bd.com/">Star Computer Systems Ltd.</a></p>
+            </div>
+        </div>
+        @*<div class="content-wrapper">
+                <div class="float-left">
+                    <p>Powered By: <a href="http://www.stargroup-bd.com/">Star Computer Systems Ltd.</a></p>
+                </div>
+            </div>*@
+    </footer>
+</body>
+</html>

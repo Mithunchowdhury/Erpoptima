@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center section-title">Requision List</h2>
+<div ng-controller="RequisionList">
+    <section class="margin-top-10 col-sm-4 col-sm-offset-4 col-xs-12">
+        <div class="box box-primary ">
+            <div class="box-body no-padding margin">
+                <form name="RequisionLists">
+                    <div class="form-group">
+                        <label for="txtName"> Start Date</label>
+                        <input type="text" class="form-control" id="txtStartDate" ng-model="StartDate" placeholder="" datetimepicker>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">End Date</label>
+                        <input type="text" class="form-control dpkr " id="txtEndDate" ng-model="EndDate" placeholder="" datetimepicker>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-12  col-xs-12">Status:</label>
+                            <select placeholder="Pick an Status" ng-model="Status" class="col-sm-12 col-xs-12" ui-select2>
+                                <option value=""></option>
+                                <option value="0">New</option>
+                                <option value="1">In Progress</option>
+                                <option value="2">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary" ng-click="Show()">Show</button>
+                        <button type="reset" id="btnReset" class="btn btn-default">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 280px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-12 col-xs-12">
+        <div class="box box-primary margin">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:30%">Requisition Code</th>
+                                <th style="width:10%">Status</th>
+                                <th style="width:10%">Approval Status</th>
+                                <th style="width:40%">Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="resource in Resources | filter:SearchList">
+                                    <td style="width:10%">{{$index+1}}</td>
+                                    <td style="width:30%">{{resource.RequisitionCode}}</td>
+                                    <td style="width:10%">{{resource.Status}}</td>
+                                    <td style="width:10%">{{resource.ApprovalStatus}}</td>
+                                    <td style="width:40%">{{resource.CreatedDate}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="~/Scripts/Sales/RequisitionListController.js"></script>

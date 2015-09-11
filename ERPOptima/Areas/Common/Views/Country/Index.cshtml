@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Country";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = false;
+    bool edit = false;
+    bool delete = false;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+
+    }
+}
+
+<h2>Country</h2>
+<div ng-controller="country">
+    <section class="margin-top-10 col-xs-5">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Country Entry</h3>
+            </div>
+            <div class="box-body">
+
+                <form name="Countries">
+
+                    <div class="form-group">
+                        <label for="txtName">Name<span style="color:red">*</span></label>
+                        <input type="text" ng-model="Country.Name" class="form-control" id="txtName" placeholder="Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtType">Short Name</label>
+                        <input type="text" ng-model="Country.ShortName" class="form-control" id="txtType" placeholder="Type">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="active" ng-model="Country.Status"> Status
+                        </label>
+                    </div>
+                    <div class="box-footer">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="Countries.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="margin-top-10 col-xs-7">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Country Table</h3>
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" data-sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Short Name'" data-sortable="'Type'">{{data.ShortName}}</td>
+                                <td class="rowTd" data-title="'Status'" data-sortable="'Status'"><span ng-class="{'badge bg-green': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Common/Country.js")"></script>
+
+}

@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "ReportAccountHeadMapping";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+<section class="content-header">
+
+    <h2 class="text-center  section-title">Report Account Head Mapping</h2><hr />
+</section>
+<div ng-controller="RptAcHdMappingController">
+    <section class="margin-top-10 col-sm-6 col-sm-offset-3 col-xs-12">
+        <div class="box box-primary ">
+
+            <div class="box-body">
+                <form name="HeadMappingForm">
+                    <div class="form-group">
+                        <label for="cmdhdName">Report head name</label>
+                        <select id="cmdhdName" placeholder="" ng-model="CorporateTypeId" name="txthdName" class="selectUI" ui-select2>
+                            <option value=""></option>
+                            <option data-ng-repeat="data in CorporateTypesList" value="{{data.Id}}">{{data.Type}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cmdAcHead">Chart of account head</label>
+                        <select id="cmdAcHead" placeholder="" name="txtAcHead" ng-model="CorporateTypeId" class="selectUI" ui-select2>
+                            <option value=""></option>
+                            <option data-ng-repeat="data in CorporateTypesList" value="{{data.Id}}">{{data.Type}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" class="normal">&nbsp;&nbsp;
+                        <label>
+                            Including opening balance
+                        </label>
+
+                    </div>
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="HeadMappingForm.$invalid" ng-click="Save(HeadMappingForm.$valid)">Show</button>
+                        }
+
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 280px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+
+<script src="~/Scripts/Accounts/Report_AccountHeadMappingController.js"></script>

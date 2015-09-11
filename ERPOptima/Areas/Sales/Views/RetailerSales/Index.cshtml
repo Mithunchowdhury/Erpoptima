@@ -1,0 +1,311 @@
+﻿@{
+    ViewBag.Title = "Retailer Sales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+<h2 class="text-center section-title">Retail Sales</h2>
+<div ng-controller="RetailerOrderController">
+
+    <form role="form" name="RetailerSalesForm">
+
+        <section class="margin-top-10 col-sm-7 col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-refresh"></i>
+                    <h3 class="box-title">
+                        Retail Sales
+                    </h3>
+                </div>
+                <!-- Product add -->
+
+                <div class="box-body">
+                    <div class="row" style="padding-left: 10px">
+                        <label style="width:30%">
+                            Product<span style="color:red">*</span>
+                        </label>
+                        <label style="width:20%">
+                            Quantity<span style="color:red">*</span>
+                        </label>
+                        <label style="width:25%">
+                            Unit<span style="color:red">*</span>
+                        </label>
+                        <label style="width:10%">
+                        </label>
+                        <label style="width:10%">
+                        </label>
+                    </div>
+
+                    <div class="row" style="padding-left: 10px">
+
+                        <select class="selectUI" id="cmbProduct" name="soProductId" ng-model="SalesOrder.SlsProductId" data-placeholder="Pick a Product"
+                                ng-change="ProductChangeHandler()" data-ui-select2 style="width:30%">
+                            <option value=""></option>
+                            <option ng-repeat="product in Products" value={{product.Id}}>{{product.Code}}&nbsp;({{product.Name}})</option>
+                        </select>
+                        <input type="number" id="txtProductQty" name="soProductQty" class="right-align" ng-model="SalesOrder.SalesOrderQuantity"
+                               placeholder="" style="width:20%">
+                        <select class="selectUI" id="cmbProductUnit" name="soProductUnit" ng-model="SalesOrder.SlsUnitId" data-placeholder="Pick a Unit"
+                                data-ui-select2 style="width:25%">
+                            <option value=""></option>
+                            <option ng-repeat="productunit in ProductUnits" value={{productunit.Id}}>{{productunit.ShortName}}</option>
+                        </select>
+
+                        <button type="button" class="btn btn-success" ng-disabled="detailInvalid()" ng-click="AddProductToOrder()" style="width:10%">Add</button>
+                        <button type="button" class="btn btn-default" ng-disabled="ButtonDisabled" ng-click="ClearProductGroup()" style="width:10%">Clear</button>
+                        @*<button event-focus="click" event-focus-id="txtProductQty" ng-show="ShowFocusButton">Declarative Focus</button>*@
+                    </div>
+
+                    <div class="row" style="padding-left: 10px">
+
+                    </div>
+                </div>
+
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-table"></i>
+                    <h3 class="box-title">
+                        Demanded Product List
+                    </h3>
+                    <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList2" placeholder="Search" />
+                </div>
+                <div class="box-body no-padding">
+                    <div class="panel panel-default">
+                        <table class="table  table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">SL</th>
+                                    <th style="width:20%">Product</th>
+                                    <th style="width:10%">Quantity</th>
+                                    <th style="width:10%">Unit</th>
+                                    <th style="width:10%">Rate</th>
+                                    <th style="width:10%">Price</th>
+                                    <th style="width:10%">Discount</th>
+                                    <th style="width:10%">Total</th>
+                                    <th style="width:13%">Action</th>
+                                    <th style="width:2%"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="div-table-content">
+                            <table class="table  table-striped">
+                                <tbody>
+                                    <tr ng-repeat="resource2 in Resources2 | filter:SearchList2">
+                                        <td style="width:5%">{{$index+1}}</td>
+                                        <td style="width:20%">{{resource2.SlsProductName}}</td>
+                                        <td style="width:10%">{{resource2.SalesOrderQuantity}}</td>
+                                        <td style="width:10%">{{resource2.SlsUnitName}}</td>
+                                        <td style="width:10%">{{resource2.Rate}}</td>
+                                        <td style="width:10%">{{resource2.Price}}</td>
+                                        <td style="width:10%">{{resource2.Discount * resource2.Price / 100}}({{resource2.Discount}}%)</td>
+                                        <td style="width:10%">{{resource2.Total}}</td>
+                                        <td style="width:13%">
+                                            <button class="btn btn-success btn-xs" id="editRowBtn{{$index}}" ng-click="RemoveResource2(resource2)"><i class="fa fa-edit"></i> Remove</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                    </div>
+                    <div class="div-table2-content">
+                        <table class="table  table-striped">
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="form-group">
+                                            <label>Retailer</label>
+                                        </div>
+                                    </td>
+                                    <td colspan="3">
+                                        <select class="selectUI" id="cmbPartyName" name="soPartyId" ng-model="SalesOrder.Party" data-placeholder="Pick a Party name"
+                                                data-ui-select2>
+                                            <option value=""></option>
+                                            <option ng-repeat="part in Parties" value={{part.Id}}>{{part.Name}}</option>
+                                        </select>
+                                    </td>
+                                    <td colspan="2" align="right">
+                                        <label>
+                                            Net Total<span style="color:red">*</span>
+                                            <span style="color:red" data-ng-show="RetailerSalesForm.soCostTotal.$dirty && RetailerSalesForm.soCostTotal.$error.required">Required</span>
+                                        </label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input type="number" class="form-control right-align" id="txtCostTotal" name="soCostTotal"
+                                               readonly ng-model="SalesOrder.Total" placeholder="">
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <label>OR Customer</label>
+                                    </td>
+                                    <td colspan="3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="txtRetailerNameEntry" name="soRetailerNameEntry" ng-model="SalesOrder.OptionalPartyName" maxlength="100" ng-minlength="1" data-ng-pattern="/^[a-zA-Z0-9]{1,100}$/" placeholder="">
+                                        </div>
+                                    </td>
+                                    <td colspan="2" align="right">
+                                        <label>
+                                            Discount<span style="color:red">*</span>
+                                            <span style="color:red" data-ng-show="RetailerSalesForm.soCostDiscount.$dirty && RetailerSalesForm.soCostDiscount.$error.required">Required</span>
+                                        </label>
+                                    </td>
+                                    <td colspan="1">
+                                        <input type="text" class="form-control" id="txtCostDiscountRate" name="soCostDiscountRate" ng-model="SalesOrder.DiscountRate"  number placeholder="" maxlength="5" ng-pattern="/^\d+(\.\d{1,2})?$/" readonly>
+                                    </td>
+                                    <td colspan="1">%</td>
+                                    <td colspan="2">
+                                        <input type="number" class="form-control" style="text-align:right" class="form-control" id="txtCostDiscount" required name="soCostDiscount" ng-model="SalesOrder.Discount"
+                                               placeholder="" number ng-change="ApplyDiscountAmount()">
+                                    </td>                                    
+                                </tr>  
+                                <tr>                                    
+                                    <td colspan="7" align="right">
+                                        <label>
+                                            Grand Total
+                                        </label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input type="number" class="form-control right-align" id="txtCostGrandTotal" name="soCostGrandTotal" ng-model="SalesOrder.GrandTotal"
+                                               readonly placeholder="" ng-change="CalculateDue()">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" align="right">
+                                        <label>
+                                            Payment
+                                        </label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input type="number" class="form-control right-align" style="text-align:right" number id="txtCostAdvance" name="soCostAdvance" ng-model="SalesOrder.Advance"
+                                               placeholder="" required ng-change="CalculateDue()">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" align="right">
+                                        <label>
+                                            Due
+                                        </label>
+                                    </td>
+                                    <td colspan="4">
+                                        <input type="number" class="form-control right-align" id="txtDue" name="soDue" ng-model="SalesOrder.Due"
+                                               readonly placeholder="">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div ng-class="{overlay:ShowLoading}"></div>
+                    <div class="{loading-img:ShowLoading}"></div>
+                </div>
+
+                <div class="text-center">
+                    @if (add || edit)
+                    {
+                        <button type="submit" class="btn btn-success" ng-disabled="RetailerSalesForm.$invalid" ng-click="Save(RetailerSalesForm.$valid)">Save</button>
+                    }
+                    <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                </div>
+            </div>
+
+
+        </section>
+
+        <section class="col-sm-11 col-xs-12 margin-top-10">
+            <div class="box box-primary">
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-table"></i>
+                    <h3 class="box-title">
+                        Order List
+                    </h3>
+                    <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                </div>
+                <div class="box-body no-padding">
+                    <div class="panel panel-default">
+                        <table class="table  table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%">Ref. No</th>
+                                    <th style="width:30%">Party</th>
+                                    <th style="width:15%">Delivery Date</th>
+                                    <th style="width:15%">Discount</th>
+                                    <th style="width:10%">Total</th>
+                                    <th style="width:10%">Invoice</th>
+                                    <th style="width:10%">Challan</th>
+                                    <th style="width:2%"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="div-maintable-content">
+                            <table class="table  table-striped">
+                                <tbody>
+                                    <tr ng-repeat="resource in Resources | filter:SearchList">
+                                        <td style="width:20%">{{resource.RefNo}}</td>
+                                        <td style="width:30%">{{resource.PartyName}}</td>
+                                        <td style="width:15%">{{resource.PreferredDeliveryDate | jsonDate}}</td>
+                                        <td style="width:15%">{{resource.Discount | number:2 }}({{resource.Discount * 100 / resource.Total | number:2 }}%)</td>
+                                        <td style="width:10%">{{resource.Total}}</td>
+                                        @if (edit || delete)
+                                        { 
+                                            <td style="width:10%">
+                                                <button class="btn btn-success btn-xs" id="invoiceRowBtn{{resource.Id}}" ng-click="printInvoice(resource)"><i class="fa fa-edit"></i>Print</button>
+                                            </td>
+                                            <td style="width:10%">
+                                                <button class="btn btn-success btn-xs" id="challanRowBtn{{resource.Id}}" ng-click="printChallan(resource)"><i class="fa fa-edit"></i>Print</button>
+                                            </td>
+                                        }                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                    <div ng-class="{overlay:ShowLoading}"></div>
+                    <div class="{loading-img:ShowLoading}"></div>
+                </div>
+            </div>
+        </section>
+
+    </form>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        .div-table2-content {
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .div-maintable-content {
+            height: 250px;
+            overflow-y: auto;
+        }
+    </style>
+
+
+
+</div>
+
+@section scripts{
+
+<script type="text/javascript" src="@Url.Content("/Scripts/Sales/RetailerOrderController.js")"></script>
+
+}

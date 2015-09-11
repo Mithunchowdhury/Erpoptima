@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Process Level";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+@section scripts{
+
+    <script src="~/Scripts/Common/ProcessLevel.js"></script>
+
+}
+
+@section css{
+
+}
+<h2 class="margin text-center" >Process Level</h2>
+<div class="row content" ng-controller="ProcessLevelController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">Process Level Information</h3>
+            </div>
+            <div class="box-body">
+                <form name="ProcessLevels">
+                    <div class="form-group">
+                        <label for="lblName">Name</label><label style="color:red">*</label>
+                        <input type="text" class="form-control" name="txtName" id="txtName" ng-model="ProcessLevel.Name" placeholder="Name..." required>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="status" ng-model="ProcessLevel.Status"> Active/Inactive
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="ProcessLevels.$invalid" ng-click="Save()">Save</button>
+                        }
+                        @if (delete)
+                        {
+                            <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">List of Process Level</h3>
+            </div>
+            <div class="box-body">
+                <div>
+                    <table ng-table="tableParams" class="table table-responsive">
+                        <tbody ng-repeat="data in $data">
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'Name'" sortable="'Name'">{{data.Name}}</td>
+                                <td class="rowTd" data-title="'Status'" sortable="'Status'"><span ng-class="{'badge bg-green': data.Status==1, 'badge bg-red': data.Status==0}" class="">{{GetStatusText(data.Status)}}</span></td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit(data)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

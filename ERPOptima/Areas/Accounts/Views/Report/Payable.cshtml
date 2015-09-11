@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Payable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+
+
+<section class="content-header ">
+    <h2 class="text-center section-title">Payable Report</h2>
+</section>
+
+<div ng-controller="RptPayableController">
+    <section class="margin-top-10 col-sm-6 col-sm-offset-3 col-xs-12">
+        <div class="box box-primary ">
+            <div class="box-header">
+                <h3 class="box-title">Payable</h3>
+            </div>
+            @using (Html.BeginForm("GetAnFReceivableReport", "Report", FormMethod.Get, new { area = "Accounts", name = "Search", id = "Search", target = "_blank" }))
+            {
+
+                <div class="box-body">
+                
+                    <div class="form-group">
+                        <label for="CostcenterId">Cost Center</label>
+                        <select class="selectUI" data-placeholder="Pick a Cost Center" data-ui-select2="costCenter" id="CostcenterId" name="CostcenterId" ng-model="ReportReceivableAndPayableViewModel.CostcenterId">
+                            <option value=""></option>
+                            <option ng-repeat="costcenter in CostCenters" value="{{costcenter.Id}}">{{costcenter.Name}}</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="ReportType" value="2" />
+                    @*<input type="hidden" name="VoucherTypeId" value="2" />*@
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="Search.$invalid" @*ng-click="Save(WebForm.$valid)"*@>Show</button>
+                        }
+
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 280px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>
+@section scripts{
+<script type="text/javascript" src="@Url.Content("/Scripts/Accounts/Report_PaybleController.js")"></script>
+    
+}

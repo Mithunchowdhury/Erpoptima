@@ -1,0 +1,285 @@
+﻿@{
+    ViewBag.Title = "Sales Delivery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Sales Delivery</h2>
+<div ng-controller="DeliveryController">
+    <form role="form" name="SalesDeliveryForm">
+        <section class="col-sm-4 col-xs-12 margin-top-10">
+            <div class="box box-primary">
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-refresh"></i>
+                    <h3 class="box-title">
+                        Sales Delivery
+                    </h3>
+                </div>
+                <div class="box-body no-padding">
+                    @*<form role="form" name="SalesDeliveryForm">*@
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>
+                                    Sales Order<span style="color:red">*</span>
+                                    <span style="color:red" data-ng-show="SalesDeliveryForm.nmSalesOrder.$dirty && SalesDeliveryForm.nmSalesOrder.$error.required">Required</span>
+                                </label>
+                                <select class="selectUI" ng-disabled="ButtonDisabled" id="cmbSalesOrder" name="nmSalesOrder" ng-model="SalesDelivery.SlsSalesOrderId"
+                                        data-placeholder="Pick a Sales Order" data-ui-select2 ng-change="GetOrderDetailsByOrderId(SalesDelivery.SlsSalesOrderId)" required>
+                                    <option value=""></option>
+                                    <option ng-repeat="soRefNo in SalesRefNos" value={{soRefNo.Id}}>{{soRefNo.RefNo}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                Delivery Date<span style="color:red">*</span>
+                                <span style="color:red" data-ng-show="SalesDeliveryForm.nmDelDate.$dirty && SalesDeliveryForm.nmDelDate.$error.required">Required</span>
+                            </label>
+                            <input type="text" class="form-control dpkr" id="txtDelDate" name="nmDelDate" ng-model="SalesDelivery.DeliveryDate" placeholder=""
+                                   datetimepicker required>
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery Challan No<span style="color:red">*</span></label>
+                            <span style="color:red" data-ng-show="SalesDeliveryForm.nmChallanNo.$dirty && SalesDeliveryForm.nmChallanNo.$error.required">Required</span>
+
+                            <input type="text" class="form-control" ng-model="ChallanNo" placeholder="" required readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Invoice No<span style="color:red">*</span></label>
+                            <span style="color:red" data-ng-show="SalesDeliveryForm.nmInvoiceNo.$dirty && SalesDeliveryForm.nmInvoiceNo.$error.required">Required</span>
+
+                            <input type="text" class="form-control" ng-model="InvoiceNo" placeholder="" required readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label> Vehicle No<span style="color:red">*</span></label>
+                            <span style="color:red" data-ng-show="SalesDeliveryForm.nmVehicleNo.$dirty && SalesDeliveryForm.nmVehicleNo.$error.required">Required</span>
+                            <span style="color:red" data-ng-show="SalesDeliveryForm.nmVehicleNo.$dirty && SalesDeliveryForm.nmVehicleNo.$error.pattern">Invalid code.</span>
+                            <span style="color:red" data-ng-show="SalesDeliveryForm.nmVehicleNo.$dirty && SalesDeliveryForm.nmVehicleNo.$error.minlength">Minimum 3 characters required</span>
+
+                            <input type="text" class="form-control" id="txtVehicleNo" name="nmVehicleNo" ng-model="SalesDelivery.VehicleNo" maxlength="20" ng-minlength="3" data-ng-pattern="/^[a-zA-Z0-9]{3,20}$/" placeholder="Vehicle No" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" id="txtRemarks" name="nmRemarks" cols="20" rows="1" ng-model="SalesDelivery.Remarks" placeholder=""
+                                      style="text-anchor:middle; max-width:100%; width:100%"></textarea>
+                        </div>
+
+
+                    </div><!-- /.box-body -->
+                    <!-- Product add -->
+                    @*<div class="box-body">
+                            <fieldset>
+                                <legend>Delivery Product</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-12 col-xs-12">
+                                            Product<span style="color:red">*</span>
+                                            <span style="color:red" data-ng-show="SalesDeliveryForm.soProductId.$error.required">Required</span>
+                                        </label>
+                                        <select class="col-sm-12 col-xs-12" id="cmbProduct" name="soProductId" ng-model="SalesDelivery.SlsProductId" data-placeholder="Pick a Product"
+                                                ng-change="ProductChangeHandler()" data-ui-select2>
+                                            <option value=""></option>
+                                            <option ng-repeat="product in Products" value={{product.Id}}>{{product.Name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Quantity<span style="color:red">*</span>
+                                        <span style="color:red" data-ng-show="SalesDeliveryForm.soProductQty.$error.required">Required</span>
+                                    </label>
+                                    <input type="number" class="form-control" id="txtProductQty" name="soProductQty" ng-model="SalesDelivery.SalesOrderQuantity" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-12 col-xs-12">
+                                            Unit<span style="color:red">*</span>
+                                            <span style="color:red" data-ng-show="SalesDeliveryForm.soProductUnit.$error.required">Required</span>
+                                        </label>
+                                        <select class="col-sm-12 col-xs-12" id="cmbProductUnit" name="soProductUnit" ng-model="SalesDelivery.SlsUnitId" data-placeholder="Pick a Product Unit"
+                                                data-ui-select2>
+                                            <option value=""></option>
+                                            <option ng-repeat="productunit in ProductUnits" value={{productunit.SlsUnitId}}>{{productunit.Unit}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success" ng-disabled="detailInvalid()" ng-click="AddProductToOrder()">Add</button>
+                                    <button type="reset" class="btn btn-default" ng-disabled="ButtonDisabled" ng-click="ClearProductGroup()">Clear</button>
+                                </div>
+                            </fieldset>
+                        </div>*@
+
+                    <div class="text-center">
+                        @if (add || edit)
+                        {
+                            <button type="submit" class="btn btn-success" ng-disabled="SalesDeliveryForm.$invalid" ng-click="Save(SalesDeliveryForm.$valid)">Save</button>
+                        }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                    <br />
+
+
+
+                    @*</form>*@
+                </div><!-- /.box-body-->
+            </div>
+
+        </section>
+
+        <section class="margin-top-10 col-sm-7 col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-table"></i>
+                    <h3 class="box-title">
+                        Delivery List
+                    </h3>
+                    <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+                </div>
+                <div class="box-body no-padding">
+                    <div class="panel panel-default">
+                        <table class="table  table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%">SL</th>
+                                    <th style="width:20%">Challan No</th>
+                                    <th style="width: 23%">Invoice No</th>
+                                    <th style="width:18%">Delivery Date</th>
+                                    @*<th style="width: 10%">Vehicle No</th>*@
+                                    <th style="width:10%">Status</th>
+                                    <th style="width:10%">Action</th>
+                                    <th style="width:10%">Invoice</th>
+                                    <th style="width:10%">Challan</th>
+                                    
+                                    <th style="width:2%"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="div-table-content">
+                            <table class="table  table-striped">
+                                <tbody>
+                                    <tr ng-repeat="resource in Resources | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                        <td style="width:10%">{{$index+1}}</td>
+                                        <td style="width:20%">{{resource.ChallanNo}}</td>
+                                        <td style="width:23%">{{resource.InvoiceNo}}</td>
+                                        <td style="width:18%">{{resource.DeliveryDate | jsonDate}}</td>
+                                        @*<td style="width:10%">{{resource.VehicleNo}}</td>*@
+                                        <td style="width: 10%">
+                                            <div ng-if="resource.ReceivedStatus == 1 ">Complete</div>
+                                            <div ng-if="resource.ReceivedStatus != 1 ">In Progress</div>
+                                        </td>
+                                        @if (edit || delete)
+                                        {
+                                            <td style="width:10%">
+                                                <button class="btn btn-success btn-xs" id="editRowBtn{{resource.Id}}" ng-click="setForEdit(resource)"><i class="fa fa-edit"></i>Edit</button>
+                                            </td>
+                                            <td style="width:10%">
+                                                <button class="btn btn-success btn-xs" id="invoiceRowBtn{{resource.Id}}" ng-click="printInvoice(resource)"><i class="fa fa-edit"></i>Print</button>
+                                            </td>
+                                            <td style="width:10%">
+                                                <button class="btn btn-success btn-xs" id="challanRowBtn{{resource.Id}}" ng-click="printChallan(resource)"><i class="fa fa-edit"></i>Print</button>
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <style>
+                            .selected {
+                                background-color: #FAA61A;
+                                color: white;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </div>
+                    <div>
+                    </div>
+                    <div ng-class="{overlay:ShowLoading}"></div>
+                    <div class="{loading-img:ShowLoading}"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-sm-11 col-xs-12 margin-top-10">
+            <div class="box box-primary">
+                <div class="box-header" style="cursor: move;">
+                    <i class="fa fa-table"></i>
+                    <h3 class="box-title">
+                        Delivery Product List
+                    </h3>
+                    <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList2" placeholder="Search" />
+                </div>
+                <div class="box-body no-padding">
+                    <div class="panel panel-default">
+                        <table class="table  table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width:6%">SL</th>
+                                    <th style="width:25%">Product</th>
+                                    <th style="width:15%">Quantity</th>
+                                    <th style="width: 15%">Unit</th>
+                                    <th style="width: 25%">Delivered Quantity</th>
+                                    @*<th style="width: 15%">Action</th>*@
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="div-table-content">
+                            <table class="table  table-striped">
+                                <tbody>
+                                    <tr ng-repeat="resource2 in Resources2 | filter:SearchList2">
+                                        <td style="width:6%">{{$index+1}}</td>
+                                        <td style="width:25%">{{resource2.SlsProductName}}</td>
+                                        <td style="width:15%">{{resource2.SalesOrderQuantity}}</td>
+                                        <td style="width:15%">{{resource2.SlsUnitName}}</td>
+                                        <td style="width:25%">
+                                            <input style="width:20%" type="number" ng-model="resource2.Quantity" name="nmDeliveryQuantity{{$index}}" required />
+                                            <span style="color:red">*</span>
+                                            <span style="color:red" data-ng-show="SalesDeliveryForm.nmDeliveryQuantity{{$index}}.$error.required">Required</span>
+                                            @*{{resource2.Quantity}}*@
+                                        </td>
+                                        @*<td style="width:15%">
+                                                <button class="btn btn-success btn-xs" id="editRowBtn{{$index}}" ng-click="RemoveResource2(resource2)"><i class="fa fa-edit"></i> Remove</button>
+                                            </td>*@
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-class="{overlay:ShowLoading}"></div>
+                    <div class="{loading-img:ShowLoading}"></div>
+                </div>
+            </div>
+        </section>
+
+    </form>
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+
+
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/DeliveryController.js")"></script>
+
+}

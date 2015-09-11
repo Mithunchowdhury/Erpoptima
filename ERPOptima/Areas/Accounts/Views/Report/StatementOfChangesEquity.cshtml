@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "StatementOfChangesEquity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/Accounts/Rpt_StatementChangesEquityController.js"></script>
+<section class="content-header ">
+    <h2 class="text-center section-title">Statement Of Changes Equity</h2>
+</section>
+
+<div class="row content" ng-controller="RptChangesEquityController">
+
+    <section class="col-sm-4 col-sm-offset-4">
+
+        <div class="box box-primary">
+
+            @using (Html.BeginForm("GetDailySalesReport", "SalesReport", FormMethod.Get, new { area = "Sales", target = "_blank" }))
+            {
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="cmdCompany">Company:</label>
+                            <select class="col-sm-8  col-xs-12" id="cmdCompany" ui-select2 ng-model="OfficeId" name="nmCompany" data-placeholder="Pick a Company" style="width:210px">
+                                <option value=""></option>
+                                <option ng-repeat="data in Office" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="txtDateForm">
+                                Date From:<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " id="txtDateForm" name="nmDateForm" ng-model="DateForm" required placeholder=""
+                                       datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-4 col-xs-12" for="txtDateTo">
+                                Date To:<span style="color:red">*</span>
+                            </label>
+                            <div class="col-sm-8  col-xs-12">
+                                <input type="text" class="form-control dpkr " id="txtDateTo" name="nmDateTo" ng-model="DateTo" placeholder=""
+                                       required datetimepicker>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br />
+
+                    <div class="form-group text-center">
+                        <button type="submit" id="SearchButton" class="btn btn-primary">Show</button>
+                        <button type="reset" id="SearchButton" ng-click="Reset()" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+
+</div>

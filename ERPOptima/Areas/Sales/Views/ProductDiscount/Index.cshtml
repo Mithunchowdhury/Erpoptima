@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Product Discount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">Product Discount</h2>
+<div ng-controller="ProductDiscountController">
+    <section class="margin-top-10 col-sm-5 col-xs-6">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Product Discount Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="ProductDiscount">
+                    <div class="form-group">
+                        <label for="selCategory">Category<span style="color:red">*</span></label>
+                        <select id="selCategory" placeholder="Pick a category" ui-select2 ng-model="CategoryId" class="selectUI" ng-change="GetSubCategory();SetCategoryId()" required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Category" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selSubCategory">Sub Category</label>
+                        <select id="selSubCategory" placeholder="Pick a sub category" ui-select2 ng-model="SubCategoryId" class="selectUI" ng-change="SetSubCategoryId()">
+                            <option value=""></option>
+                            <option ng-repeat="data in SubCategory" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selRegion">Region<span style="color:red">*</span></label>
+                        <select id="selRegion" placeholder="Pick a Region" ng-model="RegionId" class="selectUI" ng-change="GetDiscount()" ui-select2 required>
+                            <option value=""></option>
+                            <option ng-repeat="data in Region" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        @if (add || edit)
+                         {
+                             <button type="submit" class="btn btn-success" ng-disabled="ProductDiscount.$invalid" ng-click="Save()">Save</button>
+                         }
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 440px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="col-sm-7 col-xs-12 margin-top-10">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Product Discount List
+                </h3>
+                <input type="text" style="margin:8px" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default margin">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-2"><input type="checkbox" ng-model="chkAll" ng-change="CheckAll()" /></th>
+                                <th class="col-sm-4">Product</th>
+                                <th class="col-sm-2">Discount(%)</th>
+                                <th class="col-sm-4">Remarks</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="productDiscounts in ProductDiscounts | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td class="col-sm-2"><input type="checkbox" ng-model="productDiscounts.Status" /></td>
+                                    <td class="col-sm-4">{{productDiscounts.Name}}</td>
+                                    <td class="col-sm-2">
+                                        <span style="padding-left:50px" ng-if="!productDiscounts.$edit">{{productDiscounts.Discount}}</span>
+                                        <div ng-if="productDiscounts.$edit"><input class="form-control" type="number" ng-model="productDiscounts.Discount" /></div>
+                                    </td>
+                                    <td class="col-sm-4">
+                                        <span style="padding-left:50px" ng-if="!productDiscounts.$edit">{{productDiscounts.Remarks}}</span>
+                                        <div ng-if="productDiscounts.$edit"><input class="form-control" type="text" ng-model="productDiscounts.Remarks" /></div>
+                                    </td>
+                                    <td data-title="'Actions'" class="col-sm-2">
+                                        <a ng-if="!productDiscounts.$edit" href="" class="btn btn-default btn-xs" ng-click="productDiscounts.$edit = true">Edit</a>
+                                        <a ng-if="productDiscounts.$edit" href="" class="btn btn-primary btn-xs" ng-click="productDiscounts.$edit = false">Set</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+
+                </div><!-- /.box-body-->
+
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+    </section>
+</div>
+
+
+
+@section scripts{
+    
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/ProductDiscountController.js")"></script>
+
+}

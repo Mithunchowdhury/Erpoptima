@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Fiscal Year Closing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center section-title">Fiscal Year Closing</h2>
+<div ng-controller="fiscalYearClosing">
+    <div class="margin-top-10 col-md-5 col-sm-12 col-md-offset-3">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title"></h3>
+            </div>
+            <div class="box-body">
+                <form name="FinancialYearClose">
+                    <div class="form-group">
+                        <label for="txtFY">Fiscal Year to Close</label><label style="color:red">*</label>
+                        <input type="text" class="form-control" id="txtFY" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-xs-12" for="cmbNewYear">New Fiscal Year<span style="color:red">*</span></label>
+                            <select id="cmbNewYear" ng-model="FinancialYearId" data-placeholder="Pick a Year" data-ui-select2 class="col-xs-12" ng-change="AddNew()">
+                                <option value=""></option>
+                                <option value="-1">+ Add New Year .....</option>
+                                <option ng-repeat="data in FinancialYearIdAndName" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" ng-disabled="FinancialYearClose.$invalid" ng-click="Save()">Save</button>
+                        <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                    </div>
+                </form>
+                <script type="text/ng-template" id="modal">
+                    <form name="financialYears">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Financial Year Information</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form name="financialYears">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-xs-12" for="cmbModule">Module<span style="color:red">*</span></label>
+                                        <select id="cmbModule" data-placeholder="Pick a Module" class="col-xs-12" ng-model="search.SecModuleId" data-ui-select2 required>
+                                            <option value=""></option>
+                                            <option ng-repeat="data in search.SecModules" value={{data.Id}}>{{data.Name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtName">Name</label><label style="color:red">*</label>
+                                    <input type="text" ng-model="search.Name" class="form-control" id="txtName" placeholder="Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtFromDate">From Date</label><label style="color:red">*</label>
+                                    <input type="text" ng-model="search.OpeningDate" class="form-control dpkr" id="txtFromDate" placeholder="From Date" datetimepicker required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtToDate">To Date</label><label style="color:red">*</label>
+                                    <input type="text" ng-model="search.ClosingDate" class="form-control dpkr" id="txtToDate" placeholder="To Date" datetimepicker required>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        Status <input type="checkbox" name="active" ng-model="search.Status">
+                                    </label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" ng-disabled="financialYears.$invalid" ng-click="ok()">Save</button>
+                                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                                </div>
+                            </form>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Common/FinancialYearClosingController.js")"></script>
+}

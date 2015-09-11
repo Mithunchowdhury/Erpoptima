@@ -1,0 +1,242 @@
+﻿@{
+    ViewBag.Title = "Sales Target";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+
+
+}
+
+
+
+<h2 class="text-center section-title">Sales Target</h2>
+<div ng-controller="SalesTargetController">
+    <section class="margin-top-10 col-sm-5 col-xs-12">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3 class="box-title">Target Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="SalesTarget">
+                    <div class="form-group">
+                        <label for="txtRefNo">Ref. No<span style="color:red">*</span></label>
+                        <input type="text" ng-model="RefNo" class="form-control" id="txtRefNo" placeholder="" required readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selYear">Year<span style="color:red">*</span></label>
+                        <select id="selYear" class="selectUI" ng-model="Year" data-placeholder="Pick a year" ng-change="GetTargetsByYear()" required ui-select2>
+                            <option value="0"></option>
+                            @{
+                                int y = DateTime.Now.Year;
+                                for (int i = y - 10; i <= y; i++)
+                                {
+                                    var year = i;
+                                    <option value=@year>@year</option>
+
+                                }
+
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cmbMonth">Target Month<span style="color:red">*</span></label>
+                        <select id="cmbMonth" placeholder="Pick a month" ng-model="Month" class="selectUI" ui-select2>
+                            <option value="0"></option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="cmbEmployee">Employee<span style="color:red">*</span></label>
+                        <select id="cmbEmployee" placeholder="Pick an employee" ng-model="HrmEmployeeId" class="selectUI" ng-change="GetTargetsByYearNEmployeeId()" ui-select2>
+                            <option value=""></option>
+                            <option ng-repeat="data in EmployeeList" value={{data.Id}}>{{data.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtTargetSalesAmount">Target Sales Amount</label>
+                        <span style="color:red" data-ng-show="SalesTarget.nmTargetSalesAmount.$dirty && SalesTarget.nmTargetSalesAmount.$error.pattern">Invalid amount</span>
+                        <input type="text" ng-model="TargetSalesAmount" class="form-control" id="txtTargetSalesAmount" name="nmTargetSalesAmount"
+                               maxlength="18" ng-pattern="/^\d+(\.\d{1,2})?$/" placeholder="">
+                    </div>
+                    @*<div class="form-group">
+                        <label for="txtName">Defected Quantity<span style="color:red">*</span></label>
+                        <span style="color:red" data-ng-show="Businesses.nmDefectedQty.$dirty && Businesses.nmDefectedQty.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="Businesses.nmDefectedQty.$dirty && Businesses.nmDefectedQty.$error.pattern">Invalid Number</span>
+                        <input type="text" ng-model="Business.Name" class="form-control" id="txtName" name="nmDefectedQty" 
+                               maxlength="18" ng-pattern="/^\d+(\.\d{1,2})?$/" placeholder="" required>
+                    </div>*@
+                    <div class="form-group">
+                        <label for="txtRemarks">Remarks</label>
+                        <textarea cols="20" rows="2" ng-model="Remarks" class="form-control" id="txtRemarks"
+                                  style="text-anchor: middle; max-width: 100%; width: 100%; "></textarea>
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+
+        .div-table-content {
+            height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Sales Target List
+                </h3>
+                <input type="text" style="margin: 8px;" class="pull-right" ng-model="SearchList" placeholder="Search" />
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:30%">Ref. No</th>
+                                <th style="width:25%">Target Amount</th>
+                                <th style="width:25%">Remarks</th>
+                                <th style="width: 8%; text-wrap: normal">Action</th>
+                                <th style="width:2%"></th> 
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="div-table-content">
+                        <table class="table  table-striped">
+                            <tbody>
+                                <tr ng-repeat="t in Targets | filter:SearchList" ng-class="{'selected':$index == selectedRow}" ng-click="setClickedRow($index)">
+                                    <td style="width:10%">{{$index+1}}</td>
+                                    <td style="width:30%">{{t.RefNo}}</td>
+                                    <td style="width:25%">{{t.TargetSalesAmount}}</td>
+                                    <td style="width:25%">{{t.Remarks}}</td>
+                                    @if (edit || delete)
+                                    {
+                                        <td style="width:8%">
+                                            <button class="btn btn-success btn-xs" ng-click="setFortEdit(t);GetTargetDetailByTargetId()"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <style>
+                        .selected {
+                            background-color: #FAA61A;
+                            color: white;
+                            font-weight: bold;
+                        }
+                    </style>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+    <section class="margin-top-10 col-sm-7 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header" style="cursor: move;">
+                <i class="fa fa-table"></i>
+                <h3 class="box-title">
+                    Sales Target Detail
+                </h3>
+            </div>
+            <div class="box-body no-padding">
+                <div class="panel panel-default">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">SL</th>
+                                <th style="width:30%">Product</th>
+                                <th style="width:20%">Quantity</th>
+                                <th style="width:20%">Unit</th>
+                                <th style="width:20%; text-wrap: normal">
+                                    Action
+                                    <button ng-if="TargetDetails.length==0" class="btn btn-success btn-xs" ng-click="AddNewRow()"><i class="fa fa-plus-square"></i>Add</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="targetdetail in TargetDetails">
+                                <td style="width:10%">{{$index+1}}</td>
+                                <td class="col-sm-2">
+                                    <div>
+                                        <select class="form-control" ng-model="targetdetail.SlsProductId" ng-options='data.Id as (data.Code +" ("+ data.Name +")") for data in Products' ng-change="GetUnitsByProductId(targetdetail.SlsProductId)"></select>
+                                    </div>
+                                </td>
+
+                                <td class="col-sm-2">
+                                    <div>
+                                        <input class="form-control right-align" type="number" ng-model="targetdetail.Quantity" name="nmTDQuantity{{$index+1}}"
+                                               maxlength="18" ng-pattern="/^\d+(\.\d{1,2})?$/" />
+                                    </div>
+                                </td>
+                                <td class="col-sm-2">
+                                    <div>
+                                        <select class="form-control" ng-model="targetdetail.SlsUnitId" ng-options="data.SlsUnitId as data.Unit for data in Units[$index]"></select>
+                                    </div>
+                                </td>
+                                <td style="width:20%">
+                                    <button class="btn btn-success btn-xs" ng-disabled="detailInvalid(targetdetail)" ng-click="AddNewRow()"><i class="fa fa-plus-square"></i>Add</button>
+                                    <button ng-if="TargetDetails.length>0" class="btn btn-success btn-xs" ng-click="DeleteDetail($index,targetdetail.Id)"><i class="fa fa-minus-square"></i>Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="text-center">
+                    @if (add || edit)
+                    {
+                        <button type="submit" class="btn btn-success" ng-disabled="SalesTarget.$invalid" ng-click="Save()">Save</button>
+                    }
+                    @if (delete)
+                    {
+                        <button type="submit" class="btn btn-danger" ng-disabled="ButtonDisabled" ng-click="Delete()">Delete</button>
+                    }
+                    <button type="reset" class="btn btn-default" ng-click="Clear()">Reset</button>
+                </div>
+                <div ng-class="{overlay:ShowLoading}"></div>
+                <div class="{loading-img:ShowLoading}"></div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("/Scripts/Sales/SalesTargetController.js")"></script>
+
+}

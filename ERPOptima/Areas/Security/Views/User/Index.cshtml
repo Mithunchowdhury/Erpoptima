@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool add = true;
+    bool edit = true;
+    bool delete = true;
+    if (Request.IsAuthenticated)
+    {
+        add = (bool)ViewData["Add"];
+        edit = (bool)ViewData["Edit"];
+        delete = (bool)ViewData["Delete"];
+    }
+}
+
+<h2 class="text-center section-title">User</h2>
+<div ng-controller="user">
+    <section class="margin-top-10 col-xs-12 col-sm-5">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-info"></i>
+                <h3 class="box-title">User Entry</h3>
+            </div>
+            <div class="box-body">
+                <form name="Users">
+                    <div class="form-group">
+                        <label for="txtLoginName">Login Name</label><label style="color:red">*</label>
+                        <span style="color:red" data-ng-show="Users.txtLoginName.$dirty && Users.txtLoginName.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="Users.txtLoginName.$dirty && Users.txtLoginName.$error.pattern">Invalid Login name.</span>
+                      
+                        <input type="text" ng-model="UserInfo.LoginName" class="form-control" id="txtLoginName" name="txtLoginName" placeholder="Login Name..." data-ng-pattern="/^[a-zA-Z0-9@@.\s]{1,32}$/" maxlength="32" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPassword">Password</label><label style="color:red">*</label>
+                        <span style="color:red" data-ng-show="Users.txtPassword.$dirty && Users.txtPassword.$error.required">Required</span>
+                        <span style="color:red" data-ng-show="Users.txtPassword.$dirty && Users.txtPassword.$error.minlength">Minimum 5 characters required</span>
+                        <input type="password" ng-model="UserInfo.Password" class="form-control" id="txtPassword" name="txtPassword" maxlength="16" placeholder="Password......." ng-minlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtConfirmPassword">Confirm Password</label><label style="color:red">*</label>
+                        <input type="password" ng-model="UserInfo.ConfirmPassword" class="form-control" id="txtConfirmPassword" maxlength="16" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="cmnRole" class="col-sm-12 col-xs-12">Role<span style="color:red">*</span></label>
+                            <select id="cmnRole" ng-model="RoleId" class="col-sm-12 col-xs-12" data-placeholder="Pick a Role" required="required" data-ui-select2>
+                                <option class=""></option>
+                                <option ng-repeat="data in RoleIdAndName" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                        </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="cmbEmployee" class="col-sm-12 col-xs-12">Employee Name<span style="color:red">*</span></label>
+                            <select id="cmbEmployee" ng-model="EmployeeId" class="col-sm-12 col-xs-12" data-ui-select2 required>
+                                <option ng-repeat="data in Employees" value={{data.Id}}>{{data.Name}}</option>
+                            </select>
+                        </div>
+                        </div>
+                  
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="active" ng-model="UserInfo.Status"> Status
+                            </label>
+                        </div>
+                   
+                        <div class="text-center">
+                            @if (add || edit)
+                            {
+                                <button type="submit" class="btn btn-success" ng-disabled="Users.$invalid" ng-click="Save(Users.$valid)">Save</button>
+                            }
+                            @if (delete)
+                            {
+                                <button type="submit" class="btn btn-danger" ng-disabled="Users.$invalid" ng-click="Delete()">Delete</button>
+                            }
+                            <button type="reset" class="btn btn-default" ng-click="Reset()">Reset</button>
+                        </div>
+</form>
+            </div>
+        </div>
+    </section>
+
+    <section class="margin-top-10 col-xs-12 col-sm-7">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-table"></i>
+
+                <h3 class="box-title">User Table</h3>
+            </div>
+            <div class="box-body">
+
+                <div>
+                    <table ng-table="tableParams" class="table">
+
+                        <tbody ng-repeat="data in $data">
+
+                            <tr id="tr{{data.Id}}" ng-class-odd="'odd'" ng-class-even="'even'">
+                                <td class="rowTd" data-title="'S.L'" >{{$index+1}}</td>
+                                <td class="rowTd" data-title="'User Name'" sortable="'LoginName'">{{data.LoginName}}</td>
+                                <td class="rowTd" data-title="'Status'" sortable="'Status'"><span ng-class="{'badge bg-color': data.Status,'badge bg-red': !data.Status}" class="">{{data.Status}}</span></td>
+                                @if (edit || delete)
+                                {
+                                    <td class="rowTd" data-title="'Action'">
+                                        <button class="btn btn-success btn-xs" id="editRowBtn{{data.Id}}" ng-click="setFortEdit($index)"><i class="fa fa-edit"></i> Edit</button>
+                                    </td>
+                                }
+                            </tr>
+                            <tr ng-show="editId===data.Id" ng-if="editId===data.Id"></tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/Security/User.js")"></script>
+
+}
